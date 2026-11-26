@@ -347,6 +347,7 @@ fn count_player_item_by_name(ctx: &ReducerContext, player_id: Identity, item_nam
 /// Called on client connect so returning players with existing inventory progress immediately.
 /// Uses a loop (not recursion) to handle players who have items for multiple quests - avoids Wasm stack overflow.
 pub fn reconcile_tutorial_quest_progress(ctx: &ReducerContext, player_id: Identity) -> Result<(), String> {
+    if !UPSTREAM_QUESTS_ENABLED { return Ok(()); }
     let progress_table = ctx.db.player_tutorial_progress();
     let quest_defs: Vec<TutorialQuestDefinition> = ctx.db.tutorial_quest_definition().iter().collect();
     loop {
@@ -554,6 +555,7 @@ pub fn track_quest_progress(
     target_id: Option<&str>,
     amount: u32,
 ) -> Result<(), String> {
+    if !UPSTREAM_QUESTS_ENABLED { return Ok(()); }
     // Track tutorial quest progress
     track_tutorial_progress(ctx, player_id, &objective_type, target_id, amount)?;
     
@@ -992,6 +994,7 @@ fn track_daily_progress(
 /// Assign daily quests to a player (called on login or day change)
 /// Daily training is only available after completing all primary missions (calibration).
 pub fn assign_daily_quests(ctx: &ReducerContext, player_id: Identity) -> Result<(), String> {
+    if !UPSTREAM_QUESTS_ENABLED { return Ok(()); }
     // Require calibration (all primary/tutorial quests) complete before assigning daily quests
     let progress = get_or_init_tutorial_progress(ctx, player_id);
     if !progress.tutorial_completed {
@@ -1089,9 +1092,13 @@ pub fn assign_daily_quests(ctx: &ReducerContext, player_id: Identity) -> Result<
 // REDUCERS
 // ============================================================================
 
+// Keep the SpacetimeDB schema compatible with existing player data.
+const UPSTREAM_QUESTS_ENABLED: bool = false;
+
 /// Initialize quest system - call from init_module
 #[spacetimedb::reducer]
 pub fn init_quest_system(ctx: &ReducerContext) -> Result<(), String> {
+    if !UPSTREAM_QUESTS_ENABLED { return Ok(()); }
     // Note: This is called from init_module during first publish/republish
     // During init, ctx.sender() == ctx.identity() (the module itself)
     
@@ -1105,6 +1112,7 @@ pub fn init_quest_system(ctx: &ReducerContext) -> Result<(), String> {
 /// Request a hint for current tutorial quest
 #[spacetimedb::reducer]
 pub fn request_tutorial_hint(ctx: &ReducerContext) -> Result<(), String> {
+    if !UPSTREAM_QUESTS_ENABLED { return Err("Quests are disabled".to_string()); }
     let player_id = ctx.sender();
     let progress_table = ctx.db.player_tutorial_progress();
     let mut progress = get_or_init_tutorial_progress(ctx, player_id);
@@ -1149,6 +1157,7 @@ pub fn request_tutorial_hint(ctx: &ReducerContext) -> Result<(), String> {
 /// This will delete ALL daily quests for the player and assign fresh ones
 #[spacetimedb::reducer]
 pub fn refresh_my_daily_quests(ctx: &ReducerContext) -> Result<(), String> {
+    if !UPSTREAM_QUESTS_ENABLED { return Err("Quests are disabled".to_string()); }
     let player_id = ctx.sender();
     let daily_table = ctx.db.player_daily_quest();
     
@@ -1174,6 +1183,7 @@ pub fn refresh_my_daily_quests(ctx: &ReducerContext) -> Result<(), String> {
 /// Call this if quests are not showing up properly
 #[spacetimedb::reducer]
 pub fn initialize_my_quests(ctx: &ReducerContext) -> Result<(), String> {
+    if !UPSTREAM_QUESTS_ENABLED { return Err("Quests are disabled".to_string()); }
     let player_id = ctx.sender();
     
     // Verify player exists

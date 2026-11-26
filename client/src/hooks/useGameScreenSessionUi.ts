@@ -6,7 +6,6 @@ import type * as SpacetimeDB from '../generated/types';
 import type { InteractionTarget } from './useInteractionManager';
 import type { GameUIContextValue } from '../contexts/GameUIContext';
 import type { MenuType } from '../components/GameMenu';
-import { useGameplayScreenAudioRuntime } from './useGameplayScreenAudioRuntime';
 import { useGameplayScreenProgressionRuntime } from './useGameplayScreenProgressionRuntime';
 import { useGameplayScreenUiActionRuntime } from './useGameplayScreenUiActionRuntime';
 import { useSpeechBubbleManager } from './useSpeechBubbleManager';
@@ -84,7 +83,7 @@ export function useGameScreenSessionUi({
     handleError: handleVoiceError,
     forceClose: forceCloseVoice,
   } = useVoiceInterface({
-    isEnabled: true,
+    isEnabled: false,
     isChatting: gameUI.isChatting,
     isGameMenuOpen: currentMenu !== null,
     isInventoryOpen: showInventoryState || showCraftingScreenState,
@@ -125,14 +124,6 @@ export function useGameScreenSessionUi({
     alkStations,
     predictedPosition,
     localPlayer,
-  });
-
-  useGameplayScreenAudioRuntime({
-    localPlayer,
-    activeConsumableEffects,
-    localPlayerId,
-    showSovaSoundBox,
-    sovaMessageAdder,
   });
 
   const { cameraOffsetX, cameraOffsetY } = useSpeechBubbleManager(localPlayer, predictedPosition);

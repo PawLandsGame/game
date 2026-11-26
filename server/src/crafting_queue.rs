@@ -69,6 +69,10 @@ pub fn start_crafting(ctx: &ReducerContext, recipe_id: u64) -> Result<(), String
     let output_item_def = item_def_table.id().find(recipe.output_item_def_id)
         .ok_or(format!("Output item definition not found for recipe {}", recipe_id))?;
     
+    if crate::items_database::is_disabled_firearm_item(&output_item_def.name) {
+        return Err("This recipe is disabled".to_string());
+    }
+
     if let Some(ref station_name) = output_item_def.requires_station {
         // Check if player has the required station effect
         let has_required_station = match station_name.as_str() {
@@ -304,6 +308,10 @@ pub fn start_crafting_multiple(ctx: &ReducerContext, recipe_id: u64, quantity_to
     let output_item_def = item_def_table.id().find(recipe.output_item_def_id)
         .ok_or(format!("Output item definition not found for recipe {}", recipe_id))?;
     
+    if crate::items_database::is_disabled_firearm_item(&output_item_def.name) {
+        return Err("This recipe is disabled".to_string());
+    }
+
     if let Some(ref station_name) = output_item_def.requires_station {
         // Check if player has the required station effect
         let has_required_station = match station_name.as_str() {

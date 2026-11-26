@@ -26,9 +26,6 @@ Write-Host "[BUILD] Building and deploying to local database..." -ForegroundColo
 spacetime publish --no-config -p "$modulePath" broth-bullets-local -y
 Assert-LastExit "Publish to local database"
 
-Write-Host "[SOVA] Seeding local ai_http_config from root .env..." -ForegroundColor Yellow
-& "$scriptDir\seed-sova-config.ps1" -Database "broth-bullets-local"
-Assert-LastExit "Seed ai_http_config"
 
 Write-Host "[GEN] Regenerating client bindings..." -ForegroundColor Yellow
 spacetime generate --no-config --include-private -p "$modulePath" -l typescript -o "$outDir" -y

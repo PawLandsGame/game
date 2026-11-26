@@ -284,7 +284,7 @@ const GameMenu: React.FC<GameMenuProps> = ({
                                 border: '1px solid rgba(255, 51, 102, 0.3)',
                                 fontFamily: '"Press Start 2P", cursive',
                             }}>
-                                WARNING: Initiating neural sleep will disconnect your consciousness from the SOVA survival matrix.
+                                Disconnect from this game session?
                                 <br /><br />
                                 Your physical body will remain vulnerable in the world while your neural pathways are severed.
                                 <br /><br />

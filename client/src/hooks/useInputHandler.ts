@@ -67,9 +67,7 @@ import {
 import type { InteractionTargetRuntimeResult } from '../engine/runtime/interactionTargetRuntime';
 import { hasWaterContent, getWaterContent, getWaterCapacity, isWaterContainer } from '../utils/waterContainerHelpers';
 import { wasAlkPanelJustClosed } from '../components/AlkDeliveryPanel';
-import { CAIRN_LORE_TIDBITS } from '../data/cairnLoreData';
 import { Cairn as SpacetimeDBCairn } from '../generated/types';
-import { createCairnLoreAudio, isCairnAudioPlaying, getTotalCairnLoreCount, stopCairnLoreAudio } from '../utils/cairnAudioUtils';
 import { previewSeaweedHarvestBlockedIfNeeded, playImmediateSound } from './useSoundSystem';
 import { CairnNotification } from '../components/CairnUnlockNotification';
 import { registerLocalPlayerRangedShot, registerLocalPlayerSwing } from '../utils/renderers/equippedItemRenderingUtils';
@@ -1071,107 +1069,8 @@ export const useInputHandler = ({
                                 currentConnection.reducers.pickupDroppedItem({ droppedItemId: currentTarget.id as bigint });
                                 break;
                             case 'cairn':
-                                // Interact with cairn: call reducer, play audio, show lore text in SOVA chat
                                 if (typeof currentTarget.id === 'bigint') {
-                                    const cairnId = currentTarget.id;
-                                    const cairn = cairns?.get(String(cairnId));
-                                    
-                                    console.log(`[Cairn] KeyDown interaction - cairnId: ${cairnId}, cairn found: ${!!cairn}`);
-                                    
-                                    if (cairn) {
-                                        // If audio is already playing, stop it first so we can restart
-                                        if (isCairnAudioPlaying()) {
-                                            console.log('[Cairn] Audio already playing, stopping to restart');
-                                            stopCairnLoreAudio();
-                                        }
-                                        
-                                        // Check if this is the first time THIS PLAYER is discovering this cairn
-                                        // Must filter by player identity since playerDiscoveredCairns contains ALL players' discoveries
-                                        const isFirstDiscovery = !Array.from(playerDiscoveredCairns?.values() || [])
-                                            .some(discovery => 
-                                                discovery.playerIdentity?.toHexString() === localPlayerId &&
-                                                discovery.cairnId === cairnId
-                                            );
-                                        console.log(`[Cairn] isFirstDiscovery check: localPlayerId=${localPlayerId?.slice(0, 16)}, cairnId=${cairnId}, result=${isFirstDiscovery}`);
-                                        
-                                        // Find the lore entry
-                                        const loreEntry = CAIRN_LORE_TIDBITS.find(entry => entry.id === cairn.loreId);
-                                        console.log(`[Cairn] Found lore entry for cairn ${cairnId}:`, loreEntry?.id, loreEntry?.index, 'isFirstDiscovery:', isFirstDiscovery);
-                                        
-                                        // Calculate discovery count for THIS PLAYER only
-                                        const currentDiscoveryCount = Array.from(playerDiscoveredCairns?.values() || [])
-                                            .filter(d => d.playerIdentity?.toHexString() === localPlayerId).length;
-                                        const newDiscoveryCount = isFirstDiscovery ? currentDiscoveryCount + 1 : currentDiscoveryCount;
-                                        const totalCairns = getTotalCairnLoreCount();
-                                        
-                                        // Call the reducer
-                                        try {
-                                            currentConnection.reducers.interactWithCairn({ cairnId });
-                                            console.log(`[Cairn] Reducer called for cairn ${cairnId}`);
-                                            
-                                            // Note: Sound is played via PlayerDiscoveredCairn.onInsert callback
-                                            // to ensure it only plays on actual first discovery (after server confirms)
-                                            
-                                            if (loreEntry) {
-                                                // Create lore audio element
-                                                console.log(`[Cairn] Creating audio for lore index ${loreEntry.index}`);
-                                                const loreAudio = createCairnLoreAudio(loreEntry.index, 0.9);
-                                                
-                                                // Play with SovaSoundBox if available (shows waveform, click to cancel)
-                                                if (loreAudio) {
-                                                    if (showSovaSoundBox) {
-                                                        loreAudio.play().then(() => {
-                                                            showSovaSoundBox(loreAudio, `SOVA: ${loreEntry.title}`);
-                                                        }).catch(err => {
-                                                            console.warn(`[Cairn] Failed to play lore audio:`, err);
-                                                            // CRITICAL: Clear the pending flag if audio fails to play
-                                                            // Otherwise notification sounds will be blocked forever
-                                                            stopCairnLoreAudio();
-                                                        });
-                                                    } else {
-                                                        // Fallback: play without SovaSoundBox
-                                                        loreAudio.play().catch(err => {
-                                                            console.warn(`[Cairn] Failed to play lore audio (fallback):`, err);
-                                                            // CRITICAL: Clear the pending flag if audio fails to play
-                                                            stopCairnLoreAudio();
-                                                        });
-                                                    }
-                                                }
-                                                
-                                                // Show notification
-                                                if (onCairnNotification) {
-                                                    console.log(`[Cairn] Showing notification - ${newDiscoveryCount}/${totalCairns}`);
-                                                    onCairnNotification({
-                                                        id: `cairn_${cairnId}_${Date.now()}`,
-                                                        cairnNumber: newDiscoveryCount,
-                                                        totalCairns: totalCairns,
-                                                        title: loreEntry.title,
-                                                        isFirstDiscovery: isFirstDiscovery,
-                                                        timestamp: Date.now()
-                                                    });
-                                                }
-                                                
-                                                // Add lore text to SOVA chat with tab flash
-                                                if (addSOVAMessage) {
-                                                    addSOVAMessage({
-                                                        id: `cairn_${cairnId}_${Date.now()}`,
-                                                        text: loreEntry.text,
-                                                        isUser: false,
-                                                        timestamp: new Date(),
-                                                        flashTab: true // Flash the SOVA tab to draw attention
-                                                    });
-                                                } else {
-                                                    console.warn('[Cairn] addSOVAMessage not available, cannot display lore text');
-                                                }
-                                            } else {
-                                                console.warn(`[Cairn] Lore entry not found for lore_id: ${cairn.loreId}`);
-                                            }
-                                        } catch (error) {
-                                            console.error('[Cairn] Error interacting with cairn:', error);
-                                        }
-                                    } else {
-                                        console.warn(`[Cairn] Cairn not found in map: ${cairnId}`);
-                                    }
+                                    currentConnection.reducers.interactWithCairn({ cairnId: currentTarget.id });
                                 }
                                 break;
                             case 'milkable_animal':
@@ -1400,11 +1299,6 @@ export const useInputHandler = ({
                                             const isOwner = corpse.playerIdentity.toHexString() === localPlayer.identity.toHexString();
                                             
                                             if (now < lockExpires && !isOwner) {
-                                                // Corpse is protected and player is not the owner - play Sova sound
-                                                console.log('[E-Tap ACTION] Corpse protected - playing sova_corpse_protected.mp3');
-                                                const sovaAudio = new Audio('/sounds/sova_corpse_protected.mp3');
-                                                sovaAudio.volume = 0.8;
-                                                sovaAudio.play().catch(err => console.warn('Failed to play corpse protection sound:', err));
                                                 tapActionTaken = true;
                                                 break;
                                             }

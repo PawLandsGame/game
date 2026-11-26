@@ -682,12 +682,6 @@ class KokoroService {
 // Export singleton instance
 const kokoroService = new KokoroService();
 
-// Auto-warmup on import (helps wake Railway from sleep early)
-if (typeof window !== 'undefined') {
-  // Delay warmup slightly to not block initial page load
-  setTimeout(() => kokoroService.warmup(), 2000);
-}
-
 export { kokoroService };
 export default kokoroService;
 

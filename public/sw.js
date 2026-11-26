@@ -1,12 +1,12 @@
 /**
- * Service Worker for Broth & Bullets
+ * Service Worker for PawLands
  * 
  * Caches game assets for instant loading on subsequent visits.
  * Uses a cache-first strategy for static assets (images, audio).
  * Network-first for API calls and dynamic content.
  */
 
-const CACHE_VERSION = 'v4';
+const CACHE_VERSION = 'v5';
 const CACHE_NAME = `game-assets-${CACHE_VERSION}`;
 
 // Production mode detection - silence verbose logs in production
@@ -33,7 +33,6 @@ const NETWORK_ONLY_PATTERNS = [
     /spacetimedb/i,                      // SpacetimeDB WebSocket
     /\.hot-update\./,                    // Vite HMR
     /localhost:\d+\/health/,             // Health check endpoints on any localhost port
-    /localhost:8001/,                    // Kokoro TTS service (local dev)
     /localhost:4001/,                    // Auth server (local dev)
 ];
 

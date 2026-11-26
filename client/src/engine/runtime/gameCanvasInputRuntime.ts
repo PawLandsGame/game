@@ -2,7 +2,6 @@ import { Identity } from 'spacetimedb';
 import type { DbConnection } from '../../generated';
 import type { ActiveEquipment, ItemDefinition, Player, Projectile, RangedWeaponStats } from '../../generated/types';
 import { HOLD_INTERACTION_DURATION_MS, JUMP_DURATION_MS, JUMP_HEIGHT_PX } from '../../config/gameConfig';
-import { isAnySovaAudioPlaying } from '../../hooks/useSovaSoundBox';
 import { previewSeaweedHarvestBlockedIfNeeded } from '../../hooks/useSoundSystem';
 import {
   formatTargetForLogging,
@@ -444,7 +443,6 @@ export class GameCanvasInputRuntime {
     connection,
     localPlayer,
     showError,
-    showSovaSoundBox,
   }: MobileInteractTriggerOptions): void {
     const trigger = mobileInteractTrigger || 0;
     if (!this.hasMobileInteractTriggerBaseline) {
@@ -463,16 +461,7 @@ export class GameCanvasInputRuntime {
     }
 
     if (MOBILE_TAP_BLOCKED_TARGET_TYPES.has(target.type)) {
-      if (isAnySovaAudioPlaying()) {
-        showError('Not available on mobile.');
-      } else if (showSovaSoundBox) {
-        const audio = new Audio('/sounds/sova_error_mobile_capability.mp3');
-        audio.volume = 0.8;
-        showSovaSoundBox(audio, 'SOVA');
-        audio.play().catch((error) => {
-          console.warn('[Mobile] Failed to play capability error:', error);
-        });
-      }
+      showError('Not available on mobile.');
       return;
     }
 

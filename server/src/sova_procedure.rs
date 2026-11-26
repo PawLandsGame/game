@@ -358,10 +358,15 @@ pub fn generate_brew_icon(_ctx: &mut ProcedureContext, _subject: String) -> Resu
     Ok(result.to_string())
 }
 
+const SOVA_ASSISTANT_ENABLED: bool = false;
+
 /// Sends OpenAI-compatible request JSON (messages/model/etc) to configured provider.
 /// The caller should pass the full request body as JSON string.
 #[spacetimedb::procedure]
 pub fn ask_sova(ctx: &mut ProcedureContext, request_body: String) -> Result<String, String> {
+    if !SOVA_ASSISTANT_ENABLED {
+        return Err("SOVA is disabled".to_string());
+    }
     let cfg = ctx
         .with_tx(|tx| tx.db.ai_http_config().id().find(&1))
         .ok_or_else(|| "SOVA backend not configured (missing ai_http_config row id=1).".to_string())?;
@@ -549,6 +554,9 @@ pub fn transcribe_speech(
     audio_base64: String,
     mime_type: String,
 ) -> Result<String, String> {
+    if !SOVA_ASSISTANT_ENABLED {
+        return Err("SOVA speech transcription is disabled".to_string());
+    }
     let cfg = ctx
         .with_tx(|tx| tx.db.ai_http_config().id().find(&1))
         .ok_or_else(|| "SOVA backend not configured (missing ai_http_config row id=1).".to_string())?;

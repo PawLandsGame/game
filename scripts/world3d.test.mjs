@@ -634,7 +634,7 @@ import { AnimalRig, AUTHORED_ANIMAL_SPECIES } from '../client/src/engine/present
 import { WebGpuWorldRenderer } from '../client/src/engine/presentation/world3d/WebGpuWorldRenderer.ts';
 import { WebGpuWorldSurface } from '../client/src/engine/presentation/world3d/WebGpuWorldSurface.ts';
 import { StaticWorldBatches } from '../client/src/engine/presentation/world3d/StaticWorldBatches.ts';
-import { resolveWorldRenderer } from '../client/src/engine/presentation/world3d/rendererRollout.ts';
+import { isWebGpuWorldEnabled, resolveWorldRenderer } from '../client/src/engine/presentation/world3d/rendererRollout.ts';
 import { GameCanvasPointerRuntime } from '../client/src/engine/runtime/gameCanvasPointerRuntime.ts';
 import { groundOffset, groundPosition, insideShelter } from '../client/src/engine/presentation/world3d/groundAnchor.ts';
 import { getTreeCollisionOffset, getBarrelCollisionOffset, SHELTER_DIMS } from '../client/src/config/entityGroundGeometry.ts';
@@ -1664,7 +1664,7 @@ test('entity-ID variants are deterministic and distinct', () => {
   assert.notDeepEqual(sampleA, Array.from({ length: 12 }, () => c()));
 });
 
-test('WebGPU is the default and an explicit legacy choice survives authentication', () => {
+test('The renderer resolver preserves an explicit inspection choice across redirects', () => {
   const values = new Map();
   const storage = { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, value) };
   values.set('broth:world-presentation-migration', 'legacy');
@@ -1678,6 +1678,23 @@ test('WebGPU is the default and an explicit legacy choice survives authenticatio
   assert.equal(resolveWorldRenderer('', storage), 'webgpu');
   const blockedStorage = { getItem() { throw new Error('blocked'); }, setItem() { throw new Error('blocked'); } };
   assert.equal(resolveWorldRenderer('', blockedStorage), 'webgpu');
+});
+
+test('PawLands plays in 2D even when WebGPU was requested or stored', () => {
+  const originalWindow = Object.getOwnPropertyDescriptor(globalThis, 'window');
+  Object.defineProperty(globalThis, 'window', {
+    configurable: true,
+    value: {
+      location: { search: '?worldRenderer=webgpu' },
+      sessionStorage: { getItem: () => 'webgpu' },
+    },
+  });
+  try {
+    assert.equal(isWebGpuWorldEnabled(), false);
+  } finally {
+    if (originalWindow) Object.defineProperty(globalThis, 'window', originalWindow);
+    else delete globalThis.window;
+  }
 });
 
 function auditMeshes(group) {

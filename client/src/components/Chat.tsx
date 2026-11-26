@@ -5,7 +5,6 @@ import { DbConnection, EventContext } from '../generated';
 import type { Message as SpacetimeDBMessage, Player as SpacetimeDBPlayer, PrivateMessage as SpacetimeDBPrivateMessage, TeamMessage as SpacetimeDBTeamMessage, LastWhisperFrom, Recipe } from '../generated/types';
 import { Identity } from 'spacetimedb';
 import styles from './Chat.module.css';
-import sovaIcon from '../assets/ui/sova.png';
 import { openaiService } from '../services/openaiService';
 import { buildGameContext, type GameContextBuilderProps } from '../utils/gameContextBuilder';
 import apiPerformanceService from '../services/apiPerformanceService';
@@ -813,16 +812,6 @@ const Chat: React.FC<ChatProps> = ({ connection, onSOVAMessageAdderReady, isMobi
     }
   }, [sovaMessages, activeTab]);
 
-  // Call the parent callback with our function
-  useEffect(() => {
-    if (onSOVAMessageAdderReady) {
-      console.log('[Chat] Calling onSOVAMessageAdderReady with addSOVAMessage function');
-      onSOVAMessageAdderReady(addSOVAMessage);
-    } else {
-      console.log('[Chat] onSOVAMessageAdderReady not available');
-    }
-  }, [onSOVAMessageAdderReady, addSOVAMessage]);
-
   // Register/unregister global keyboard listeners
   useEffect(() => {
     window.addEventListener('keydown', handleGlobalKeyDown);
@@ -861,8 +850,8 @@ const Chat: React.FC<ChatProps> = ({ connection, onSOVAMessageAdderReady, isMobi
         data-chat-container="true"
       >
         <img 
-          src={sovaIcon} 
-          alt="SOVA" 
+          src="/favicon.png"
+          alt="Open chat"
           className={styles.sovaIcon}
         />
       </div>
@@ -936,21 +925,6 @@ const Chat: React.FC<ChatProps> = ({ connection, onSOVAMessageAdderReady, isMobi
           onClick={() => handleTabSwitch('global')}
         >
           Global
-        </button>
-        <button 
-          className={`${styles.tab} ${activeTab === 'sova' ? styles.activeTab : ''} ${isSovaTabFlashing && activeTab !== 'sova' ? styles.sovaTabFlash : ''}`}
-          onClick={() => {
-            handleTabSwitch('sova');
-            // Stop flashing when user clicks on SOVA tab
-            if (isSovaTabFlashing) {
-              setIsSovaTabFlashing(false);
-              if (sovaTabFlashTimeoutRef.current) {
-                clearTimeout(sovaTabFlashTimeoutRef.current);
-              }
-            }
-          }}
-        >
-          SOVA
         </button>
         {matronageMembers?.get(localPlayerIdentity || '') && (
           <button 

@@ -13,12 +13,7 @@ export function resolveWorldRenderer(search: string, storage: Pick<Storage, 'get
   catch { return 'webgpu'; }
 }
 
-/** Engine-owned selection; UI components and the app entry stay intact. */
+/** The PawLands game uses the 2D renderer. WebGPU remains in the engine labs. */
 export function isWebGpuWorldEnabled(): boolean {
-  if (typeof window === 'undefined') return false;
-  try { return resolveWorldRenderer(window.location.search, window.sessionStorage) === 'webgpu'; }
-  catch { return new URLSearchParams(window.location.search).get('worldRenderer') !== 'legacy'; }
+  return false;
 }
-
-// Remember a choice before an authentication redirect changes the URL.
-isWebGpuWorldEnabled();

@@ -20,12 +20,8 @@ import { Player } from '../generated/types'; // Adjusted path
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faDiscord, faXTwitter, faGithub } from '@fortawesome/free-brands-svg-icons';
 import { faBars, faTimes, faChevronDown, faChevronRight } from '@fortawesome/free-solid-svg-icons';
-import loginBackground from '../assets/ui/login_background.png';
+import loginBackground from '../assets/ui/pawlands-login.webp';
 import logo from '../assets/ui/logo_alt.png';
-import ShipwreckCarousel from './ShipwreckCarousel';
-import GameplayFeaturesCarousel from './GameplayFeaturesCarousel';
-// @ts-ignore - importing JavaScript module
-import { blogPosts } from '../blog/data/blogPosts';
 
 // Style Constants (Consider moving to a shared file)
 const UI_BG_COLOR = 'rgba(40, 40, 60, 0.85)';
@@ -293,6 +289,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
     // Local state for the username input field (only used for new players)
     const [inputUsername, setInputUsername] = useState<string>('');
     const [localError, setLocalError] = useState<string | null>(null);
+    const isWaitingForGame = isAuthenticated && !isSpacetimeReady && !storedUsername;
 
     // Debug logging for new users (enable when debugging)
     // React.useEffect(() => {
@@ -461,6 +458,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
     // Handle button click: Trigger OpenAuth login or join game
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
+        if (isWaitingForGame) return;
         setLocalError(null); // Clear previous local errors
 
         if (!isAuthenticated) {
@@ -687,7 +685,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                     {/* Logo */}
                     <img
                         src={logo}
-                        alt="Broth & Bullets"
+                        alt="PawLands"
                         onClick={scrollToTop}
                         style={{
                             height: '50px',
@@ -740,9 +738,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                             <MobileNavMenu
                                 navItems={[
                                     { label: 'ABOUT', selector: '[data-about-section]' },
-                                    { label: 'LOADOUT', selector: '[data-tools-section]' },
                                     { label: 'FEATURES', selector: '[data-features-section]' },
-                                    { label: 'BLOG', selector: '[data-blog-section]' },
                                     { label: 'FAQ', selector: '[data-faq-section]' },
                                 ]}
                                 onNavigate={smoothScrollTo}
@@ -760,9 +756,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                         }}>
                             {[
                                 { label: 'ABOUT', selector: '[data-about-section]' },
-                                { label: 'LOADOUT', selector: '[data-tools-section]' },
                                 { label: 'FEATURES', selector: '[data-features-section]' },
-                                { label: 'BLOG', selector: '[data-blog-section]' },
                                 { label: 'FAQ', selector: '[data-faq-section]' },
                             ].map((item) => (
                                 <button
@@ -893,13 +887,13 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                         textAlign: 'center',
                                         fontWeight: 'bold',
                                     }}>
-                                        BROTH & BULLETS
+                                        PAWLANDS
                                     </div>
                                 </div>
                             )}
                             <img
                                 src={logo}
-                                alt="Broth & Bullets Logo"
+                                alt="PawLands Logo"
                                 loading="eager"
                                 fetchPriority="high"
                                 decoding="sync"
@@ -1078,18 +1072,15 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                             <form onSubmit={handleSubmit}>
                                 <button
                                     type="submit"
-                                    // Disable if there's any auth error, or connection error without stored username
-                                    disabled={authError !== null || (connectionError !== null && !storedUsername) || localError !== null}
+                                    disabled={isWaitingForGame}
                                     onMouseEnter={(e) => {
-                                        const isButtonDisabled = authError !== null || (connectionError !== null && !storedUsername) || localError !== null;
-                                        if (!isButtonDisabled) {
+                                        if (!isWaitingForGame) {
                                             e.currentTarget.style.transform = 'translateY(-2px)';
                                             e.currentTarget.style.boxShadow = '0 8px 25px rgba(0,0,0,0.4), 0 0 20px rgba(255,165,0,0.3)';
                                         }
                                     }}
                                     onMouseLeave={(e) => {
-                                        const isButtonDisabled = authError !== null || (connectionError !== null && !storedUsername) || localError !== null;
-                                        if (!isButtonDisabled) {
+                                        if (!isWaitingForGame) {
                                             e.currentTarget.style.transform = 'translateY(0)';
                                             e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.4), 0 0 15px rgba(255,140,0,0.4)';
                                         }
@@ -1098,28 +1089,16 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                         padding: '16px 32px',
                                         border: '2px solid rgba(255, 165, 0, 0.6)',
                                         backgroundColor: (() => {
-                                            const isDisabled = authError || (connectionError && !storedUsername) || localError;
+                                            const isDisabled = isWaitingForGame;
                                             return isDisabled ? 'rgba(100, 50, 50, 0.6)' : 'linear-gradient(135deg, rgba(255, 140, 0, 0.9), rgba(200, 100, 0, 0.9))';
                                         })(),
-                                        background: (() => {
-                                            const isDisabled = authError || (connectionError && !storedUsername) || localError;
-                                            return isDisabled ? 'rgba(100, 50, 50, 0.6)' : 'linear-gradient(135deg, #ff8c00, #cc6400)';
-                                        })(),
-                                        color: (() => {
-                                            const isDisabled = authError || (connectionError && !storedUsername) || localError;
-                                            return isDisabled ? '#ccc' : 'white';
-                                        })(),
+                                        background: isWaitingForGame ? 'rgba(100, 50, 50, 0.6)' : 'linear-gradient(135deg, #ff8c00, #cc6400)',
+                                        color: isWaitingForGame ? '#ccc' : 'white',
                                         fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
                                         fontSize: '16px',
                                         fontWeight: 'bold',
-                                        cursor: (() => {
-                                            const isDisabled = authError || (connectionError && !storedUsername) || localError;
-                                            return isDisabled ? 'not-allowed' : 'pointer';
-                                        })(),
-                                        boxShadow: (() => {
-                                            const isDisabled = authError || (connectionError && !storedUsername) || localError;
-                                            return isDisabled ? '2px 2px 6px rgba(0,0,0,0.4)' : '0 4px 15px rgba(0,0,0,0.4), 0 0 15px rgba(255,140,0,0.4)';
-                                        })(),
+                                        cursor: isWaitingForGame ? 'not-allowed' : 'pointer',
+                                        boxShadow: isWaitingForGame ? '2px 2px 6px rgba(0,0,0,0.4)' : '0 4px 15px rgba(0,0,0,0.4), 0 0 15px rgba(255,140,0,0.4)',
                                         display: 'inline-block',
                                         boxSizing: 'border-box',
                                         textTransform: 'uppercase',
@@ -1133,7 +1112,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                 >
                                     {(() => {
                                         if (!isAuthenticated) return 'Start Your Journey';
-                                        return 'Join Game';
+                                        return isWaitingForGame ? 'Connecting…' : 'Join Game';
                                     })()}
                                 </button>
 
@@ -1163,7 +1142,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                             textShadow: '1px 1px 3px rgba(60,18,0,0.7)',
                                             letterSpacing: '0.7px',
                                         }}>
-                                            Early Access Alpha v0.82
+                                            PawLands Alpha
                                         </span>
                                         <button
                                             type="button"
@@ -1429,7 +1408,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                             <strong>Recommended:</strong> 8GB+ RAM, GPU for faster canvas rendering, broadband connection.
                                         </p>
                                         <p style={{ marginBottom: '16px' }}>
-                                            Broth and Bullets runs in your browser and shares CPU, GPU, and memory with other apps. For best performance:
+                                            PawLands runs in your browser and shares CPU, GPU, and memory with other apps. For best performance:
                                         </p>
                                         <ul style={{ margin: '0 0 16px 0', paddingLeft: '20px', textAlign: 'left' }}>
                                             <li style={{ marginBottom: '8px' }}>Close other games in the background</li>
@@ -1439,7 +1418,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                             <li style={{ marginBottom: '8px' }}>Close other games even when minimized</li>
                                         </ul>
                                         <p style={{ marginBottom: 0, fontSize: '13px', color: 'rgba(255, 255, 255, 0.75)' }}>
-                                            Running multiple heavy applications at once will cause noticeable slowdown. For the smoothest experience, play Broth and Bullets when no other demanding games are running.
+                                            Running multiple heavy applications at once will cause noticeable slowdown. For the smoothest experience, play PawLands when no other demanding games are running.
                                         </p>
                                     </div>
                                     <button
@@ -1568,8 +1547,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                         fontWeight: 'bold',
                                         letterSpacing: '-1px',
                                     }}>
-                                        FROM HUMBLE BROTHS<br />
-                                        TO TRADING EMPIRES
+                                        SURVIVE TOGETHER
                                     </h2>
 
                                     <p style={{
@@ -1581,11 +1559,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                         maxWidth: '800px',
                                         margin: '0 auto',
                                     }}>
-                                        Where <strong>Rust's</strong> intense survival meets <strong>Blazing Beaks'</strong> quirky combat, all wrapped in <strong>Stardew Valley's&nbsp;</strong>
-                                        cozy farming vibes. You've washed ashore as a weathered babushka, resourceful, stubborn, and far from finished.
-                                        Every meal you cook could save a life. Every trade could build a friendship. Farm while the sun shines, but when the light fades...
-                                        something stirs. Something that remembers. Build from simple shelters to thriving homesteads, find neighbors who become family,
-                                        and uncover what ancient force haunts this island.
+                                        Explore a changing world as a cat. Gather supplies, build a shelter and team up with other players to survive.
                                     </p>
 
                                     <p style={{
@@ -1597,7 +1571,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                         maxWidth: '700px',
                                         margin: '24px auto 0',
                                     }}>
-                                        Want to play offline solo? Clone the repo, follow the <a href="https://github.com/SeloSlav/vibe-coding-starter-pack-2d-multiplayer-survival/blob/main/README.md" target="_blank" rel="noopener noreferrer" style={{ color: '#ff8c00', textDecoration: 'underline' }}>Quick Local Setup in the README</a>, and play fully offline. Run <code style={{ backgroundColor: 'rgba(0,0,0,0.4)', padding: '2px 6px', borderRadius: '4px', fontSize: '14px' }}>git pull</code> when you want updates.{' '}
+                                        Want to play offline solo? Clone the repo, follow the <a href="https://github.com/PawLandsGame/game/blob/main/README.md" target="_blank" rel="noopener noreferrer" style={{ color: '#ff8c00', textDecoration: 'underline' }}>Quick Local Setup in the README</a>, and play fully offline. Run <code style={{ backgroundColor: 'rgba(0,0,0,0.4)', padding: '2px 6px', borderRadius: '4px', fontSize: '14px' }}>git pull</code> when you want updates.{' '}
                                         <button
                                             type="button"
                                             onClick={() => smoothScrollTo('[data-faq-section]')}
@@ -1619,50 +1593,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                 </div>
 
                                 {/* Tools Section */}
-                                <div data-tools-section style={{
-                                    backgroundColor: 'rgba(0, 0, 0, 0.75)',
-                                    backdropFilter: 'blur(12px)',
-                                    borderRadius: '16px',
-                                    padding: 'clamp(30px, 6vw, 60px) clamp(20px, 5vw, 40px)', // Responsive padding: smaller on mobile
-                                    margin: '0 auto 60px auto',
-                                    maxWidth: '800px',
-                                    width: '100%',
-                                    border: '2px solid rgba(255, 255, 255, 0.3)',
-                                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
-                                    textAlign: 'center',
-                                    boxSizing: 'border-box',
-                                    overflowX: 'hidden',
-                                }}>
-                                    <div style={{
-                                        fontSize: '14px',
-                                        color: '#ff8c00',
-                                        fontWeight: '600',
-                                        textTransform: 'uppercase',
-                                        letterSpacing: '4px',
-                                        marginBottom: '30px',
-                                        textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
-                                    }}>
-                                        YOUR INITIAL LOADOUT
-                                    </div>
-
-                                    <h2 style={{
-                                        fontSize: 'clamp(36px, 5vw, 56px)',
-                                        marginBottom: '30px',
-                                        color: 'white',
-                                        textAlign: 'center',
-                                        textShadow: '2px 2px 6px rgba(0,0,0,0.9)',
-                                        lineHeight: '1.1',
-                                        fontWeight: 'bold',
-                                        letterSpacing: '-1px',
-                                    }}>
-                                        WHAT SURVIVED<br />
-                                        THE SHIPWRECK
-                                    </h2>
-
-                                    {/* Shipwreck Carousel */}
-                                    <ShipwreckCarousel />
-                                </div>
-
                                 {/* Game Features Section */}
                                 <div data-features-section style={{
                                     backgroundColor: 'rgba(0, 0, 0, 0.75)',
@@ -1700,192 +1630,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                         fontWeight: 'bold',
                                         letterSpacing: '-1px',
                                     }}>
-                                        BUILD YOUR EMPIRE<br />
-                                        FORGE YOUR DESTINY
+                                        GATHER, CRAFT AND EXPLORE
                                     </h2>
 
-                                    {/* Gameplay Features Carousel */}
-                                    <GameplayFeaturesCarousel />
-                                </div>
-
-                                {/* Blog Section */}
-                                <div data-blog-section style={{
-                                    backgroundColor: 'rgba(0, 0, 0, 0.75)',
-                                    backdropFilter: 'blur(12px)',
-                                    borderRadius: '16px',
-                                    padding: 'clamp(30px, 6vw, 60px) clamp(20px, 5vw, 40px)',
-                                    margin: '0 auto 60px auto',
-                                    maxWidth: '800px',
-                                    width: '100%',
-                                    border: '2px solid rgba(255, 255, 255, 0.3)',
-                                    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
-                                    boxSizing: 'border-box',
-                                    overflowX: 'hidden',
-                                }}>
-                                    <div style={{
-                                        fontSize: '14px',
-                                        color: '#ff8c00',
-                                        fontWeight: '600',
-                                        textTransform: 'uppercase',
-                                        letterSpacing: '4px',
-                                        marginBottom: '30px',
-                                        textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
-                                        textAlign: 'center',
-                                    }}>
-                                        LATEST NEWS
-                                    </div>
-
-                                    <h2 style={{
-                                        fontSize: 'clamp(36px, 5vw, 56px)',
-                                        marginBottom: '60px',
-                                        color: 'white',
-                                        textAlign: 'center',
-                                        textShadow: '2px 2px 6px rgba(0,0,0,0.9)',
-                                        lineHeight: '1.1',
-                                        fontWeight: 'bold',
-                                        letterSpacing: '-1px',
-                                    }}>
-                                        FROM THE<br />
-                                        DEVELOPER'S DESK
-                                    </h2>
-
-                                    {/* Blog Posts Grid */}
-                                    <div style={{
-                                        display: 'grid',
-                                        gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-                                        gap: '24px',
-                                        marginBottom: '40px',
-                                    }}>
-                                        {blogPosts.slice(0, 2).map((post: any) => {
-                                            const formattedDate = new Date(post.date).toLocaleDateString('en-US', {
-                                                year: 'numeric',
-                                                month: 'long',
-                                                day: 'numeric'
-                                            });
-
-                                            return (
-                                                <div
-                                                    key={post.slug}
-                                                    onClick={() => window.location.href = `/blog/${post.slug}`}
-                                                    style={{
-                                                        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-                                                        borderRadius: '12px',
-                                                        padding: '24px',
-                                                        border: '1px solid rgba(255, 255, 255, 0.2)',
-                                                        cursor: 'pointer',
-                                                        transition: 'all 0.3s ease',
-                                                        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.3)',
-                                                    }}
-                                                    onMouseEnter={(e) => {
-                                                        e.currentTarget.style.transform = 'translateY(-4px)';
-                                                        e.currentTarget.style.borderColor = 'rgba(255, 140, 0, 0.5)';
-                                                        e.currentTarget.style.boxShadow = '0 8px 24px rgba(255, 140, 0, 0.2)';
-                                                    }}
-                                                    onMouseLeave={(e) => {
-                                                        e.currentTarget.style.transform = 'translateY(0)';
-                                                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.2)';
-                                                        e.currentTarget.style.boxShadow = '0 4px 16px rgba(0, 0, 0, 0.3)';
-                                                    }}
-                                                >
-                                                    {post.coverImage && (
-                                                        <div style={{
-                                                            width: '100%',
-                                                            height: '180px',
-                                                            borderRadius: '8px',
-                                                            overflow: 'hidden',
-                                                            marginBottom: '16px',
-                                                        }}>
-                                                            <img
-                                                                src={post.coverImage}
-                                                                alt={post.title}
-                                                                style={{
-                                                                    width: '100%',
-                                                                    height: '100%',
-                                                                    objectFit: 'cover',
-                                                                }}
-                                                            />
-                                                        </div>
-                                                    )}
-
-                                                    <div style={{
-                                                        fontSize: '12px',
-                                                        color: '#ff8c00',
-                                                        marginBottom: '8px',
-                                                        fontWeight: '600',
-                                                    }}>
-                                                        {formattedDate}
-                                                    </div>
-
-                                                    <h3 style={{
-                                                        fontSize: '20px',
-                                                        fontWeight: 'bold',
-                                                        color: 'white',
-                                                        marginBottom: '12px',
-                                                        lineHeight: '1.3',
-                                                        textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
-                                                    }}>
-                                                        {post.title}
-                                                    </h3>
-
-                                                    <p style={{
-                                                        fontSize: '14px',
-                                                        color: 'rgba(255, 255, 255, 0.7)',
-                                                        lineHeight: '1.6',
-                                                        marginBottom: '16px',
-                                                    }}>
-                                                        {post.subtitle}
-                                                    </p>
-
-                                                    <div style={{
-                                                        fontSize: '14px',
-                                                        color: '#ff8c00',
-                                                        fontWeight: '600',
-                                                        display: 'flex',
-                                                        alignItems: 'center',
-                                                        gap: '8px',
-                                                    }}>
-                                                        Read More
-                                                        <span style={{ fontSize: '16px' }}>→</span>
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-
-                                    {/* Read More Button */}
-                                    <div style={{
-                                        textAlign: 'center',
-                                    }}>
-                                        <button
-                                            onClick={() => window.location.href = '/blog'}
-                                            style={{
-                                                backgroundColor: '#ff8c00',
-                                                color: 'white',
-                                                border: 'none',
-                                                borderRadius: '8px',
-                                                padding: '16px 40px',
-                                                fontSize: '16px',
-                                                fontWeight: 'bold',
-                                                cursor: 'pointer',
-                                                textTransform: 'uppercase',
-                                                letterSpacing: '1px',
-                                                boxShadow: '0 4px 16px rgba(255, 140, 0, 0.3)',
-                                                transition: 'all 0.3s ease',
-                                            }}
-                                            onMouseEnter={(e) => {
-                                                e.currentTarget.style.backgroundColor = '#ff9d1a';
-                                                e.currentTarget.style.transform = 'translateY(-2px)';
-                                                e.currentTarget.style.boxShadow = '0 6px 20px rgba(255, 140, 0, 0.4)';
-                                            }}
-                                            onMouseLeave={(e) => {
-                                                e.currentTarget.style.backgroundColor = '#ff8c00';
-                                                e.currentTarget.style.transform = 'translateY(0)';
-                                                e.currentTarget.style.boxShadow = '0 4px 16px rgba(255, 140, 0, 0.3)';
-                                            }}
-                                        >
-                                            View All Blog Posts
-                                        </button>
-                                    </div>
+                                    <p>Explore a procedurally generated world with changing weather, day and night, and wildlife. Craft gear, build shelter, and form teams with other players.</p>
                                 </div>
 
                                 {/* FAQ Section */}
@@ -1933,8 +1681,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
                                         {[
                                             {
-                                                question: "WHAT IS BROTH & BULLETS?",
-                                                answer: "A cooperative multiplayer survival and farming game where you work with other players to survive a harsh, persistent world. You've washed ashore on a strange island with nothing but grit and a lifetime of hard-won wisdom. Here, resourceful babushkas build thriving homesteads together, cooking life-saving meals, weathering harsh seasons side by side, trading what they grow for what they need. The world keeps turning whether you're there or not. Your crops keep growing. Your neighbors keep building. And when darkness falls, the island remembers things best left forgotten."
+                                                question: "WHAT IS PAWLANDS?",
+                                                answer: "A multiplayer survival game about cats. Gather resources, craft equipment and build together in a persistent world."
                                             },
                                             {
                                                 question: "CAN I PLAY OFFLINE SOLO?",
@@ -1954,17 +1702,17 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                                             border: '1px solid rgba(255, 140, 0, 0.4)',
                                                             overflowX: 'auto',
                                                         }}>
-                                                            git clone https://github.com/SeloSlav/vibe-coding-starter-pack-2d-multiplayer-survival.git
+                                                            git clone https://github.com/PawLandsGame/game.git
                                                         </code>
                                                         <p style={{ margin: 0, fontSize: '16px', lineHeight: '1.7', color: 'rgba(255, 255, 255, 0.85)' }}>
-                                                            Then follow the <a href="https://github.com/SeloSlav/vibe-coding-starter-pack-2d-multiplayer-survival/blob/main/README.md" target="_blank" rel="noopener noreferrer" style={{ color: '#ffb366', textDecoration: 'underline' }}>Quick Local Setup in the README</a>. Just run <code style={{ backgroundColor: 'rgba(0,0,0,0.4)', padding: '2px 6px', borderRadius: '4px', fontSize: '14px' }}>git pull</code> when you want the latest updates.
+                                                            Then follow the <a href="https://github.com/PawLandsGame/game/blob/main/README.md" target="_blank" rel="noopener noreferrer" style={{ color: '#ffb366', textDecoration: 'underline' }}>Quick Local Setup in the README</a>. Just run <code style={{ backgroundColor: 'rgba(0,0,0,0.4)', padding: '2px 6px', borderRadius: '4px', fontSize: '14px' }}>git pull</code> when you want the latest updates.
                                                         </p>
                                                     </div>
                                                 )
                                             },
                                             {
                                                 question: "HOW DO I START SURVIVING?",
-                                                answer: "You begin with basic survival gear and a lifetime of accumulated wisdom. Hunt wild animals, gather plant fibers, collect wood and stone to build your first campfire. Use the daylight wisely to farm, craft, and prepare. When darkness falls, find shelter, or face what emerges from it. Work with neighbors to survive what you couldn't alone. Hold V anytime to talk to SOVA, your in-game virtual assistant. She'll get you on the right track."
+                                                answer: "Start with basic survival gear. Gather plant fibers, wood and stone to build your first campfire, and prepare shelter before nightfall."
                                             },
                                             {
                                                 question: "WHAT'S SO SPECIAL ABOUT BREWING?",
@@ -1998,7 +1746,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                                         A thriving network of settlements where survivors build lasting legacies together. Whether you spend your days tending crops in the sunshine or braving what comes after dark, there's a place for you. The island holds deeper secrets yet to be uncovered: ancient recipes, forgotten techniques, and perhaps answers to what corruption took root here long before any of us arrived. Seasons already test the hardiest souls.
                                                     </p>
                                                     <p style={{ margin: '0 0 16px 0' }}>
-                                                        Our server architecture allows an insane amount of scaling, and we'd like to keep going. Think of the island as the starter zone. The vision is much more immense: a deep ocean biome with advanced water and aircraft, volcanic biomes, underground caverns beneath the island, and the Peninsula, where the cyberpunk metropolis of Gred rises from the lore of the <a href="https://mybook.to/babushkabook" target="_blank" rel="noopener noreferrer" style={{ color: '#ffb366', textDecoration: 'underline' }}>Babushka books</a>. Who knows how big this could get!
+                                                        PawLands is in development. The current focus is the 2D survival world and multiplayer systems.
                                                     </p>
                                                 </>
                                             )
@@ -2167,7 +1915,6 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                                 { name: "🍳 Survival & Cooking", status: "100%" },
                                                 { name: "🏠 Simple Shelters & Storage", status: "100%" },
                                                 { name: "🔐 Authentication", status: "100%" },
-                                                { name: "🎤 Voice-Enabled AI Assistant", status: "100%" },
                                                 { name: "🌱 Farming Systems", status: "100%" },
                                                 { name: "🦌 Hunting & Wildlife", status: "100%" },
                                                 { name: "🏗️ Advanced Construction", status: "100%" },
@@ -2365,7 +2112,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                         }}>
                             <img
                                 src={logo}
-                                alt="Broth & Bullets Logo"
+                                alt="PawLands Logo"
                                 style={{
                                     width: '160px',
                                     height: 'auto',
@@ -2384,7 +2131,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                 textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
                                 fontFamily: "'Courier New', Consolas, Monaco, monospace",
                             }}>
-                                Broth & Bullets is developed by{' '}
+                                Based on open-source game code by{' '}
                                 <a
                                     href="https://martinerlic.com"
                                     target="_blank"
@@ -2411,7 +2158,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                 textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
                                 fontFamily: "'Courier New', Consolas, Monaco, monospace",
                             }}>
-                                © 2025 Martin Erlic
+                                Upstream code © 2025 Martin Erlic
                             </p>
                         </div>
 
@@ -2438,100 +2185,15 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                             }}>
                                 {[
                                     { label: 'ABOUT', action: 'about' },
-                                    { label: 'BABUSHKA\'S TOOLS', action: 'tools' },
                                     { label: 'FEATURES', action: 'features' },
                                     { label: 'FAQ', action: 'faq' },
-                                    { label: 'LORE', action: 'https://www.babushkabook.com/reader/excerpts/tides-prologue-lagunov', external: true },
-                                    { label: 'BLOG', action: '/blog', internal: true },
-                                    { label: 'CONTACT', action: 'mailto:martin.erlic@gmail.com', external: true },
                                 ].map((link) => (
                                     <li key={link.label} style={{ marginBottom: '12px' }}>
                                         <a
-                                            href={link.external ? link.action : '#'}
-                                            target={link.external ? '_blank' : undefined}
-                                            rel={link.external ? 'noopener noreferrer' : undefined}
-                                            onClick={(e) => {
-                                                if (link.external) return;
-                                                e.preventDefault();
-                                                if (link.internal) {
-                                                    navigate(link.action);
-                                                    // Scroll to top after navigation for internal links
-                                                    window.scrollTo(0, 0);
-                                                } else {
-                                                    const selector = `[data-${link.action}-section]`;
-                                                    const section = document.querySelector(selector);
-                                                    if (section) {
-                                                        // We're on the home page, scroll to the section
-                                                        section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                                    } else {
-                                                        // Section not found (probably on blog page), navigate to home first
-                                                        navigate('/');
-                                                        // Then scroll to the section after a delay
-                                                        setTimeout(() => {
-                                                            const homeSection = document.querySelector(selector);
-                                                            if (homeSection) {
-                                                                homeSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                                                            }
-                                                        }, 100);
-                                                    }
-                                                }
-                                            }}
-                                            style={{
-                                                color: 'rgba(255, 255, 255, 0.7)',
-                                                textDecoration: 'none',
-                                                fontSize: '13px',
-                                                transition: 'color 0.2s ease',
-                                                fontFamily: "'Courier New', Consolas, Monaco, monospace",
-                                                textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
-                                            }}
-                                            onMouseEnter={(e) => {
-                                                e.currentTarget.style.color = '#ff8c00';
-                                            }}
-                                            onMouseLeave={(e) => {
-                                                e.currentTarget.style.color = 'rgba(255, 255, 255, 0.7)';
-                                            }}
-                                        >
-                                            {link.label}
-                                        </a>
-                                    </li>
-                                ))}
-                            </ul>
-                        </div>
-
-                        {/* Legal Links */}
-                        <div style={{
-                            textAlign: isMobile ? 'center' : 'left',
-                        }}>
-                            <h4 style={{
-                                fontSize: '14px',
-                                color: '#ff8c00',
-                                fontWeight: '600',
-                                textTransform: 'uppercase',
-                                letterSpacing: '2px',
-                                marginBottom: '20px',
-                                textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
-                                fontFamily: "'Courier New', Consolas, Monaco, monospace",
-                            }}>
-                                LEGAL
-                            </h4>
-                            <ul style={{
-                                listStyle: 'none',
-                                padding: 0,
-                                margin: 0,
-                            }}>
-                                {[
-                                    { label: 'PRIVACY POLICY', path: '/privacy' },
-                                    { label: 'TERMS OF SERVICE', path: '/terms' },
-                                    { label: 'COOKIE DECLARATION', path: '/cookies' },
-                                ].map((link) => (
-                                    <li key={link.label} style={{ marginBottom: '12px' }}>
-                                        <a
-                                            href={link.path}
-                                            onClick={(e) => {
-                                                e.preventDefault();
-                                                navigate(link.path);
-                                                // Scroll to top after navigation for legal links
-                                                window.scrollTo(0, 0);
+                                            href={`#${link.action}`}
+                                            onClick={(event) => {
+                                                event.preventDefault();
+                                                smoothScrollTo(`[data-${link.action}-section]`);
                                             }}
                                             style={{
                                                 color: 'rgba(255, 255, 255, 0.7)',
@@ -2581,9 +2243,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                 marginBottom: '30px',
                             }}>
                                 {[
-                                    { name: 'Discord', icon: faDiscord, href: 'https://discord.gg/tUcBzfAYfs' },
-                                    { name: 'X (Twitter)', icon: faXTwitter, href: 'https://x.com/metalhorse233' },
-                                    { name: 'GitHub', icon: faGithub, href: 'https://github.com/SeloSlav/vibe-coding-starter-pack-2d-multiplayer-survival' },
+                                    { name: 'GitHub', icon: faGithub, href: 'https://github.com/PawLandsGame/game' },
                                 ].map((social) => (
                                     <a
                                         key={social.name}

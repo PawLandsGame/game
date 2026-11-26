@@ -135,14 +135,11 @@ fn get_loadout_items(loadout: LoadoutType) -> Vec<(&'static str, u32, Option<u8>
         // ====================================================================
         LoadoutType::Firearms => vec![
             // Hotbar
-            ("Makarov PM", 1, Some(0), None),
-            ("PP-91 KEDR", 1, Some(1), None),     // SMG for testing
             ("Crossbow", 1, Some(2), None),       // Backup ranged
             ("Metal Dagger", 1, Some(3), None),   // Backup melee
             ("Torch", 1, Some(4), None),
             ("Bandage", 10, Some(5), None),
             // Inventory - Lots of ammo
-            ("9x18mm Round", 1000, None, Some(0)), // More ammo for SMG testing
             ("Bone Arrow", 100, None, Some(1)),
             ("Gunpowder", 200, None, Some(2)),
             ("Metal Fragments", 500, None, Some(3)),
@@ -180,14 +177,11 @@ fn get_loadout_items(loadout: LoadoutType) -> Vec<(&'static str, u32, Option<u8>
         // ====================================================================
         LoadoutType::Developer => vec![
             // Hotbar - Best tools
-            ("PP-91 KEDR", 1, Some(0), None),     // SMG - ultimate firearm
-            ("Makarov PM", 1, Some(1), None),
             ("Crossbow", 1, Some(2), None),
             ("Battle Axe", 1, Some(3), None),
             ("Metal Hatchet", 1, Some(4), None),
             ("Blueprint", 1, Some(5), None),
             // Inventory - Everything for testing
-            ("9x18mm Round", 1000, None, Some(0)), // Extra ammo for SMG
             ("Bone Arrow", 200, None, Some(1)),
             ("Wood", 10000, None, Some(2)),
             ("Stone", 5000, None, Some(3)),
@@ -322,14 +316,11 @@ fn get_loadout_items(loadout: LoadoutType) -> Vec<(&'static str, u32, Option<u8>
         // ====================================================================
         LoadoutType::NightOwl => vec![
             // Hotbar - Firearms for testing hostile NPC combat + lanterns/wards
-            ("PP-91 KEDR", 1, Some(0), None),                // SMG - primary weapon for fighting hostiles
-            ("Makarov PM", 1, Some(1), None),                 // Pistol - backup weapon
             ("Lantern", 1, Some(2), None),                    // Basic lantern
             ("Ancestral Ward", 1, Some(3), None),            // Tier 1 ward (tallow fuel)
             ("Signal Disruptor", 1, Some(4), None),          // Tier 2 ward (battery fuel)
             ("Flashlight", 1, Some(5), None),   // Flashlight for night vision
             // Inventory - Ammo and fuel
-            ("9x18mm Round", 2000, None, Some(0)),           // Lots of ammo for SMG/pistol testing
             ("Tallow", 50, None, Some(1)),                    // Fuel for Lantern & Ancestral Ward (2 tallow = 10 min night)
             ("Scrap Batteries", 30, None, Some(2)),          // Fuel for Signal Disruptor & Memory Beacon
             ("Reed Water Bottle", 1, None, Some(3)),         // Hydration

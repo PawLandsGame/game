@@ -180,12 +180,12 @@ const DayNightCycleTracker: React.FC<DayNightCycleTrackerProps> = ({
 
     // Get current tutorial quest
     const currentTutorialQuest = useMemo(() => {
-        if (!localPlayerId) return null;
+        if (!onOpenQuestsPanel || !localPlayerId) return null;
         const progress = playerTutorialProgress.get(localPlayerId.toHexString());
         if (!progress || progress.tutorialCompleted) return null;
         const quests = Array.from(tutorialQuestDefinitions.values()).sort((a, b) => a.orderIndex - b.orderIndex);
         return quests[progress.currentQuestIndex] || null;
-    }, [localPlayerId, playerTutorialProgress, tutorialQuestDefinitions]);
+    }, [localPlayerId, onOpenQuestsPanel, playerTutorialProgress, tutorialQuestDefinitions]);
 
     const currentTutorialProgress = useMemo(() => {
         if (!localPlayerId) return null;
@@ -773,6 +773,7 @@ const DayNightCycleTracker: React.FC<DayNightCycleTrackerProps> = ({
                             </div>
                         </div>
                         
+                        {onOpenQuestsPanel && <>
                         {/* Divider */}
                         <div style={{
                             height: '1px',
@@ -784,7 +785,7 @@ const DayNightCycleTracker: React.FC<DayNightCycleTrackerProps> = ({
                         <div
                             className="uplink-directives"
                             onClick={handleClick}
-                            style={{ cursor: onOpenQuestsPanel ? 'pointer' : 'default' }}
+                            style={{ cursor: 'pointer' }}
                         >
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
                                 <span style={{ fontSize: '9px', color: ACCENT_CYAN, letterSpacing: '1px' }}>DIRECTIVES</span>
@@ -892,6 +893,7 @@ const DayNightCycleTracker: React.FC<DayNightCycleTrackerProps> = ({
                                 </div>
                             )}
                         </div>
+                        </>}
                     </div>
                     
                     {/* Notification indicator */}

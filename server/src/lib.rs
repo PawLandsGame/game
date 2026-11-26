@@ -1578,24 +1578,8 @@ pub fn identity_connected(ctx: &ReducerContext) -> Result<(), String> {
                               client_identity, reward_day, stats.login_streak_days);
                 }
                 
-                // Assign daily quests for this new day
-                if let Err(e) = crate::quests::assign_daily_quests(ctx, client_identity) {
-                    log::error!("[Connect] Failed to assign daily quests for player {:?}: {}", client_identity, e);
-                }
-            } else {
-                // Same day login - still try to assign quests (function is idempotent)
-                // This handles edge cases like new players or players who somehow missed assignment
-                if let Err(e) = crate::quests::assign_daily_quests(ctx, client_identity) {
-                    log::error!("[Connect] Failed to assign daily quests for player {:?}: {}", client_identity, e);
-                }
             }
         }
-        
-        // Initialize tutorial progress if not exists (so existing players without quests get them)
-        // This is idempotent - won't overwrite existing progress
-        let progress = crate::quests::get_or_init_tutorial_progress(ctx, client_identity);
-        log::info!("[Connect] Tutorial progress for {:?}: quest_idx={}, completed={}", 
-                   client_identity, progress.current_quest_index, progress.tutorial_completed);
     } else {
         // Player might not be registered yet, which is fine. is_online will be set during registration.
         log::debug!("[Connect] Player {:?} not found in Player table yet (likely needs registration).", client_identity);
@@ -2349,24 +2333,6 @@ pub fn register_player(ctx: &ReducerContext, username: String) -> Result<(), Str
                 }
             }
             // --- End Grant Starting Items ---
-            
-            // --- Initialize Quest System for NEW player ---
-            // Initialize tutorial progress so they see quests immediately
-            let _ = crate::quests::get_or_init_tutorial_progress(ctx, sender_id);
-            log::info!("[RegisterPlayer] Initialized tutorial progress for new player {}", username);
-            
-            // Assign daily quests
-            if let Err(e) = crate::quests::assign_daily_quests(ctx, sender_id) {
-                log::error!("[RegisterPlayer] Failed to assign daily quests for new player {}: {}", username, e);
-            } else {
-                log::info!("[RegisterPlayer] Assigned daily quests for new player {}", username);
-            }
-            // --- End Initialize Quest System ---
-            
-            // --- Spawn 3 Beach Lyme Grass near spawn for first quest ---
-            // This helps new players complete their first tutorial quest quickly
-            spawn_starter_beach_lyme_grass(ctx, spawn_x, spawn_y);
-            // --- End Spawn Starter Beach Lyme Grass ---
             
             Ok(())
         },

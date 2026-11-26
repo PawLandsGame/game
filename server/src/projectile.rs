@@ -827,6 +827,10 @@ pub fn fire_projectile(
     let item_def = ctx.db.item_definition().id().find(equipped_item_def_id)
         .ok_or("Equipped item definition not found.")?;
 
+    if crate::items_database::is_disabled_firearm_item(&item_def.name) {
+        return Err("This firearm is disabled".to_string());
+    }
+
     // --- Check if it's a Ranged Weapon and if it's ready to fire ---
     if item_def.category != crate::items::ItemCategory::RangedWeapon {
         return Err("Equipped item is not a ranged weapon.".to_string());

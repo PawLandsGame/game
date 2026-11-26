@@ -676,58 +676,6 @@ export const MEMORY_GRID_NODES = [
   // Day 21-35 - Major milestones
   // Radius: 520
   // ============================================
-  // Branch 1 (linear)
-  { 
-    id: '9x18mm-round', 
-    name: '9x18mm Ammunition', 
-    description: 'Unlocks crafting 9x18mm Rounds - ammunition for the Makarov PM pistol.', 
-    cost: 2400, 
-    tier: 5, 
-    prerequisites: ['hollow-reed-arrow'], 
-    position: getRadialPosition(BRANCH_ANGLES.BRANCH_1, 520),
-    category: 'weapon' as const, 
-    status: 'locked' as const,
-    unlocksItems: ['9x18mm Round']
-  },
-  // NOTE: Shelter removed from Memory Grid - now always craftable as a starter base
-
-  // ============================================
-  // TIER 6 - Late Game (3200 shards)
-  // Day 35-45 - Final upgrades before factions
-  // Radius: 620
-  // ============================================
-  { 
-    id: 'makarov-pm', 
-    name: 'Makarov PM', 
-    description: 'Unlocks crafting the Makarov PM - a reliable Soviet-era semi-automatic pistol. Longest range, fastest fire rate.', 
-    cost: 3200, 
-    tier: 6, 
-    prerequisites: ['9x18mm-round'], 
-    position: getRadialPosition(BRANCH_ANGLES.BRANCH_1, 620),
-    category: 'weapon' as const, 
-    status: 'locked' as const,
-    unlocksItems: ['Makarov PM']
-  },
-  
-  // ============================================
-  // TIER 7 - Endgame (4000+ shards)
-  // Ultimate weapons
-  // Radius: 720
-  // ============================================
-  { 
-    id: 'pp91-kedr', 
-    name: 'PP-91 KEDR', 
-    description: 'Unlocks crafting the PP-91 KEDR - a devastating Soviet submachine gun with 30-round magazine and extreme fire rate.', 
-    cost: 4000, 
-    tier: 7, 
-    prerequisites: ['makarov-pm'], 
-    position: getRadialPosition(BRANCH_ANGLES.BRANCH_1, 720),
-    category: 'weapon' as const, 
-    status: 'locked' as const,
-    unlocksItems: ['PP-91 KEDR']
-  },
-
-  // ============================================
   // FACTION UNLOCK NODES (1600 shards each)
   // Major milestone - requires 8000 total shards spent
   // Player commits to ONE faction (reset costs 5000 shards)

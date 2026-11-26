@@ -176,13 +176,6 @@ const GAMEPLAY_NON_SPATIAL_SUBSCRIPTIONS: GameplayNonSpatialSubscriptionDefiniti
   { query: 'SELECT * FROM daily_login_reward', errorLabel: 'DAILY_LOGIN_REWARD' },
   { query: 'SELECT * FROM plant_config_definition', errorLabel: 'PLANT_CONFIG_DEFINITION' },
   { query: 'SELECT * FROM player_discovered_plant', errorLabel: 'PLAYER_DISCOVERED_PLANT' },
-  { query: 'SELECT * FROM tutorial_quest_definition', errorLabel: 'TUTORIAL_QUEST_DEFINITION' },
-  { query: 'SELECT * FROM daily_quest_definition', errorLabel: 'DAILY_QUEST_DEFINITION' },
-  { query: 'SELECT * FROM player_tutorial_progress', errorLabel: 'PLAYER_TUTORIAL_PROGRESS' },
-  { query: 'SELECT * FROM player_daily_quest', errorLabel: 'PLAYER_DAILY_QUEST' },
-  { query: 'SELECT * FROM quest_completion_notification', errorLabel: 'QUEST_COMPLETION_NOTIFICATION' },
-  { query: 'SELECT * FROM quest_progress_notification', errorLabel: 'QUEST_PROGRESS_NOTIFICATION' },
-  { query: 'SELECT * FROM sova_quest_message', errorLabel: 'SOVA_QUEST_MESSAGE' },
   { query: 'SELECT * FROM beacon_drop_event', errorLabel: 'BEACON_DROP_EVENT' },
   { query: 'SELECT * FROM drone_event', errorLabel: 'DRONE_EVENT' },
 ];
@@ -195,13 +188,6 @@ const UI_ONLY_NON_SPATIAL_QUERIES = new Set([
   'SELECT * FROM matronage_member',
   'SELECT * FROM matronage_invitation',
   'SELECT * FROM matronage_owed_shards',
-  'SELECT * FROM tutorial_quest_definition',
-  'SELECT * FROM daily_quest_definition',
-  'SELECT * FROM player_tutorial_progress',
-  'SELECT * FROM player_daily_quest',
-  'SELECT * FROM quest_completion_notification',
-  'SELECT * FROM quest_progress_notification',
-  'SELECT * FROM sova_quest_message',
   'SELECT * FROM beacon_drop_event',
 ]);
 

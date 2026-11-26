@@ -288,7 +288,6 @@ fn get_node_info(node_id: &str) -> Option<(u64, Vec<&'static str>)> {
         // Day 21-35 - Split paths conclude
         // ============================================
         // Branch 1 (linear)
-        "9x18mm-round" => Some((2400, vec!["hollow-reed-arrow"])),
         // NOTE: Shelter removed from Memory Grid - now craftable from start as a beginner base
         // Branch 4 UPPER (Cooking)
         "cooking-station" => Some((1400, vec!["barbecue"])),
@@ -297,12 +296,10 @@ fn get_node_info(node_id: &str) -> Option<(u64, Vec<&'static str>)> {
         // TIER 6 - Late Game (3200 shards)
         // Day 35-45 - Final upgrades before factions
         // ============================================
-        "makarov-pm" => Some((3200, vec!["9x18mm-round"])),
         
         // TIER 7 - Endgame (4000 shards)
         // Day 45+ - Ultimate weapons
         // ============================================
-        "pp91-kedr" => Some((4000, vec!["makarov-pm"])), // Requires Makarov PM unlock first
         
         // ============================================
         // FACTION UNLOCK NODES (1600 shards each)

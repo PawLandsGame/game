@@ -1,3 +1,5 @@
+> Архив исходного проекта. Маршруты блога отключены в PawLands, а иллюстрации исключены из публичной сборки.
+
 # Blog Content Management
 
 This directory contains the blog posts and data for the Broth & Bullets blog section.
@@ -43,8 +45,8 @@ The `blogPosts.js` file exports several helper functions for working with blog p
 
 Blog images should be placed in the following directories:
 
-- `/public/images/blog/` - Blog post cover images
-- `/public/images/blog/authors/` - Author profile images
+- `client/src/blog/archive/blog-images/` - Blog post cover images
+- `client/src/blog/archive/blog-images/authors/` - Author profile images
 
 ## Content Guidelines
 

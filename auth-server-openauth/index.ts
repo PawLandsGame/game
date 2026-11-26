@@ -14,9 +14,7 @@ if (process.env.NODE_ENV !== 'production') {
 const config = {
   isDevelopment: process.env.NODE_ENV !== 'production',
   port: parseInt(process.env.PORT || '4001'),
-  issuerUrl: process.env.ISSUER_URL || (process.env.NODE_ENV === 'production' 
-    ? 'https://broth-and-bullets-production.up.railway.app' 
-    : 'http://localhost:4001'),
+  issuerUrl: process.env.ISSUER_URL || 'http://localhost:4001',
   databaseUrl: process.env.DATABASE_URL,
   jwtPrivateKey: process.env.JWT_PRIVATE_KEY,
   jwtPublicKey: process.env.JWT_PUBLIC_KEY,
@@ -61,10 +59,11 @@ const PASSWORD_RESET_EXPIRY_MINUTES = 15;
 
 // Initialize Resend for email sending
 const resendApiKey = process.env.RESEND_API_KEY;
-const resend = resendApiKey ? new Resend(resendApiKey) : null;
+const resetEmailFrom = process.env.RESET_EMAIL_FROM;
+const resend = resendApiKey && resetEmailFrom ? new Resend(resendApiKey) : null;
 
-if (!resendApiKey) {
-  console.warn('[Config] RESEND_API_KEY not set - password reset emails will be logged to console only');
+if (!resend) {
+  console.warn('[Config] RESEND_API_KEY or RESET_EMAIL_FROM not set - password reset emails will be logged to console only');
 } else {
   console.log('[Config] Resend email service configured');
 }
@@ -202,12 +201,12 @@ function renderForgotPasswordPage(opts: { error?: string; success?: string } = {
   <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Forgot Password - Broth & Bullets</title>
+      <title>Forgot Password - PawLands</title>
       <style>
           * { margin: 0; padding: 0; box-sizing: border-box; }
           body {
               min-height: 100vh;
-              background-image: url('/login_background.png');
+              background-image: url('/pawlands-login.webp');
               background-size: cover;
               background-position: top center;
               background-repeat: no-repeat;
@@ -321,7 +320,7 @@ function renderForgotPasswordPage(opts: { error?: string; success?: string } = {
   <body>
       <div class="container">
           <div class="game-title">
-              <img src="/logo_alt.png" alt="Broth & Bullets Logo" style="height: 100%; width: auto;">
+              <img src="/logo_alt.png" alt="PawLands Logo" style="height: 100%; width: auto;">
           </div>
           <div class="game-subtitle">2D Multiplayer Survival</div>
           <h1 class="form-title">Forgot Password</h1>
@@ -354,12 +353,12 @@ function renderResetPasswordPage(opts: { token?: string; email?: string; error?:
   <head>
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Reset Password - Broth & Bullets</title>
+      <title>Reset Password - PawLands</title>
       <style>
           * { margin: 0; padding: 0; box-sizing: border-box; }
           body {
               min-height: 100vh;
-              background-image: url('/login_background.png');
+              background-image: url('/pawlands-login.webp');
               background-size: cover;
               background-position: top center;
               font-family: system-ui, -apple-system, sans-serif;
@@ -466,7 +465,7 @@ function renderResetPasswordPage(opts: { token?: string; email?: string; error?:
   <body>
       <div class="container">
           <div class="game-title">
-              <img src="/logo_alt.png" alt="Broth & Bullets Logo" style="height: 100%; width: auto;">
+              <img src="/logo_alt.png" alt="PawLands Logo" style="height: 100%; width: auto;">
           </div>
           <div class="game-subtitle">2D Multiplayer Survival</div>
           <h1 class="form-title">Reset Password</h1>
@@ -534,30 +533,30 @@ function renderResetPasswordPage(opts: { token?: string; email?: string; error?:
     }
   });
 
-  // --- Static File Serving for login_background.png ---
-  app.get('/login_background.png', async (c) => {
+  // --- Static File Serving for pawlands-login.webp ---
+  app.get('/pawlands-login.webp', async (c) => {
     try {
-      const imagePath = path.join(process.cwd(), 'login_background.png');
+      const imagePath = path.join(process.cwd(), 'pawlands-login.webp');
       const imageBuffer = fs.readFileSync(imagePath);
-      c.header('Content-Type', 'image/png');
+      c.header('Content-Type', 'image/webp');
       c.header('Cache-Control', 'public, max-age=3600');
       return c.body(imageBuffer);
     } catch (error) {
-      console.error('[Static] Failed to serve login_background.png:', error);
+      console.error('[Static] Failed to serve pawlands-login.webp:', error);
       return c.text('Image not found', 404);
     }
   });
 
   // --- Also serve at the wrong path to fix current issue ---
-  app.get('/auth/password/login_background.png', async (c) => {
+  app.get('/auth/password/pawlands-login.webp', async (c) => {
     try {
-      const imagePath = path.join(process.cwd(), 'login_background.png');
+      const imagePath = path.join(process.cwd(), 'pawlands-login.webp');
       const imageBuffer = fs.readFileSync(imagePath);
-      c.header('Content-Type', 'image/png');
+      c.header('Content-Type', 'image/webp');
       c.header('Cache-Control', 'public, max-age=3600');
       return c.body(imageBuffer);
     } catch (error) {
-      console.error('[Static] Failed to serve login_background.png:', error);
+      console.error('[Static] Failed to serve pawlands-login.webp:', error);
       return c.text('Image not found', 404);
     }
   });
@@ -569,9 +568,9 @@ function renderResetPasswordPage(opts: { token?: string; email?: string; error?:
           'http://localhost:3009',
           'http://localhost:5173',
           'http://127.0.0.1:5173',
-          'https://brothandbullets.com',
-          'https://www.brothandbullets.com',
-          'https://broth-and-bullets-production-client-production.up.railway.app'
+          'http://127.0.0.1:3008',
+          'http://127.0.0.1:3009',
+          ...(process.env.CLIENT_ORIGINS ?? '').split(',').map(origin => origin.trim()).filter(Boolean)
       ],
       allowMethods: ['GET', 'POST', 'OPTIONS'],
       allowHeaders: ['Content-Type', 'Authorization'],
@@ -650,7 +649,7 @@ function renderResetPasswordPage(opts: { token?: string; email?: string; error?:
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Create Account - Broth & Bullets</title>
+        <title>Create Account - PawLands</title>
         <style>
             * {
                 margin: 0;
@@ -661,7 +660,7 @@ function renderResetPasswordPage(opts: { token?: string; email?: string; error?:
             body {
                 min-height: 100vh;
                 width: 100%;
-                background-image: url('login_background.png');
+                background-image: url('pawlands-login.webp');
                 background-size: cover;
                 background-position: top center;
                 background-repeat: no-repeat;
@@ -838,7 +837,7 @@ function renderResetPasswordPage(opts: { token?: string; email?: string; error?:
     <body>
         <div class="container">
             <div class="game-title">
-                <img src="logo_alt.png" alt="Broth & Bullets Logo" style="height: 100%; width: auto;">
+                <img src="logo_alt.png" alt="PawLands Logo" style="height: 100%; width: auto;">
             </div>
             <div class="game-subtitle">2D Multiplayer Survival</div>
             
@@ -926,7 +925,7 @@ function renderResetPasswordPage(opts: { token?: string; email?: string; error?:
         </head>
         <body>
             <div class="container">
-                <div class="logo-text">Vibe Survival</div>
+                <div class="logo-text">PawLands</div>
                 <div class="subtitle">2D Multiplayer Survival</div>
                 <h1>Create Account</h1>
                 <p style="color: red; margin-bottom: 15px;">Registration failed. That email might already be taken.</p>
@@ -965,7 +964,7 @@ function renderResetPasswordPage(opts: { token?: string; email?: string; error?:
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Sign In - Broth & Bullets</title>
+        <title>Sign In - PawLands</title>
         <style>
             * {
                 margin: 0;
@@ -976,7 +975,7 @@ function renderResetPasswordPage(opts: { token?: string; email?: string; error?:
             body {
                 min-height: 100vh;
                 width: 100%;
-                background-image: url('login_background.png');
+                background-image: url('pawlands-login.webp');
                 background-size: cover;
                 background-position: top center;
                 background-repeat: no-repeat;
@@ -1143,7 +1142,7 @@ function renderResetPasswordPage(opts: { token?: string; email?: string; error?:
     <body>
         <div class="container">
             <div class="game-title">
-                <img src="logo_alt.png" alt="Broth & Bullets Logo" style="height: 100%; width: auto;">
+                <img src="logo_alt.png" alt="PawLands Logo" style="height: 100%; width: auto;">
             </div>
             <div class="game-subtitle">2D Multiplayer Survival</div>
             
@@ -1234,7 +1233,7 @@ function renderResetPasswordPage(opts: { token?: string; email?: string; error?:
             <head>
                 <meta charset="UTF-8">
                 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>Sign In - Broth & Bullets</title>
+                <title>Sign In - PawLands</title>
                 <style>
                     * {
                         margin: 0;
@@ -1245,7 +1244,7 @@ function renderResetPasswordPage(opts: { token?: string; email?: string; error?:
                     body {
                         min-height: 100vh;
                         width: 100%;
-                        background-image: url('login_background.png');
+                        background-image: url('pawlands-login.webp');
                         background-size: cover;
                         background-position: top center;
                         background-repeat: no-repeat;
@@ -1412,7 +1411,7 @@ function renderResetPasswordPage(opts: { token?: string; email?: string; error?:
             <body>
                 <div class="container">
                     <div class="game-title">
-                        <img src="logo_alt.png" alt="Broth & Bullets Logo" style="height: 100%; width: auto;">
+                        <img src="logo_alt.png" alt="PawLands Logo" style="height: 100%; width: auto;">
                     </div>
                     <div class="game-subtitle">2D Multiplayer Survival</div>
                     <h1 class="form-title">Sign In</h1>
@@ -1452,13 +1451,13 @@ function renderResetPasswordPage(opts: { token?: string; email?: string; error?:
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Forgot Password - Broth & Bullets</title>
+        <title>Forgot Password - PawLands</title>
         <style>
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body {
                 min-height: 100vh;
                 width: 100%;
-                background-image: url('login_background.png');
+                background-image: url('pawlands-login.webp');
                 background-size: cover;
                 background-position: top center;
                 background-repeat: no-repeat;
@@ -1580,7 +1579,7 @@ function renderResetPasswordPage(opts: { token?: string; email?: string; error?:
     <body>
         <div class="container">
             <div class="game-title">
-                <img src="logo_alt.png" alt="Broth & Bullets Logo" style="height: 100%; width: auto;">
+                <img src="logo_alt.png" alt="PawLands Logo" style="height: 100%; width: auto;">
             </div>
             <div class="game-subtitle">2D Multiplayer Survival</div>
             <h1 class="form-title">Forgot Password</h1>
@@ -1632,12 +1631,12 @@ function renderResetPasswordPage(opts: { token?: string; email?: string; error?:
     const resetLink = `${ISSUER_URL}/auth/password/reset?token=${token}`;
 
     // Send email
-    if (resend) {
+    if (resend && resetEmailFrom) {
       try {
         await resend.emails.send({
-          from: 'Broth & Bullets <noreply@brothandbullets.com>',
+          from: resetEmailFrom,
           to: email,
-          subject: 'Reset your Broth & Bullets password',
+          subject: 'Reset your PawLands password',
           html: `
             <!DOCTYPE html>
             <html>
@@ -1649,7 +1648,7 @@ function renderResetPasswordPage(opts: { token?: string; email?: string; error?:
               <div style="max-width: 500px; margin: 0 auto; background: rgba(40, 40, 60, 0.95); border-radius: 16px; padding: 40px; border: 2px solid rgba(255, 140, 0, 0.3);">
                 <h1 style="color: #ff8c00; margin-bottom: 20px; font-size: 24px;">Reset Your Password</h1>
                 <p style="color: rgba(255, 255, 255, 0.8); line-height: 1.6; margin-bottom: 30px;">
-                  You requested a password reset for your Broth & Bullets account. Click the button below to set a new password:
+                  You requested a password reset for your PawLands account. Click the button below to set a new password:
                 </p>
                 <a href="${resetLink}" style="display: inline-block; background: linear-gradient(135deg, #ff8c00 0%, #e67700 100%); color: white; padding: 16px 32px; text-decoration: none; border-radius: 12px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">
                   Reset Password
@@ -1660,7 +1659,7 @@ function renderResetPasswordPage(opts: { token?: string; email?: string; error?:
                 </p>
                 <hr style="border: none; border-top: 1px solid rgba(255, 255, 255, 0.1); margin: 30px 0;">
                 <p style="color: rgba(255, 255, 255, 0.4); font-size: 12px;">
-                  Broth & Bullets - 2D Multiplayer Survival
+                  PawLands - 2D Multiplayer Survival
                 </p>
               </div>
             </body>
@@ -1763,12 +1762,12 @@ function renderResetPasswordPage(opts: { token?: string; email?: string; error?:
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Password Reset - Broth & Bullets</title>
+        <title>Password Reset - PawLands</title>
         <style>
             * { margin: 0; padding: 0; box-sizing: border-box; }
             body {
                 min-height: 100vh;
-                background-image: url('/login_background.png');
+                background-image: url('/pawlands-login.webp');
                 background-size: cover;
                 background-position: top center;
                 font-family: system-ui, -apple-system, sans-serif;
@@ -1822,7 +1821,7 @@ function renderResetPasswordPage(opts: { token?: string; email?: string; error?:
     <body>
         <div class="container">
             <div class="game-title">
-                <img src="/logo_alt.png" alt="Broth & Bullets Logo" style="height: 100%; width: auto;">
+                <img src="/logo_alt.png" alt="PawLands Logo" style="height: 100%; width: auto;">
             </div>
             <div class="success-icon">✓</div>
             <h1 class="form-title">Password Reset Successful!</h1>

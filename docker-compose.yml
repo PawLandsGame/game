@@ -42,8 +42,6 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - "3008:3008"
-    environment:
-      VITE_KOKORO_BASE_URL: http://localhost:8001
     volumes:
       - .:/app
       - /app/node_modules
@@ -51,14 +49,3 @@ services:
       - auth-server
     stdin_open: true
     tty: true
-
-  tts-backend:
-    build:
-      context: ./tts-backend
-      dockerfile: Dockerfile
-    ports:
-      - "8001:8001"
-    environment:
-      PORT: 8001
-    depends_on:
-      - auth-server

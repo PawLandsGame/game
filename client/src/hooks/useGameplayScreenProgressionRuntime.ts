@@ -54,26 +54,14 @@ export function useGameplayScreenProgressionRuntime({
     }
   }, [connection]);
 
-  useSovaTutorials({
-    localPlayerId,
-    showSovaSoundBoxRef,
-    sovaMessageAdderRef,
-    seenTutorialIds: seenTutorialIds ? [...seenTutorialIds] : undefined,
-    onMarkTutorialSeen: handleMarkTutorialSeen,
-    localPlayerPosition: predictedPosition,
-    runeStones,
-    alkStations,
-    monumentParts,
-  });
-
   const {
     questCompletionNotification,
     dismissQuestCompletionNotification,
     hasNewQuestNotification,
   } = useQuestNotifications({
-    sovaQuestMessages,
-    questCompletionNotifications,
-    questProgressNotifications,
+    sovaQuestMessages: undefined,
+    questCompletionNotifications: undefined,
+    questProgressNotifications: undefined,
     playerIdentity,
     showSovaSoundBoxRef,
     sovaMessageAdderRef,

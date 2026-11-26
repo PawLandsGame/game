@@ -1,17 +1,13 @@
 /**
  * Resolves auth + SpacetimeDB endpoints for the browser client.
  *
- * Precedence per channel: explicit VITE_* override → VITE_USE_PRODUCTION_BACKENDS →
- * local stack when Vite dev or hostname is localhost → else production defaults.
+ * Explicit PawLands deployment endpoints override the local development defaults.
  */
 
-const PROD_AUTH_SERVER_URL = 'https://broth-and-bullets-production.up.railway.app';
 const LOCAL_AUTH_SERVER_URL = 'http://localhost:4001';
 
-const PROD_SPACETIME_WS_URL = 'wss://maincloud.spacetimedb.com';
 const LOCAL_SPACETIME_WS_URL = 'ws://localhost:3000';
 
-const PROD_SPACETIME_DATABASE = 'broth-bullets';
 const LOCAL_SPACETIME_DATABASE = 'broth-bullets-local';
 
 function isLocalDevBrowser(): boolean {
@@ -27,25 +23,19 @@ function trimEnv(value: string | undefined): string | undefined {
 function resolveAuthServerUrl(): string {
     const override = trimEnv(import.meta.env.VITE_AUTH_SERVER_URL);
     if (override) return override;
-    if (import.meta.env.VITE_USE_PRODUCTION_BACKENDS === 'true') return PROD_AUTH_SERVER_URL;
-    if (isLocalDevBrowser()) return LOCAL_AUTH_SERVER_URL;
-    return PROD_AUTH_SERVER_URL;
+    return LOCAL_AUTH_SERVER_URL;
 }
 
 function resolveSpacetimeWsUrl(): string {
     const override = trimEnv(import.meta.env.VITE_SPACETIME_WS_URL);
     if (override) return override;
-    if (import.meta.env.VITE_USE_PRODUCTION_BACKENDS === 'true') return PROD_SPACETIME_WS_URL;
-    if (isLocalDevBrowser()) return LOCAL_SPACETIME_WS_URL;
-    return PROD_SPACETIME_WS_URL;
+    return LOCAL_SPACETIME_WS_URL;
 }
 
 function resolveSpacetimeDatabaseName(): string {
     const override = trimEnv(import.meta.env.VITE_SPACETIME_DATABASE);
     if (override) return override;
-    if (import.meta.env.VITE_USE_PRODUCTION_BACKENDS === 'true') return PROD_SPACETIME_DATABASE;
-    if (isLocalDevBrowser()) return LOCAL_SPACETIME_DATABASE;
-    return PROD_SPACETIME_DATABASE;
+    return LOCAL_SPACETIME_DATABASE;
 }
 
 export const authServerUrl = resolveAuthServerUrl();
@@ -67,12 +57,12 @@ export const useLocalSpacetimeSocket = isLoopbackSpacetimeUrl(spacetimeWsUrl);
 
 /** Localhost + dev server using production backends via env flag. */
 export const usedProductionBackendsFromEnv =
-    import.meta.env.VITE_USE_PRODUCTION_BACKENDS === 'true' && isLocalDevBrowser();
+    isLocalDevBrowser() && (authServerUrl !== LOCAL_AUTH_SERVER_URL || !useLocalSpacetimeSocket);
 
 export function getAuthBackendLogLabel(): string {
     const tier = authServerUrl === LOCAL_AUTH_SERVER_URL ? 'local' : 'production';
     if (usedProductionBackendsFromEnv && tier === 'production') {
-        return `${tier} (VITE_USE_PRODUCTION_BACKENDS)`;
+        return `${tier} (env override)`;
     }
     return tier;
 }
@@ -80,7 +70,7 @@ export function getAuthBackendLogLabel(): string {
 export function getSpacetimeBackendLogLabel(): string {
     const tier = useLocalSpacetimeSocket ? 'local' : 'production';
     if (usedProductionBackendsFromEnv && tier === 'production') {
-        return `${tier} (VITE_USE_PRODUCTION_BACKENDS)`;
+        return `${tier} (env override)`;
     }
     return tier;
 }

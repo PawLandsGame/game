@@ -78,8 +78,6 @@ import { Identity } from 'spacetimedb';
 import { PlacementItemInfo, PlacementActions } from '../hooks/usePlacementManager';
 
 // Import voice interface components
-import VoiceInterface from './VoiceInterface';
-import SOVALoadingBar from './SOVALoadingBar';
 
 // Import other necessary imports
 import { useMusicSystem } from '../hooks/useMusicSystem';
@@ -91,7 +89,6 @@ import { useGameplayMovement } from '../contexts/GameplayMovementContext';
 // Import debug context
 import { useDebug } from '../contexts/DebugContext';
 import { useErrorDisplay } from '../contexts/ErrorDisplayContext';
-import { isAnySovaAudioPlaying } from '../hooks/useSovaSoundBox';
 
 const MemoGameCanvas = memo(GameCanvas);
 const MemoPlayerUI = memo(PlayerUI);
@@ -368,15 +365,7 @@ const GameScreen: React.FC<GameScreenProps> = (props) => {
                 onCraftingSearchFocusChange={gameUI.setIsCraftingSearchFocused}
                 onToggleInventory={() => {
                     if (isMobile && !showInventoryState) {
-                        // Block opening inventory on mobile - SOVA error or red box when narrative playing
-                        if (isAnySovaAudioPlaying()) {
-                            showError('Not available on mobile.');
-                        } else if (showSovaSoundBox) {
-                            const audio = new Audio('/sounds/sova_error_mobile_capability.mp3');
-                            audio.volume = 0.8;
-                            showSovaSoundBox(audio, 'SOVA');
-                            audio.play().catch(() => { });
-                        }
+                        showError('Not available on mobile.');
                         return;
                     }
                     setShowInventoryState(prev => !prev);
@@ -391,15 +380,7 @@ const GameScreen: React.FC<GameScreenProps> = (props) => {
                 showCraftingScreen={showCraftingScreenState}
                 onToggleCraftingScreen={() => {
                     if (isMobile && !showCraftingScreenState) {
-                        // Block opening crafting on mobile - SOVA error or red box when narrative playing
-                        if (isAnySovaAudioPlaying()) {
-                            showError('Not available on mobile.');
-                        } else if (showSovaSoundBox) {
-                            const audio = new Audio('/sounds/sova_error_mobile_capability.mp3');
-                            audio.volume = 0.8;
-                            showSovaSoundBox(audio, 'SOVA');
-                            audio.play().catch(() => { });
-                        }
+                        showError('Not available on mobile.');
                         return;
                     }
                     setShowCraftingScreenState(prev => !prev);
@@ -409,7 +390,6 @@ const GameScreen: React.FC<GameScreenProps> = (props) => {
             />
             <Chat
                 connection={connection}
-                onSOVAMessageAdderReady={onSOVAMessageAdderReady}
                 isMobile={isMobile}
                 isMobileChatOpen={isMobileChatOpen}
                 onTitleSelect={handleTitleSelect}
@@ -456,37 +436,6 @@ const GameScreen: React.FC<GameScreenProps> = (props) => {
                 />
             )}
 
-            {/* SOVA Loading Bar - Hidden on mobile */}
-            {!isMobile && (
-                <SOVALoadingBar
-                    isRecording={sovaLoadingState.isRecording}
-                    isTranscribing={sovaLoadingState.isTranscribing}
-                    isGeneratingResponse={sovaLoadingState.isGeneratingResponse}
-                    isSynthesizingVoice={sovaLoadingState.isSynthesizingVoice}
-                    isPlayingAudio={sovaLoadingState.isPlayingAudio}
-                    currentPhase={sovaLoadingState.currentPhase}
-                />
-            )}
-
-            {/* Voice Interface - Hidden on mobile */}
-            {!isMobile && (
-                <VoiceInterface
-                    isVisible={voiceState.isVisible}
-                    onTranscriptionComplete={handleTranscriptionComplete}
-                    onError={handleVoiceError}
-                    onAddSOVAMessage={sovaMessageAdder}
-                    localPlayerIdentity={localPlayerId}
-                    worldState={worldState}
-                    localPlayer={localPlayer}
-                    itemDefinitions={itemDefinitions}
-                    activeEquipments={activeEquipments}
-                    inventoryItems={inventoryItems}
-                    recipes={recipes}
-                    playerIdentity={playerIdentity}
-                    connection={connection}
-                    onLoadingStateChange={onSOVALoadingStateChange}
-                />
-            )}
 
         </div>
     );

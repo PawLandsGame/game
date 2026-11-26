@@ -269,6 +269,9 @@ pub fn set_active_item_reducer(ctx: &ReducerContext, item_instance_id: u64) -> R
     // let item_def = item_defs.id().find(item_to_make_active.item_def_id) // Already fetched above
     //     .ok_or_else(|| format!("Item definition {} not found for item instance {}.", item_to_make_active.item_def_id, item_instance_id))?;
 
+    if crate::items_database::is_disabled_firearm_item(&item_def.name) {
+        return Err("This firearm is disabled".to_string());
+    }
     if !item_def.is_equippable {
         return Err(format!("Item '{}' (Instance ID: {}) is not a usable tool or weapon and cannot be set as active.", item_def.name, item_instance_id));
     }
@@ -507,6 +510,9 @@ pub fn load_ranged_weapon(ctx: &ReducerContext) -> Result<(), String> {
         .ok_or_else(|| "Equipped item definition not found".to_string())?;
 
     // Check if the equipped item is a ranged weapon
+    if crate::items_database::is_disabled_firearm_item(&item_def.name) {
+        return Err("This firearm is disabled".to_string());
+    }
     if item_def.category != crate::items::ItemCategory::RangedWeapon {
         return Err("Equipped item is not a ranged weapon.".to_string());
     }

@@ -26,9 +26,6 @@ Write-Host "[BUILD] Clearing database and deploying fresh module..." -Foreground
 spacetime publish -c --no-config -p "$modulePath" broth-bullets-local -y
 Assert-LastExit "Clean publish to local database"
 
-# Seed SOVA AI config from root .env (required after clean deploy)
-& "$scriptDir\seed-sova-config.ps1" -Database "broth-bullets-local"
-Assert-LastExit "Seed ai_http_config"
 
 Write-Host "[GEN] Regenerating client bindings..." -ForegroundColor Yellow
 spacetime generate --no-config --include-private -p "$modulePath" -l typescript -o "$outDir" -y

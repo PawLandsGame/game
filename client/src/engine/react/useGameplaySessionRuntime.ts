@@ -208,11 +208,6 @@ export function useGameplaySessionRuntime({
         return;
       }
 
-      if ((event.key === 'j' || event.key === 'J') && !isChatting) {
-        setIsQuestsPanelOpen((prev) => !prev);
-        return;
-      }
-
       if ((event.key === 'g' || event.key === 'G') && !isChatting) {
         event.preventDefault();
         event.stopPropagation();

@@ -17,7 +17,6 @@ import heroCrouchSpriteSheet from '../assets/hero_crouch.png';
 import heroDodgeSpriteSheet from '../assets/hero_dodge.png';
 
 // Import UI assets
-import sovaImage from '../assets/ui/sova.png';
 import heartIcon from '../assets/ui/heart.png';
 import hungerIcon from '../assets/ui/hunger.png';
 import thirstIcon from '../assets/ui/thirst.png';
@@ -60,7 +59,6 @@ const CRITICAL_ASSETS: { name: string; src: string }[] = [
     { name: 'Player Swim', src: heroWaterSpriteSheet },
     { name: 'Player Crouch', src: heroCrouchSpriteSheet },
     { name: 'Player Dodge', src: heroDodgeSpriteSheet },
-    { name: 'SOVA Interface', src: sovaImage },
     { name: 'Health Icon', src: heartIcon },
     { name: 'Hunger Icon', src: hungerIcon },
     { name: 'Thirst Icon', src: thirstIcon },

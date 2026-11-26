@@ -12,6 +12,10 @@ pub use spoiled_items::get_spoiled_item_name;
 
 use crate::items::ItemDefinition;
 
+pub(crate) fn is_disabled_firearm_item(item_name: &str) -> bool {
+    matches!(item_name, "Makarov PM" | "PP-91 KEDR" | "9x18mm Round")
+}
+
 pub fn get_initial_item_definitions() -> Vec<ItemDefinition> {
     let mut items = Vec::new();
     
@@ -26,5 +30,6 @@ pub fn get_initial_item_definitions() -> Vec<ItemDefinition> {
     items.extend(placeables::get_placeable_definitions());
     items.extend(ammunition::get_ammunition_definitions());
     
+    items.retain(|item| !is_disabled_firearm_item(&item.name));
     items
 }

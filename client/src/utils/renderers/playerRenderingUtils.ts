@@ -819,7 +819,7 @@ export const renderPlayer = (
     totalFrames = 6; // 6 frames for walking
   }
 
-  const { sx, sy } = getSpriteCoordinates(
+  const { sx, sy: directionY } = getSpriteCoordinates(
     player, 
     finalIsMoving, 
     finalAnimationFrame, 
@@ -832,6 +832,10 @@ export const renderPlayer = (
     dodgeRollProgress || 0
   );
   
+  // Stable across clients and reconnects. Each coat occupies four rows.
+  const catVariant = parseInt(playerHexId.slice(24, 32), 16) % 3 || 0;
+  const sy = directionY + catVariant * 4 * gameConfig.spriteHeight;
+
   // Shake Logic (uses clientCombatEffectElapsed via effectiveHitElapsed)
   let shakeX = 0;
   let shakeY = 0;

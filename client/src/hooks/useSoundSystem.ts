@@ -1424,33 +1424,7 @@ export const useSoundSystem = ({
                 return; // Don't play the stop_bandaging sound itself
             }
             
-            // Special handling for SOVA memory shard tutorial - emit event for useSovaTutorials to handle
-            // useSovaTutorials will play the audio with the SovaSoundBox waveform visualization
-            if (soundType === 'sova_memory_shard_tutorial') {
-                // Only trigger for the local player who picked up the shard
-                if (localPlayerIdentity && soundEvent.triggeredBy.toHexString() === localPlayerIdentity.toHexString()) {
-                    console.log(`🔮 [SOVA Tutorial] Memory shard tutorial triggered for local player`);
-                    
-                    // CRITICAL: Defer dispatch so useSovaTutorials' listener is guaranteed to be attached.
-                    // React effects run in declaration order; without deferral, we may fire before the listener exists.
-                    queueMicrotask(() => {
-                        window.dispatchEvent(new CustomEvent('sova-memory-shard-tutorial'));
-                    });
-                }
-                // Don't play through sound system - useSovaTutorials handles this with SovaSoundBox
-                return;
-            }
-
-            // Special handling for SOVA 200 memory shards tutorial - emit event for useSovaTutorials
-            if (soundType === 'sova_memory_shard_200_tutorial') {
-                if (localPlayerIdentity && soundEvent.triggeredBy.toHexString() === localPlayerIdentity.toHexString()) {
-                    console.log(`🔮 [SOVA Tutorial] 200 memory shards tutorial triggered for local player`);
-                    queueMicrotask(() => {
-                        window.dispatchEvent(new CustomEvent('sova-memory-shard-200-tutorial'));
-                    });
-                }
-                return;
-            }
+            if (SOVA_SOUND_PATTERN.test(soundEvent.filename)) return;
 
             // Seaweed-above-water: IMMEDIATE in SOUND_DEFINITIONS; skip spatial (SOVA gate + falloff).
             // Also handled from reducer for reliability; debounced helper avoids double play.

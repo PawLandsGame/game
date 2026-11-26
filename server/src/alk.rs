@@ -1854,10 +1854,6 @@ fn get_arms_contract_params(item_name: &str) -> (u32, u32) {
         "Reed Harpoon" => (3, 70),       // Fishing/combat hybrid
         "Reed Harpoon Gun" => (1, 200),  // Underwater + above
         
-        // === FIREARMS (rare, valuable) ===
-        "Makarov PM" => (1, 320),        // Soviet pistol
-        "PP-91 KEDR" => (1, 380),        // SMG - top tier
-        
         // === AMMUNITION - ARROWS ===
         "Wooden Arrow" => (30, 50),      // Basic arrows - common
         "Bone Arrow" => (25, 70),        // Better arrows
@@ -1865,8 +1861,7 @@ fn get_arms_contract_params(item_name: &str) -> (u32, u32) {
         "Hollow Reed Arrow" => (35, 40), // Fast but weak
         "Venom Arrow" => (12, 115),      // Poison - premium
         
-        // === AMMUNITION - BULLETS/HARPOONS ===
-        "9x18mm Round" => (15, 120),     // Premium ammo - gunpowder needed
+        // === AMMUNITION - HARPOONS ===
         "Reed Harpoon Dart" => (20, 65), // Harpoon ammo
         "Venom Harpoon Dart" => (10, 110), // Poison harpoon
         
@@ -2994,6 +2989,10 @@ pub fn purchase_from_alk(
     let contract = contracts_table.contract_id().find(&contract_id)
         .ok_or("Contract not found")?;
     
+    if crate::items_database::is_disabled_firearm_item(&contract.item_name) {
+        return Err("This buy order is disabled".to_string());
+    }
+
     // Validate this is a BuyOrder contract
     if contract.kind != AlkContractKind::BuyOrder {
         return Err("This is not a buy order contract".to_string());

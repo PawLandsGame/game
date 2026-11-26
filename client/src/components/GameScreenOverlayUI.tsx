@@ -8,7 +8,6 @@ import GameVisualSettingsMenu from './GameVisualSettingsMenu';
 import type { MenuType } from './GameMenu';
 import DebugPanel from './DebugPanel';
 import DayNightCycleTracker from './DayNightCycleTracker';
-import QuestsPanel from './QuestsPanel';
 import MusicControlPanel from './MusicControlPanel';
 import ErrorDisplay from './ErrorDisplay';
 import AlkDeliveryPanel from './AlkDeliveryPanel';
@@ -132,7 +131,7 @@ export default function GameScreenOverlayUI({
               NEUROVEIL™ REFRESH REQUEST
             </div>
             <div style={{ color: '#e0e0e0', fontSize: '14px', lineHeight: '1.6', marginBottom: '24px', padding: '16px', backgroundColor: 'rgba(0, 0, 0, 0.3)', borderRadius: '4px' }}>
-              Your neural interface is requesting to refresh the Babachain connection.
+              Reconnect to refresh your game session.
               This will reinitialize your session with the latest quantum state synchronization.
               <br /><br />
               Proceed with Neuroveil™ Refresh?
@@ -179,18 +178,7 @@ export default function GameScreenOverlayUI({
         isMobile={isMobile}
         onMinimizedChange={onDayNightMinimizedChange}
         localPlayerId={playerIdentity || undefined}
-        onOpenQuestsPanel={onOpenQuestsPanel}
         hasNewNotification={hasNewQuestNotification}
-      />
-
-      <QuestsPanel
-        isOpen={isQuestsPanelOpen}
-        onClose={onCloseQuestsPanel}
-        localPlayerId={playerIdentity || undefined}
-        isMobile={isMobile}
-        showSovaSoundBox={showSovaSoundBox}
-        addSOVAMessage={sovaMessageAdder || undefined}
-        seenTutorialIds={seenTutorialIds ? [...seenTutorialIds] : undefined}
       />
 
       {!isMobile && (
@@ -245,7 +233,6 @@ export default function GameScreenOverlayUI({
         questCompletionNotification={questCompletionNotification}
         onDismissQuestCompletion={onDismissQuestCompletion}
         onOpenAchievements={gameUI.onOpenAchievements}
-        onOpenQuests={onOpenQuestsPanel}
       />
     </>
   );
