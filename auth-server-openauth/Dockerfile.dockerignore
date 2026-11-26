@@ -1,0 +1,7 @@
+**
+!package.json
+!package-lock.json
+!*.ts
+!tsconfig.json
+!logo_alt.png
+!pawlands-login.webp
