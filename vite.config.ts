@@ -1,9 +1,33 @@
-import { defineConfig } from 'vite'
+import { defineConfig, loadEnv, type Connect, type Plugin } from 'vite'
+import runtimeKeys from './scripts/client-runtime-keys.json'
 import react from '@vitejs/plugin-react'
 import Prerender from '@prerenderer/rollup-plugin'
 import PuppeteerRenderer from '@prerenderer/renderer-puppeteer'
 import prerenderRoutes from './prerender-routes.json'
 import { isDevWatchIgnored, resilientDevWatcher } from './scripts/dev-server-policy';
+
+function serveRuntimeConfig(mode: string): Plugin {
+  function middleware(): Connect.NextHandleFunction {
+    const env = loadEnv(mode, process.cwd(), 'VITE_');
+    const settings = Object.fromEntries(runtimeKeys.map(key => [key, env[key]]));
+    return (req, res, next) => {
+      if (req.url?.split('?')[0] !== '/runtime-config.js') return next();
+      res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+      res.setHeader('Cache-Control', 'no-store');
+      res.end(`globalThis.__PAWLANDS_CONFIG__ = ${JSON.stringify(settings)};`);
+    };
+  }
+
+  return {
+    name: 'pawlands-runtime-config',
+    configureServer(server) {
+      server.middlewares.use(middleware());
+    },
+    configurePreviewServer(server) {
+      server.middlewares.use(middleware());
+    },
+  };
+}
 
 // https://vite.dev/config/
 export default defineConfig(({ command, mode }) => {
@@ -38,7 +62,8 @@ export default defineConfig(({ command, mode }) => {
   }
 
   return {
-    plugins,
+    plugins: [...plugins, serveRuntimeConfig(mode)],
+    envPrefix: command === 'build' ? [] : 'VITE_',
     resolve: {
       alias: {
         // No alias needed - using spacetimedb package directly

@@ -1,10 +1,11 @@
+import { runtimeSetting } from '../config/runtimeConfig';
 // Kokoro TTS Service for Voice Synthesis
 // Alternative to ElevenLabs, using self-hosted Kokoro model
 
 console.log('[KokoroService] 🚀 Loading Kokoro TTS service...');
 
 // Configuration
-const KOKORO_BASE_URL = import.meta.env.VITE_KOKORO_BASE_URL || 'http://localhost:8001';
+const KOKORO_BASE_URL = runtimeSetting('VITE_KOKORO_BASE_URL') || 'http://localhost:8001';
 const KOKORO_SYNTHESIZE_ENDPOINT = `${KOKORO_BASE_URL}/synthesize`;
 
 export interface KokoroResponse {

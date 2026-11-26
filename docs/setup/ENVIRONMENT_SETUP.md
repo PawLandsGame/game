@@ -82,3 +82,24 @@ No separate AI gateway service is required for runtime chat/voice/brewing flows.
 | `VITE_AI_PROVIDER` | root `.env` | SOVA provider selector |
 | `VITE_KOKORO_BASE_URL` | root `.env` | Kokoro backend URL |
 | `VITE_STT_PROVIDER` | root `.env` | `local` by default; `openai` opts into hosted transcription |
+
+## Client container runtime settings
+
+Set these variables on the running client service (for example, through Docker
+`--env-file`). Recreate the container with the same image to apply edits, then
+reload the game in the browser. For Railway, set them on the client service that
+uses `railway-client.toml`.
+
+| Variable | Default |
+|---|---|
+| `VITE_AUTH_SERVER_URL` | `http://localhost:4001` |
+| `VITE_SPACETIME_WS_URL` | `ws://localhost:3000` |
+| `VITE_SPACETIME_DATABASE` | `broth-bullets-local` |
+| `VITE_KOKORO_BASE_URL` | `http://localhost:8001` |
+| `VITE_AI_PROVIDER` | `grok` |
+| `VITE_STT_PROVIDER` | `local` |
+| `VITE_TTS_PROVIDER` | `kokoro` |
+
+Use addresses reachable from the player's browser. These settings are public.
+For local development and `npm run preview`, put them in the root `.env` or
+supply them in the Vite server process environment.

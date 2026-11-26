@@ -1,3 +1,4 @@
+import { runtimeSetting } from '../config/runtimeConfig';
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import whisperService, { type WhisperResponse } from '../services/whisperService';
 import { openaiService } from '../services/openaiService';
@@ -12,7 +13,7 @@ import type { Identity } from 'spacetimedb';
 import { useAuth } from '../contexts/AuthContext';
 
 // TTS Provider selection: 'kokoro' (default) | 'auto' (auto-detect)
-const TTS_PROVIDER = import.meta.env.VITE_TTS_PROVIDER || 'kokoro';
+const TTS_PROVIDER = runtimeSetting('VITE_TTS_PROVIDER') || 'kokoro';
 
 /**
  * Determine which TTS provider to use based on configuration and availability

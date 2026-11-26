@@ -1,3 +1,4 @@
+import { runtimeSetting } from '../config/runtimeConfig';
 /**
  * Brewing AI Service (procedure-backed)
  *
@@ -15,7 +16,7 @@ function normalizeProvider(rawProvider: string | undefined): AIProvider {
   }
   return 'grok';
 }
-const AI_PROVIDER: AIProvider = normalizeProvider(import.meta.env.VITE_AI_PROVIDER);
+const AI_PROVIDER: AIProvider = normalizeProvider(runtimeSetting('VITE_AI_PROVIDER'));
 
 let brewingConnection: DbConnection | null = null;
 

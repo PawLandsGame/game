@@ -1,9 +1,10 @@
+import { runtimeSetting } from '../config/runtimeConfig';
 // SOVA speech-to-text. Local mode uses faster-whisper; cloud mode uses OpenAI.
 // VITE_STT_PROVIDER=openai opts into the hosted transcription procedure.
 // The default transcribes through the local faster-whisper backend.
 import type { DbConnection } from '../generated';
-const LOCAL_STT = import.meta.env.VITE_STT_PROVIDER !== 'openai';
-const VOICE_BACKEND_URL = import.meta.env.VITE_KOKORO_BASE_URL || 'http://localhost:8001';
+const LOCAL_STT = runtimeSetting('VITE_STT_PROVIDER') !== 'openai';
+const VOICE_BACKEND_URL = runtimeSetting('VITE_KOKORO_BASE_URL') || 'http://localhost:8001';
 
 export interface WhisperTiming {
   requestStartTime: number;

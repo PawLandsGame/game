@@ -55,30 +55,28 @@ jobs:
           ref: ${{ env.IMAGE_REVISION }}
           persist-credentials: false
       - name: Build image
-        env:
-          VITE_AUTH_SERVER_URL: ${{ vars.VITE_AUTH_SERVER_URL }}
-          VITE_SPACETIME_WS_URL: ${{ vars.VITE_SPACETIME_WS_URL }}
-          VITE_SPACETIME_DATABASE: ${{ vars.VITE_SPACETIME_DATABASE }}
-          VITE_KOKORO_BASE_URL: ${{ vars.VITE_KOKORO_BASE_URL }}
         run: |
           image="ghcr.io/${GITHUB_REPOSITORY,,}/$SERVICE"
-          args=()
-          if [[ "$SERVICE" == client ]]; then
-            args=(--build-arg VITE_AUTH_SERVER_URL --build-arg VITE_SPACETIME_WS_URL
-                  --build-arg VITE_SPACETIME_DATABASE --build-arg VITE_KOKORO_BASE_URL)
-          fi
-          docker build "${args[@]}" \
+          docker build \
             --label "org.opencontainers.image.source=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY" \
             --label "org.opencontainers.image.revision=$IMAGE_REVISION" \
             --tag "$image:$IMAGE_REVISION" "$CONTEXT"
           echo "IMAGE=$image" >> "$GITHUB_ENV"
       - name: Check container
         run: |
-          container=$(docker run --detach --publish "127.0.0.1:$PORT:$PORT" "$IMAGE:$IMAGE_REVISION")
+          args=()
+          if [[ "$SERVICE" == client ]]; then
+            args=(--env VITE_AUTH_SERVER_URL=https://runtime.example.invalid)
+          fi
+          container=$(docker run --detach --publish "127.0.0.1:$PORT:$PORT" "${args[@]}" "$IMAGE:$IMAGE_REVISION")
           trap 'docker logs "$container"; docker rm --force "$container" >/dev/null' EXIT
           response=$(curl --fail --silent --show-error --retry 45 --retry-delay 2 --retry-all-errors \
             --max-time 5 "http://127.0.0.1:$PORT$HEALTH_PATH")
-          if [[ "$SERVICE" == tts-backend ]]; then
+          if [[ "$SERVICE" == client ]]; then
+            grep -F 'src="/runtime-config.js"' <<< "$response"
+            curl --fail --silent --show-error "http://127.0.0.1:$PORT/runtime-config.js" |
+              grep -F '"VITE_AUTH_SERVER_URL":"https://runtime.example.invalid"'
+          elif [[ "$SERVICE" == tts-backend ]]; then
             jq -e '.pipeline_ready == true' <<< "$response"
           fi
       - name: Push to GHCR

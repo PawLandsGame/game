@@ -4,6 +4,8 @@
  * Explicit PawLands deployment endpoints override the local development defaults.
  */
 
+import { runtimeSetting } from './runtimeConfig';
+
 const LOCAL_AUTH_SERVER_URL = 'http://localhost:4001';
 
 const LOCAL_SPACETIME_WS_URL = 'ws://localhost:3000';
@@ -15,32 +17,9 @@ function isLocalDevBrowser(): boolean {
     return import.meta.env.DEV || window.location.hostname === 'localhost';
 }
 
-function trimEnv(value: string | undefined): string | undefined {
-    const t = value?.trim();
-    return t ? t : undefined;
-}
-
-function resolveAuthServerUrl(): string {
-    const override = trimEnv(import.meta.env.VITE_AUTH_SERVER_URL);
-    if (override) return override;
-    return LOCAL_AUTH_SERVER_URL;
-}
-
-function resolveSpacetimeWsUrl(): string {
-    const override = trimEnv(import.meta.env.VITE_SPACETIME_WS_URL);
-    if (override) return override;
-    return LOCAL_SPACETIME_WS_URL;
-}
-
-function resolveSpacetimeDatabaseName(): string {
-    const override = trimEnv(import.meta.env.VITE_SPACETIME_DATABASE);
-    if (override) return override;
-    return LOCAL_SPACETIME_DATABASE;
-}
-
-export const authServerUrl = resolveAuthServerUrl();
-export const spacetimeWsUrl = resolveSpacetimeWsUrl();
-export const spacetimeDatabaseName = resolveSpacetimeDatabaseName();
+export const authServerUrl = runtimeSetting('VITE_AUTH_SERVER_URL') ?? LOCAL_AUTH_SERVER_URL;
+export const spacetimeWsUrl = runtimeSetting('VITE_SPACETIME_WS_URL') ?? LOCAL_SPACETIME_WS_URL;
+export const spacetimeDatabaseName = runtimeSetting('VITE_SPACETIME_DATABASE') ?? LOCAL_SPACETIME_DATABASE;
 
 function isLoopbackSpacetimeUrl(value: string): boolean {
     try {

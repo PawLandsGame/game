@@ -1,3 +1,4 @@
+import { runtimeSetting } from '../config/runtimeConfig';
 // AI Service for SOVA AI Personality
 // Handles intelligent responses based on game lore and context
 // Supports AI providers: OpenAI, Gemini, and Grok
@@ -16,7 +17,7 @@ function normalizeProvider(rawProvider: string | undefined): AIProvider {
   }
   return 'grok';
 }
-const AI_PROVIDER: AIProvider = normalizeProvider(import.meta.env.VITE_AI_PROVIDER);
+const AI_PROVIDER: AIProvider = normalizeProvider(runtimeSetting('VITE_AI_PROVIDER'));
 
 export interface OpenAITiming {
   requestStartTime: number;
