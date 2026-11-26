@@ -14,6 +14,7 @@ COPY --from=build /app/package.json ./
 COPY --from=build /app/node_modules ./node_modules
 COPY --from=build /app/dist ./dist
 COPY logo_alt.png pawlands-login.webp ./
+RUN chown node:node /app
 USER node
 EXPOSE 4001
 CMD ["npm", "start"]
