@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/PawLandsGame/game/compare/v1.0.0...v1.0.1) (2026-11-26)
+
+
+### Bug Fixes
+
+* **клиент:** читать адреса сервисов при запуске контейнера ([86651b4](https://github.com/PawLandsGame/game/commit/86651b47d407b406a07732628815345c734ab7ef))
+
 ## 1.0.0 (2026-11-26)
 
 
