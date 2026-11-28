@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext';
 /**
  * ContainerButtons Component
  * 
@@ -38,6 +39,7 @@ const ContainerButtons: React.FC<ContainerButtonsProps> = ({
     onExtinguish,
     children
 }) => {
+    const { t } = useLanguage();
     const config = getContainerConfig(containerType);
     
     // Only render buttons for fuel containers
@@ -75,7 +77,7 @@ const ContainerButtons: React.FC<ContainerButtonsProps> = ({
         const lantern = containerEntity as Lantern;
         const requiredFuelName = getLanternFuelTypeName(lantern.lanternType);
         if (!hasValidLanternFuel) {
-            fuelHintText = `Requires ${requiredFuelName}`;
+            fuelHintText = `${t('Requires')} ${t(requiredFuelName)}`;
         }
     }
 
@@ -90,7 +92,7 @@ const ContainerButtons: React.FC<ContainerButtonsProps> = ({
                         isActive ? styles.extinguishButton : styles.lightFireButton
                     }`}
                 >
-                    {getButtonText(containerType, isActive, containerEntity)}
+                    {t(getButtonText(containerType, isActive, containerEntity))}
                 </button>
             )}
             
@@ -114,14 +116,14 @@ const ContainerButtons: React.FC<ContainerButtonsProps> = ({
                         disabled={isActive || !hasValidLanternFuel}
                         className={`${styles.interactionButton} ${styles.lightFireButton}`}
                     >
-                        {getButtonText(containerType, false, containerEntity)}
+                        {t(getButtonText(containerType, false, containerEntity))}
                     </button>
                     <button
                         onClick={onExtinguish || onToggle}
                         disabled={!isActive}
                         className={`${styles.interactionButton} ${styles.extinguishButton}`}
                     >
-                        {getButtonText(containerType, true, containerEntity)}
+                        {t(getButtonText(containerType, true, containerEntity))}
                     </button>
                 </div>
             )}

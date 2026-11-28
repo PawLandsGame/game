@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext';
 import React from 'react';
 
 interface MobileControlBarProps {
@@ -24,6 +25,9 @@ const MobileControlBar: React.FC<MobileControlBarProps> = ({
     hasInteractable,
     interactableLabel,
 }) => {
+    const { language, t } = useLanguage();
+    const actionLabel = t(interactableLabel || 'USE');
+
     return (
         <div 
             data-mobile-control-bar
@@ -59,7 +63,7 @@ const MobileControlBar: React.FC<MobileControlBarProps> = ({
                     flexDirection: 'column',
                 }}
                 aria-pressed={isMapOpen}
-                aria-label="Toggle map and interfaces"
+                aria-label={t("Toggle map and interfaces")}
             >
                 {/* Map icon - simple grid/compass design */}
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -76,7 +80,7 @@ const MobileControlBar: React.FC<MobileControlBarProps> = ({
                     fontFamily: 'system-ui, sans-serif',
                     marginTop: '2px',
                 }}>
-                    MAP
+                    {t("MAP")}
                 </span>
             </button>
 
@@ -99,7 +103,9 @@ const MobileControlBar: React.FC<MobileControlBarProps> = ({
                         flexDirection: 'column',
                         animation: 'pulse 1.5s ease-in-out infinite',
                     }}
-                    aria-label={`Interact with ${interactableLabel || 'nearby object'}`}
+                    aria-label={interactableLabel && language === 'en'
+                        ? `Interact with ${interactableLabel}`
+                        : t('Interact with nearby object')}
                 >
                     {/* Hand/interact icon */}
                     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -114,7 +120,7 @@ const MobileControlBar: React.FC<MobileControlBarProps> = ({
                         marginTop: '2px',
                         whiteSpace: 'nowrap',
                     }}>
-                        {interactableLabel ? interactableLabel.substring(0, 5).toUpperCase() : 'USE'}
+                        {language === 'en' ? actionLabel.substring(0, 5).toUpperCase() : actionLabel}
                     </span>
                 </button>
             )}
@@ -141,7 +147,7 @@ const MobileControlBar: React.FC<MobileControlBarProps> = ({
                     flexDirection: 'column',
                 }}
                 aria-pressed={isChatOpen}
-                aria-label="Toggle SOVA chat"
+                aria-label={t("Toggle SOVA chat")}
             >
                 {/* SOVA AI icon - stylized eye/radar design */}
                 <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -163,7 +169,7 @@ const MobileControlBar: React.FC<MobileControlBarProps> = ({
                     marginTop: '1px',
                     letterSpacing: '1px',
                 }}>
-                    SOVA
+                    {t('SOVA')}
                 </span>
             </button>
 

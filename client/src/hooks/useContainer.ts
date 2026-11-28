@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext';
 /**
  * useContainer Hook
  * 
@@ -76,6 +77,7 @@ interface UseContainerResult {
 }
 
 export function useContainer(props: UseContainerProps): UseContainerResult {
+    const { t } = useLanguage();
     const {
         interactionTarget,
         inventoryItems,
@@ -217,23 +219,23 @@ export function useContainer(props: UseContainerProps): UseContainerResult {
     
     // Container title
     const containerTitle = useMemo(() => {
-        if (!containerType) return 'External Container';
+        if (!containerType) return t('External Container');
         
         // Handle special cases
         if (containerType === 'player_corpse' && containerEntity) {
             const corpse = containerEntity as PlayerCorpse;
             // Strip "(Offline)" suffix from username for cleaner title display
             const cleanUsername = corpse.username?.replace(/\s*\(Offline\)\s*$/i, '') || '';
-            return cleanUsername ? `${cleanUsername}'s Backpack` : 'Player Corpse';
+            return cleanUsername ? t("{player}'s Backpack").replace('{player}', () => cleanUsername) : t('Player Corpse');
         }
         
         if (containerType === 'stash' && containerEntity) {
             const stash = containerEntity as Stash;
-            return stash.isHidden ? 'HIDDEN STASH (NEARBY)' : 'STASH';
+            return t(stash.isHidden ? 'HIDDEN STASH (NEARBY)' : 'STASH');
         }
         
-        return getContainerDisplayName(containerType, containerEntity ?? undefined);
-    }, [containerType, containerEntity]);
+        return t(getContainerDisplayName(containerType, containerEntity ?? undefined));
+    }, [containerType, containerEntity, t]);
     
     // State helpers
     const isEmpty = useMemo(() => {

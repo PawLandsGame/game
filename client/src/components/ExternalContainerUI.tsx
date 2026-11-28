@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext';
 /******************************************************************************
  * ExternalContainerUI.tsx                                                     *
  * -------------------------------------------------------------------------- *
@@ -217,6 +218,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
     setHotLootCurrentHover,
     onSelectInventoryItem,
 }) => {
+    const { language, t } = useLanguage();
     useEffect(() => {
         setBrewingConnection(connection);
     }, [connection]);
@@ -1238,9 +1240,9 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                             color: '#a8e6a8',
                             flexShrink: 0,
                         }}
-                        title="Sort items by type (alphabetically). Same item types will appear next to each other."
+                        title={t("Sort items by type (alphabetically). Same item types will appear next to each other.")}
                     >
-                        <FontAwesomeIcon icon={faSortAlphaDown} /> Sort
+                        <FontAwesomeIcon icon={faSortAlphaDown} /> {t("Sort")}
                     </button>
                 )}
                 {showSplitButton && (
@@ -1267,9 +1269,9 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                             color: '#e8d4a8',
                             flexShrink: 0,
                         }}
-                        title="Split ore evenly across all slots (same ore type + empty). Maximizes burn rate when furnace is lit."
+                        title={t("Split ore evenly across all slots (same ore type + empty). Maximizes burn rate when furnace is lit.")}
                     >
-                        <FontAwesomeIcon icon={faRightLeft} /> Split
+                        <FontAwesomeIcon icon={faRightLeft} /> {t("Split")}
                     </button>
                 )}
             </div>
@@ -1288,7 +1290,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                     color: '#aab',
                     fontStyle: 'italic'
                 }}>
-                    🌋 Add items to <strong style={{ color: '#ff8c46' }}>incinerate</strong> them into charcoal
+                    {t("🌋 Add items to")} <strong style={{ color: '#ff8c46' }}>{t("incinerate")}</strong> {t("them into charcoal")}
                 </div>
             )}
             
@@ -1327,7 +1329,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                         gap: '6px',
                     }}>
                         <span style={{ fontSize: '16px' }}>🔥</span>
-                        <span>Incinerating for Charcoal</span>
+                        <span>{t("Incinerating for Charcoal")}</span>
                         <span style={{ fontSize: '16px' }}>🔥</span>
                     </div>
                 </div>
@@ -1418,7 +1420,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                 <>
                     <div style={{ marginTop: '24px', borderTop: '1px solid rgba(255, 255, 255, 0.2)', paddingTop: '16px' }}>
                         <h3 className={styles.sectionTitle} style={{ fontSize: '14px', marginBottom: '8px' }}>
-                            Field Cauldron
+                            {t("Field Cauldron")}
                         </h3>
                         
                         {/* Heat Source Indicator */}
@@ -1431,8 +1433,8 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                             opacity: 0.9
                         }}>
                             {container.containerType === 'fumarole' 
-                                ? '🌋 Always-On Volcanic Heat (No Fuel Required)' 
-                                : '🔥 Campfire Heat (Requires Fuel)'}
+                                ? t("🌋 Always-On Volcanic Heat (No Fuel Required)")
+                                : t("🔥 Campfire Heat (Requires Fuel)")}
                         </div>
                         
                         {/* All 5 slots in one row: Water Container + 3 Ingredient slots + Arrow + Output slot */}
@@ -1729,7 +1731,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                     {/* Water indicator */}
                                     <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
                                         <span style={{ fontSize: '9px' }}>{attachedBrothPot.isSeawater ? '🌊' : '💧'}</span>
-                                        <span>{hasEnoughWater ? '✓' : `${Math.round(attachedBrothPot.waterLevelMl)}/${BREWING_WATER_REQUIREMENT_ML}ml`}</span>
+                                        <span>{hasEnoughWater ? '✓' : `${Math.round(attachedBrothPot.waterLevelMl)}/${BREWING_WATER_REQUIREMENT_ML}${t("ml")}`}</span>
                                     </div>
                                 </div>
                             );
@@ -1745,7 +1747,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                 fontWeight: 'bold',
                                 textShadow: '0 0 4px rgba(135, 206, 250, 0.6)',
                             }}>
-                                {attachedBrothPot.isSeawater ? '🌊' : '💧'} Water: {attachedBrothPot.waterLevelMl}ml / {BROTH_POT_MAX_WATER_CAPACITY_ML}ml
+                                {attachedBrothPot.isSeawater ? '🌊' : '💧'} {t("Water:")} {attachedBrothPot.waterLevelMl}{t("ml /")} {BROTH_POT_MAX_WATER_CAPACITY_ML}{t("ml")}
                             </div>
                             
                                 {/* Visual water level bar - LARGER and more prominent */}
@@ -1892,7 +1894,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                         gap: '6px',
                                     }}>
                                         <span style={{ fontSize: '16px' }}>🍲</span>
-                                        <span>{isGeneratingRecipe ? 'Generating Recipe...' : 'Preparing Brew...'}</span>
+                                        <span>{isGeneratingRecipe ? t("Generating Recipe...") : t("Preparing Brew...")}</span>
                                         <span style={{ fontSize: '16px' }}>🍲</span>
                                     </div>
                                     <div style={{
@@ -1902,8 +1904,8 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                         fontStyle: 'italic',
                                     }}>
                                         {isGeneratingRecipe 
-                                            ? 'Consulting the elders...' 
-                                            : 'Mixing ingredients... brewing will start soon!'}
+                                            ? t("Consulting the elders...")
+                                            : t("Mixing ingredients... brewing will start soon!")}
                                     </div>
                                 </div>
                             );
@@ -1951,7 +1953,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                     gap: '6px',
                                 }}>
                                     <span style={{ fontSize: '16px' }}>🔥</span>
-                                    <span>Ready to Brew!</span>
+                                    <span>{t("Ready to Brew!")}</span>
                                     <span style={{ fontSize: '16px' }}>🔥</span>
                                 </div>
                                 <div style={{
@@ -1960,7 +1962,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                     color: '#cc6633',
                                     fontStyle: 'italic',
                                 }}>
-                                    Light the campfire to start brewing!
+                                    {t("Light the campfire to start brewing!")}
                                 </div>
                             </div>
                         )}
@@ -2000,7 +2002,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                     gap: '6px',
                                 }}>
                                     <span style={{ fontSize: '16px' }}>🍲</span>
-                                    <span>Currently Brewing {attachedBrothPot.currentRecipeName || 'Unknown Brew'}</span>
+                                    <span>{t("Currently Brewing")} {attachedBrothPot.currentRecipeName || 'Unknown Brew'}</span>
                                     <span style={{ fontSize: '16px' }}>🍲</span>
                                 </div>
                                 {/* Brewing Time Remaining */}
@@ -2014,7 +2016,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                         justifyContent: 'center',
                                         gap: '8px',
                                     }}>
-                                        <span>⏱️ Time Remaining:</span>
+                                        <span>{t("⏱️ Time Remaining:")}</span>
                                         <span style={{ fontWeight: 'bold', color: '#ffcc44' }}>
                                             {formatDurationSeconds(Math.max(0, attachedBrothPot.requiredCookingTimeSecs - attachedBrothPot.cookingProgressSecs))}
                                         </span>
@@ -2064,7 +2066,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                     gap: '6px',
                                 }}>
                                     <span style={{ fontSize: '14px' }}>🌊</span>
-                                    <span>Cannot brew with salt water - Desalinate first!</span>
+                                    <span>{t("Cannot brew with salt water - Desalinate first!")}</span>
                                     <span style={{ fontSize: '14px' }}>🌊</span>
                                 </div>
                             </div>
@@ -2098,7 +2100,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                             boxShadow: '0 0 8px rgba(255, 140, 0, 0.3)',
                         }}
                     >
-                        <FontAwesomeIcon icon={faArrowDown} /> Take
+                        <FontAwesomeIcon icon={faArrowDown} /> {t("Take")}
                     </button>
 
                     {/* Give = Blue/Cyan - water from your container to cauldron */}
@@ -2128,7 +2130,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                             boxShadow: '0 0 8px rgba(0, 150, 255, 0.3)',
                         }}
                     >
-                        <FontAwesomeIcon icon={faArrowUp} /> Give
+                        <FontAwesomeIcon icon={faArrowUp} /> {t("Give")}
                     </button>
 
                         {/* Broth pot info and actions */}
@@ -2157,9 +2159,9 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                 style={{ width: '100%', marginTop: '8px', textShadow: 'none' }}
                                 title={attachedBrothPot.waterLevelMl > 0 
                                     ? `⚠️ WARNING: Picking up will spill ${attachedBrothPot.waterLevelMl}ml of water! (No confirmation for quick PvP escapes)` 
-                                    : "Pick up the Field Cauldron and return it to your inventory"}
+                                    : t("Pick up the Field Cauldron and return it to your inventory")}
                             >
-                                Pick Up Broth Pot {attachedBrothPot.waterLevelMl > 0 ? '(Will Spill Water!)' : ''}
+                                {t("Pick Up Broth Pot")} {attachedBrothPot.waterLevelMl > 0 ? t("(Will Spill Water!)") : ''}
                             </button>
                         </div>
                     </div>
@@ -2186,13 +2188,13 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                 : styles.extinguishButton
                         }`}
                     >
-                        {(container.containerEntity as SpacetimeDBStash).isHidden ? "Surface Stash" : "Hide Stash"}
+                        {(container.containerEntity as SpacetimeDBStash).isHidden ? t("Surface Stash") : t("Hide Stash")}
                         </button>
                     )}
 
                 {/* Stash hidden message */}
                 {container.containerType === 'stash' && (container.containerEntity as SpacetimeDBStash).isHidden && !canOperateStashButton && (
-                        <p className={styles.infoText}>This stash is hidden. You might be able to surface it if you are on top of it.</p>
+                        <p className={styles.infoText}>{t("This stash is hidden. You might be able to surface it if you are on top of it.")}</p>
                 )}
 
                 {/* Rain collector fill button and info */}
@@ -2206,7 +2208,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                 marginBottom: '6px',
                                 textAlign: 'center'
                             }}>
-                                {((container.containerEntity as any) as SpacetimeDBRainCollector & { isSaltWater?: boolean }).isSaltWater ? '🌊' : '💧'} Water: {Math.round((container.containerEntity as SpacetimeDBRainCollector).totalWaterCollected * 1000)}ml / 40000ml
+                                {((container.containerEntity as any) as SpacetimeDBRainCollector & { isSaltWater?: boolean }).isSaltWater ? '🌊' : '💧'} {t("Water:")} {Math.round((container.containerEntity as SpacetimeDBRainCollector).totalWaterCollected * 1000)}{t("ml / 40000ml")}
                             </div>
                             
                             {/* Visual water level bar */}
@@ -2260,7 +2262,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                 boxShadow: '0 0 8px rgba(255, 140, 0, 0.3)',
                             }}
                         >
-                            <FontAwesomeIcon icon={faArrowDown} /> Take
+                            <FontAwesomeIcon icon={faArrowDown} /> {t("Take")}
                         </button>
 
                         {/* IN = Blue/Cyan (filling) */}
@@ -2292,7 +2294,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                 boxShadow: '0 0 8px rgba(0, 150, 255, 0.3)',
                             }}
                         >
-                            <FontAwesomeIcon icon={faArrowUp} /> Give
+                            <FontAwesomeIcon icon={faArrowUp} /> {t("Give")}
                         </button>
 
                         {/* Empty Reservoir Button - for clearing contaminated water (not available on monument rain collectors) */}
@@ -2315,9 +2317,9 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                             disabled={(container.containerEntity as SpacetimeDBRainCollector).totalWaterCollected <= 0}
                             className={`${styles.interactionButton} ${styles.extinguishButton}`}
                             style={{ width: '100%', marginBottom: '8px', textShadow: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px' }}
-                            title="Empty all water from the reservoir. Useful for clearing salt water contamination."
+                            title={t("Empty all water from the reservoir. Useful for clearing salt water contamination.")}
                         >
-                            <FontAwesomeIcon icon={faDroplet} /> Empty Reservoir (Spill All Water)
+                            <FontAwesomeIcon icon={faDroplet} /> {t("Empty Reservoir (Spill All Water)")}
                         </button>
                         )}
                         
@@ -2356,7 +2358,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                                     marginBottom: '6px',
                                                     color: '#ccc'
                                                 }}>
-                                                    <span>Durability:</span>
+                                                    <span>{t("Durability:")}</span>
                                                     <span style={{ 
                                                         color: currentDurability <= maxDurability * 0.25 ? '#ff6b6b' : 
                                                                currentDurability <= maxDurability * 0.5 ? '#ffc94d' : '#66d966' 
@@ -2410,7 +2412,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                                     marginBottom: '8px',
                                                     color: '#ccc'
                                                 }}>
-                                                    <span>Repairs Used:</span>
+                                                    <span>{t("Repairs Used:")}</span>
                                                     <span style={{ 
                                                         color: repairCount >= MAX_REPAIR_COUNT ? '#ff6b6b' : 
                                                                repairCount >= 2 ? '#ffc94d' : '#66d966' 
@@ -2436,7 +2438,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                                                     color: '#aaa',
                                                                     marginBottom: '4px'
                                                                 }}>
-                                                                    Repair Cost:
+                                                                    {t("Repair Cost:")}
                                                                 </div>
                                                                 <div style={{ 
                                                                     fontSize: '12px', 
@@ -2505,7 +2507,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                     marginBottom: '8px',
                                     fontStyle: 'italic'
                                 }}>
-                                    Place an item in the slot to repair it
+                                    {t("Place an item in the slot to repair it")}
                                 </div>
                             )}
                             
@@ -2535,7 +2537,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                         : 'none',
                                 }}
                             >
-                                🔧 Repair Item
+                                {t("🔧 Repair Item")}
                             </button>
                             
                             {/* Repair info */}
@@ -2546,7 +2548,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                 marginTop: '8px',
                                 lineHeight: '1.4'
                             }}>
-                                Each repair restores durability but reduces max durability by 25%
+                                {t("Each repair restores durability but reduces max durability by 25%")}
                             </div>
                         </div>
                     </>
@@ -2579,10 +2581,10 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                             lineHeight: '1.6'
                         }}>
                             <p style={{ margin: '0 0 8px 0' }}>
-                                This workstation unlocks advanced cooking recipes when you're nearby.
+                                {t("This workstation unlocks advanced cooking recipes when you're nearby.")}
                             </p>
                             <p style={{ margin: '0', color: '#888' }}>
-                                📋 Open your crafting menu by pressing <b>B</b> and navigate to the Consumables tab to see available recipes
+                                {t("📋 Open your crafting menu by pressing")} <b>B</b> {t("and navigate to the Consumables tab to see available recipes")}
                             </p>
                         </div>
                     </div>
@@ -2605,7 +2607,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                             marginBottom: '8px', 
                             textAlign: 'center' 
                         }}>
-                            🐝 Beehive Production
+                            {t("🐝 Beehive Production")}
                         </div>
                         
                         {/* Slot 0: Queen Bee Input */}
@@ -2616,7 +2618,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                 marginBottom: '4px',
                                 textAlign: 'center'
                             }}>
-                                Queen Bee Input (Slot 1)
+                                {t("Queen Bee Input (Slot 1)")}
                             </div>
                             <div style={{
                                 fontSize: '12px',
@@ -2625,7 +2627,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                             }}>
                                 {container.items[0] 
                                     ? `✓ ${container.items[0].definition.name} (produces honeycomb)` 
-                                    : '○ Place a Queen Bee here to start production'}
+                                    : t("○ Place a Queen Bee here to start production")}
                             </div>
                         </div>
 
@@ -2668,7 +2670,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                                 gap: '8px',
                                             }}>
                                                 <span style={{ fontSize: '11px', color: '#ffcc44' }}>
-                                                    🍯 Production starting...
+                                                    {t("🍯 Production starting...")}
                                                 </span>
                                             </div>
                                         );
@@ -2687,7 +2689,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                             flexWrap: 'wrap',
                                         }}>
                                             <span style={{ fontSize: '11px', color: '#ffcc44' }}>
-                                                🍯 Next honeycomb:
+                                                {t("🍯 Next honeycomb:")}
                                             </span>
                                             <span style={{ 
                                                 fontSize: '12px', 
@@ -2695,7 +2697,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                                 color: remainingSecs <= 60 ? '#66d966' : '#ffcc44',
                                                 minWidth: '40px',
                                             }}>
-                                                {remainingSecs <= 0 ? 'Ready!' : formatDurationSeconds(remainingSecs)}
+                                                {remainingSecs <= 0 ? t("Ready!") : formatDurationSeconds(remainingSecs)}
                                             </span>
                                             {/* Progress bar */}
                                             <div style={{
@@ -2732,7 +2734,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                 marginBottom: '4px',
                                 textAlign: 'center'
                             }}>
-                                Honeycomb Output (Slots 2-4)
+                                {t("Honeycomb Output (Slots 2-4)")}
                             </div>
                             <div style={{
                                 fontSize: '12px',
@@ -2755,9 +2757,9 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                             marginTop: '8px',
                             lineHeight: '1.3'
                         }}>
-                            While a Queen Bee is present, honeycomb is produced continuously.
+                            {t("While a Queen Bee is present, honeycomb is produced continuously.")}
                             <br/>
-                            Queen Bee won't spoil while in the hive.
+                            {t("Queen Bee won't spoil while in the hive.")}
                         </div>
                     </div>
                 )}
@@ -2794,9 +2796,9 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                     style={{ marginTop: '8px', textShadow: 'none' }}
                                     title={!isEmpty 
                                         ? `⚠️ WARNING: Picking up will spill ${brothPot.waterLevelMl}ml of water and drop ingredients! (No confirmation for quick PvP escapes)` 
-                                        : "Pick up the Field Cauldron and return it to your inventory"}
+                                        : t("Pick up the Field Cauldron and return it to your inventory")}
                                 >
-                                    Pick Up Broth Pot {!isEmpty ? '(Will Spill Contents!)' : ''}
+                                    {t("Pick Up Broth Pot")} {!isEmpty ? t("(Will Spill Contents!)") : ''}
                                 </button>
                             );
                         })()}
@@ -2820,7 +2822,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                 color: '#87CEEB',
                                 marginBottom: '8px'
                             }}>
-                                🏗️ Building Privilege
+                                {t("🏗️ Building Privilege")}
                             </div>
                             
                             <div style={{ 
@@ -2836,14 +2838,14 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                         style={{ width: '100%' }}
                                         disabled={!connection || container.containerId === null || isTogglingPrivilege}
                                         title={
-                                            !connection ? 'Not connected' : 
+                                            !connection ? t("Not connected") :
                                             container.containerId === null ? 'No container selected' : 
                                             isTogglingPrivilege ? 'Processing...' : 
                                             ''
                                         }
                                     >
                                         {isTogglingPrivilege 
-                                            ? 'Processing...' 
+                                            ? t("Processing...")
                                             : currentPlayerHasPrivilege 
                                                 ? 'Revoke Building Privilege' 
                                                 : 'Grant Building Privilege'
@@ -2863,7 +2865,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                                 justifyContent: 'space-between',
                                                 alignItems: 'center'
                                             }}>
-                                                <span>Players with privilege:</span>
+                                                <span>{t("Players with privilege:")}</span>
                                                 {/* Wipe All button */}
                                                 {playersWithPrivilege.length > 1 && currentPlayerHasPrivilege && (
                                                     <button
@@ -2897,7 +2899,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                                             e.currentTarget.style.borderColor = 'rgba(255, 100, 100, 0.6)';
                                                         }}
                                                     >
-                                                        Wipe All
+                                                        {t("Wipe All")}
                                                     </button>
                                                 )}
                                             </div>
@@ -2963,7 +2965,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                         </div>
                                     ) : (
                                         <div style={{ fontSize: '12px', color: '#aaaaaa', fontStyle: 'italic' }}>
-                                            No players with building privilege
+                                            {t("No players with building privilege")}
                                         </div>
                                     )}
                                 </div>
@@ -2985,7 +2987,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                 color: '#ffa040',
                                 marginBottom: '8px'
                             }}>
-                                ⚙️ Building Upkeep
+                                {t("⚙️ Building Upkeep")}
                             </div>
                             
                             {upkeepCosts ? (
@@ -2998,7 +3000,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                     <div style={{ flex: '1', minWidth: '0' }}>
                                         {upkeepCosts.requiredWood === 0 && upkeepCosts.requiredStone === 0 && upkeepCosts.requiredMetal === 0 ? (
                                             <div style={{ fontSize: '12px', color: '#00ff88', fontStyle: 'italic' }}>
-                                                ✓ No upkeep required (only twig buildings)
+                                                {t("✓ No upkeep required (only twig buildings)")}
                                             </div>
                                         ) : (
                                             <>
@@ -3014,8 +3016,8 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                                     {(upkeepCosts.availableWood >= upkeepCosts.requiredWood && 
                                                       upkeepCosts.availableStone >= upkeepCosts.requiredStone && 
                                                       upkeepCosts.availableMetal >= upkeepCosts.requiredMetal) 
-                                                        ? '✓ Building Protected' 
-                                                        : '⚠️ Insufficient Resources - Buildings Will Decay'}
+                                                        ? t("✓ Building Protected")
+                                                        : t("⚠️ Insufficient Resources - Buildings Will Decay")}
                                                 </div>
                                                 
                                                 {/* Show time estimate - resource duration when protected, decay time when unprotected */}
@@ -3033,11 +3035,11 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                                           upkeepCosts.availableStone >= upkeepCosts.requiredStone && 
                                                           upkeepCosts.availableMetal >= upkeepCosts.requiredMetal) ? (
                                                             <>
-                                                                ⏱️ Resources will last: {calculateResourceDuration(upkeepCosts)}
+                                                                {t("⏱️ Resources will last:")} {calculateResourceDuration(upkeepCosts)}
                                                             </>
                                                         ) : (
                                                             <>
-                                                                ⏱️ Buildings will decay in: {formatDecayTime(upkeepCosts.estimatedDecayHours)}
+                                                                {t("⏱️ Buildings will decay in:")} {formatDecayTime(upkeepCosts.estimatedDecayHours)}
                                                             </>
                                                         )}
                                                     </div>
@@ -3049,22 +3051,22 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                     {/* Right column: Resource requirements */}
                                     <div style={{ flex: '1', minWidth: '0' }}>
                                         <div style={{ fontSize: '12px', color: '#ffffff' }}>
-                                            <div style={{ marginBottom: '6px', fontWeight: 'bold', color: '#ffa040' }}>Required per hour:</div>
+                                            <div style={{ marginBottom: '6px', fontWeight: 'bold', color: '#ffa040' }}>{t("Required per hour:")}</div>
                                             <div style={{ marginBottom: '4px', fontSize: '13px' }}>
-                                                🪵 Wood: {upkeepCosts.requiredWood}
+                                                {t("🪵 Wood:")} {upkeepCosts.requiredWood}
                                             </div>
                                             <div style={{ marginBottom: '4px', fontSize: '13px' }}>
-                                                🪨 Stone: {upkeepCosts.requiredStone}
+                                                {t("🪨 Stone:")} {upkeepCosts.requiredStone}
                                             </div>
                                             <div style={{ marginBottom: '4px', fontSize: '13px' }}>
-                                                ⚙️ Metal: {upkeepCosts.requiredMetal}
+                                                {t("⚙️ Metal:")} {upkeepCosts.requiredMetal}
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             ) : (
                                 <div style={{ fontSize: '12px', color: '#aaaaaa', fontStyle: 'italic' }}>
-                                    Loading upkeep information...
+                                    {t("Loading upkeep information...")}
                                 </div>
                             )}
                         </div>
@@ -3137,7 +3139,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                             fontFamily: '"Press Start 2P", cursive',
                             letterSpacing: '1px',
                         }}>
-                            {pendingEmptyReservoirInfo.isSalt ? '🌊 SPILL SALT WATER?' : '⚠️ SPILL FRESH WATER?'}
+                            {pendingEmptyReservoirInfo.isSalt ? t("🌊 SPILL SALT WATER?") : t("⚠️ SPILL FRESH WATER?")}
                         </div>
                         
                         <div style={{
@@ -3153,15 +3155,15 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                 : '1px solid rgba(255, 102, 102, 0.3)',
                             fontFamily: '"Press Start 2P", cursive',
                         }}>
-                            You are about to spill <strong style={{ color: pendingEmptyReservoirInfo.isSalt ? '#87CEEB' : '#66ccff' }}>{pendingEmptyReservoirInfo.waterAmount}ml</strong> of <strong>{pendingEmptyReservoirInfo.waterType}</strong> from the rain collector.
+                            {t("You are about to spill")} <strong style={{ color: pendingEmptyReservoirInfo.isSalt ? '#87CEEB' : '#66ccff' }}>{pendingEmptyReservoirInfo.waterAmount}{t("ml")}</strong>{language === 'en' ? ' of ' : ' '}<strong>{t(pendingEmptyReservoirInfo.waterType)}</strong> {t("from the rain collector.")}
                             <br /><br />
                             {pendingEmptyReservoirInfo.isSalt ? (
-                                <>This will clear the salt water contamination and allow fresh rainwater to be collected.</>
+                                <>{t("This will clear the salt water contamination and allow fresh rainwater to be collected.")}</>
                             ) : (
-                                <>This will permanently destroy this fresh water. Consider transferring it to containers first!</>
+                                <>{t("This will permanently destroy this fresh water. Consider transferring it to containers first!")}</>
                             )}
                             <br /><br />
-                            <span style={{ color: '#ff6666' }}>This action cannot be undone.</span>
+                            <span style={{ color: '#ff6666' }}>{t("This action cannot be undone.")}</span>
                         </div>
 
                         <div style={{
@@ -3208,7 +3210,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                     e.currentTarget.style.boxShadow = '0 0 15px rgba(255, 102, 102, 0.3), inset 0 0 10px rgba(255, 102, 102, 0.1)';
                                 }}
                             >
-                                CONFIRM SPILL
+                                {t("CONFIRM SPILL")}
                             </button>
                             
                             <button
@@ -3242,7 +3244,7 @@ const ExternalContainerUI: React.FC<ExternalContainerUIProps> = ({
                                     e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 170, 255, 0.3), inset 0 0 10px rgba(0, 170, 255, 0.1)';
                                 }}
                             >
-                                KEEP WATER
+                                {t("KEEP WATER")}
                             </button>
                         </div>
                     </div>
