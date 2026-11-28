@@ -1,0 +1,8 @@
+**
+!server/
+!server/**
+!shared/
+!shared/**
+!deploy/spacetimedb/publish.sh
+server/target/
+server/Cargo.lock

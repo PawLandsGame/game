@@ -41,9 +41,13 @@ jobs:
             context: tts-backend
             port: 8001
             health: /health
+          - service: spacetimedb-publisher
+            context: .
+            dockerfile: deploy/spacetimedb/Dockerfile
     env:
       SERVICE: ${{ matrix.service }}
       CONTEXT: ${{ matrix.context }}
+      DOCKERFILE: ${{ matrix.dockerfile || 'Dockerfile' }}
       PORT: ${{ matrix.port }}
       HEALTH_PATH: ${{ matrix.health }}
       IMAGE_REVISION: ${{ inputs.release_sha || github.sha }}
@@ -57,12 +61,13 @@ jobs:
       - name: Build image
         run: |
           image="ghcr.io/${GITHUB_REPOSITORY,,}/$SERVICE"
-          docker build \
+          docker build --file "$CONTEXT/$DOCKERFILE" \
             --label "org.opencontainers.image.source=$GITHUB_SERVER_URL/$GITHUB_REPOSITORY" \
             --label "org.opencontainers.image.revision=$IMAGE_REVISION" \
             --tag "$image:$IMAGE_REVISION" "$CONTEXT"
           echo "IMAGE=$image" >> "$GITHUB_ENV"
       - name: Check container
+        if: matrix.service != 'spacetimedb-publisher'
         run: |
           args=()
           if [[ "$SERVICE" == client ]]; then
@@ -79,6 +84,29 @@ jobs:
           elif [[ "$SERVICE" == tts-backend ]]; then
             jq -e '.pipeline_ready == true' <<< "$response"
           fi
+      - name: Check module publishing
+        if: matrix.service == 'spacetimedb-publisher'
+        run: |
+          docker network create module-check
+          trap 'docker logs module-check-db; docker rm --force module-check-db; docker network rm module-check' EXIT
+          docker run --detach --name module-check-db --network module-check --publish 127.0.0.1::3000 \
+            clockworklabs/spacetime:v2.0.1 start --listen-addr=0.0.0.0:3000
+          address=$(docker port module-check-db 3000/tcp)
+          url="http://$address"
+          curl --fail --silent --show-error --retry 30 --retry-delay 2 --retry-all-errors \
+            --max-time 5 "$url/v1/ping"
+          SPACETIMEDB_PUBLISH_TOKEN=$(curl --fail --silent --show-error --request POST \
+            "$url/v1/identity" | jq -er '.token | select(type == "string" and length > 0)')
+          echo "::add-mask::$SPACETIMEDB_PUBLISH_TOKEN"
+          export SPACETIMEDB_PUBLISH_TOKEN
+          publish_module() {
+            docker run --rm --network module-check --env SPACETIMEDB_PUBLISH_TOKEN \
+              --env SPACETIMEDB_SERVER_URL=http://module-check-db:3000 "$IMAGE:$IMAGE_REVISION"
+          }
+          publish_module
+          identity=$(curl --fail --silent --show-error "$url/v1/database/pawlands/identity")
+          publish_module
+          test "$(curl --fail --silent --show-error "$url/v1/database/pawlands/identity")" = "$identity"
       - name: Push to GHCR
         env:
           GHCR_TOKEN: ${{ secrets.GITHUB_TOKEN }}
