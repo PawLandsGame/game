@@ -7,10 +7,8 @@
   max-width: 1425px; /* Max width */
   height: 80vh;
   max-height: 850px; /* Corrected value */
-  /* Cyberpunk SOVA styling */
-  background: linear-gradient(135deg, rgba(30, 15, 50, 0.95), rgba(20, 10, 40, 0.98));
-  border: 2px solid #00aaff;
-  box-shadow: 0 0 30px rgba(0, 170, 255, 0.3), inset 0 0 20px rgba(0, 170, 255, 0.1);
+  background: var(--game-ui-panel);
+  border: 2px solid var(--game-ui-border);
   border-radius: 8px;
   padding: 20px;
   padding-top: 45px;
@@ -18,37 +16,17 @@
   display: flex;
   gap: 15px;
   color: #ffffff;
-  font-family: 'Press Start 2P', cursive;
+  font-family: system-ui, sans-serif;
   box-sizing: border-box;
   align-items: flex-start;
-  backdrop-filter: blur(10px);
   overflow: hidden;
-}
-
-/* Animated scan line effect */
-.inventoryPanel::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, transparent, #00ffff, transparent);
-  animation: scanLine 3s linear infinite;
-  pointer-events: none;
-  z-index: 1;
-}
-
-@keyframes scanLine {
-  0% { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
 }
 
 .closeButton {
   position: absolute;
   top: 12px;
   right: 12px;
-  background: linear-gradient(135deg, rgba(120, 20, 40, 0.8), rgba(80, 10, 30, 0.9));
+  background: #55342f;
   color: #ffffff;
   border: 2px solid #ff3366;
   border-radius: 4px;
@@ -57,15 +35,12 @@
   font-size: 16px;
   font-family: inherit;
   z-index: 110;
-  box-shadow: 0 0 15px rgba(255, 51, 102, 0.3), inset 0 0 10px rgba(255, 51, 102, 0.1);
-  text-shadow: 0 0 5px currentColor;
   transition: all 0.3s ease;
 }
 
 .closeButton:hover {
-  background: linear-gradient(135deg, rgba(150, 30, 50, 0.9), rgba(100, 15, 35, 1));
+  background: #70443d;
   transform: translateY(-2px) scale(1.05);
-  box-shadow: 0 0 25px rgba(255, 51, 102, 0.6), inset 0 0 15px rgba(255, 51, 102, 0.2);
 }
 
 /* Panes Layout - Proportions might need adjusting again */
@@ -183,11 +158,10 @@
 .craftableItemsSection {
     height: 250px;
     margin-bottom: 15px;
-    border: 2px solid rgba(0, 170, 255, 0.3);
+    border: 2px solid rgba(189, 170, 124, 0.3);
     border-radius: 6px;
     padding: 5px;
-    background: linear-gradient(135deg, rgba(15, 15, 35, 0.8), rgba(10, 10, 25, 0.9));
-    box-shadow: inset 0 0 15px rgba(0, 170, 255, 0.1);
+    background: var(--game-ui-inset);
 }
 
 .craftableItemsGrid {
@@ -201,11 +175,10 @@
 
 .craftingQueueSection {
     height: 220px;
-    border: 2px solid rgba(0, 170, 255, 0.3);
+    border: 2px solid rgba(189, 170, 124, 0.3);
     border-radius: 6px;
     padding: 5px;
-    background: linear-gradient(135deg, rgba(15, 15, 35, 0.8), rgba(10, 10, 25, 0.9));
-    box-shadow: inset 0 0 15px rgba(0, 170, 255, 0.1);
+    background: var(--game-ui-inset);
     display: flex;
     flex-direction: column;
 }
@@ -275,7 +248,7 @@
 .interactionButton {
     margin-top: 10px;
     padding: 8px 15px;
-    border: 2px solid rgba(0, 170, 255, 0.5);
+    border: 2px solid rgba(189, 170, 124, 0.5);
     border-radius: 4px;
     cursor: pointer;
     font-weight: bold;
@@ -284,45 +257,41 @@
     font-family: inherit;
     font-size: 11px;
     white-space: nowrap;
-    box-shadow: 0 0 10px rgba(0, 170, 255, 0.2), inset 0 0 8px rgba(0, 170, 255, 0.1);
-    text-shadow: 0 0 5px currentColor;
 }
 
 .interactionButton:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  background: linear-gradient(135deg, rgba(60, 60, 80, 0.6), rgba(50, 50, 70, 0.7));
+  background: rgba(60, 60, 80, 0.6);
   color: #888;
   border-color: rgba(100, 100, 120, 0.4);
 }
 
 /* Specific styles for campfire actions */
 .lightFireButton {
-  background: linear-gradient(135deg, rgba(230, 126, 34, 0.8), rgba(211, 84, 0, 0.9));
+  background: rgba(230, 126, 34, 0.8);
   border-color: #ff8800;
 }
 
 .lightFireButton:not(:disabled):hover {
-  background: linear-gradient(135deg, rgba(243, 156, 18, 0.9), rgba(230, 126, 34, 1));
+  background: rgba(243, 156, 18, 0.9);
   transform: translateY(-2px);
-  box-shadow: 0 0 20px rgba(255, 136, 0, 0.5), inset 0 0 12px rgba(255, 136, 0, 0.2);
 }
 
 .extinguishButton {
-  background: linear-gradient(135deg, rgba(192, 57, 43, 0.8), rgba(169, 50, 38, 0.9));
+  background: rgba(192, 57, 43, 0.8);
   border-color: #ff3366;
 }
 
 .extinguishButton:not(:disabled):hover {
-  background: linear-gradient(135deg, rgba(231, 76, 60, 0.9), rgba(192, 57, 43, 1));
+  background: rgba(231, 76, 60, 0.9);
   transform: translateY(-2px);
-  box-shadow: 0 0 20px rgba(255, 51, 102, 0.5), inset 0 0 12px rgba(255, 51, 102, 0.2);
 }
 
 /* Ensure disabled styles take precedence */
 .lightFireButton:disabled,
 .extinguishButton:disabled {
-   background: linear-gradient(135deg, rgba(60, 60, 80, 0.6), rgba(50, 50, 70, 0.7));
+   background: rgba(60, 60, 80, 0.6);
    border-color: rgba(100, 100, 120, 0.4);
 }
 
@@ -337,31 +306,20 @@
 
 /* General Styles */
 .sectionTitle {
-  color: #00ffff;
+  color: var(--game-ui-accent);
   margin-bottom: 10px;
   text-align: center;
   font-size: 1.1em; 
   letter-spacing: 2px;
   text-transform: uppercase;
   margin-top: 0;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.8), 0 0 20px rgba(0, 255, 255, 0.4);
-  animation: titleGlow 2s ease-in-out infinite alternate;
-}
-
-@keyframes titleGlow {
-  0% { 
-    text-shadow: 0 0 10px rgba(0, 255, 255, 0.8), 0 0 20px rgba(0, 255, 255, 0.4);
-  }
-  100% { 
-    text-shadow: 0 0 15px rgba(0, 255, 255, 1), 0 0 30px rgba(0, 255, 255, 0.6);
-  }
 }
 
 .slot {
   width: 64px;
   height: 64px;
-  background: linear-gradient(135deg, rgba(20, 30, 60, 0.8), rgba(15, 25, 50, 0.9));
-  border: 2px solid rgba(0, 170, 255, 0.4);
+  background: var(--game-ui-inset);
+  border: 2px solid rgba(189, 170, 124, 0.4);
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -369,23 +327,19 @@
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
-  box-shadow: inset 0 0 10px rgba(0, 170, 255, 0.1);
   transition: all 0.2s ease;
 }
 
 .slot:hover {
-    border-color: #00aaff;
-    box-shadow: 0 0 10px rgba(0, 170, 255, 0.4), inset 0 0 15px rgba(0, 170, 255, 0.2);
+    border-color: var(--game-ui-border);
 }
 
 /* Selected slot styling */
 .selectedSlot {
-    border-color: #00ffff !important;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.6), inset 0 0 20px rgba(0, 255, 255, 0.2) !important;
-    background: linear-gradient(135deg, rgba(0, 170, 255, 0.2), rgba(0, 150, 255, 0.3)) !important;
+    border-color: var(--game-ui-accent) !important;
+    background: rgba(189, 170, 124, 0.2) !important;
 }
 
-/* Custom Scrollbar Styles - Cyberpunk theme */
 .craftableItemsSection::-webkit-scrollbar,
 .craftingQueueList::-webkit-scrollbar {
   width: 8px;
@@ -395,29 +349,27 @@
 .craftingQueueList::-webkit-scrollbar-track {
   background: rgba(30, 15, 50, 0.8);
   border-radius: 4px;
-  border: 1px solid rgba(0, 170, 255, 0.2);
+  border: 1px solid rgba(189, 170, 124, 0.2);
 }
 
 .craftableItemsSection::-webkit-scrollbar-thumb,
 .craftingQueueList::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, rgba(0, 170, 255, 0.8), rgba(0, 150, 255, 0.6));
+  background: rgba(189, 170, 124, 0.8);
   border-radius: 4px;
-  border: 1px solid rgba(0, 170, 255, 0.4);
-  box-shadow: 0 0 8px rgba(0, 170, 255, 0.3), inset 0 0 4px rgba(0, 255, 255, 0.2);
+  border: 1px solid rgba(189, 170, 124, 0.4);
 }
 
 .craftableItemsSection::-webkit-scrollbar-thumb:hover,
 .craftingQueueList::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, rgba(0, 200, 255, 0.9), rgba(0, 170, 255, 0.8));
-  box-shadow: 0 0 12px rgba(0, 204, 255, 0.5), inset 0 0 6px rgba(0, 255, 255, 0.3);
-  border-color: rgba(0, 204, 255, 0.6);
+  background: rgba(189, 170, 124, 0.9);
+  border-color: rgba(189, 170, 124, 0.6);
 }
 
 /* Class for scrollable areas */
 .scrollableSection {
   overflow-y: auto;
   scrollbar-width: thin; /* For Firefox */
-  scrollbar-color: rgba(0, 170, 255, 0.8) rgba(30, 15, 50, 0.8); /* For Firefox - thumb track */
+  scrollbar-color: rgba(189, 170, 124, 0.8) rgba(30, 15, 50, 0.8); /* For Firefox - thumb track */
 }
 
 /* Style scrollbar for Webkit browsers */
@@ -427,18 +379,16 @@
 .scrollableSection::-webkit-scrollbar-track {
   background: rgba(30, 15, 50, 0.8);
   border-radius: 4px;
-  border: 1px solid rgba(0, 170, 255, 0.2);
+  border: 1px solid rgba(189, 170, 124, 0.2);
 }
 .scrollableSection::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, rgba(0, 170, 255, 0.8), rgba(0, 150, 255, 0.6));
+  background: rgba(189, 170, 124, 0.8);
   border-radius: 4px;
-  border: 1px solid rgba(0, 170, 255, 0.4);
-  box-shadow: 0 0 8px rgba(0, 170, 255, 0.3), inset 0 0 4px rgba(0, 255, 255, 0.2);
+  border: 1px solid rgba(189, 170, 124, 0.4);
 }
 .scrollableSection::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, rgba(0, 200, 255, 0.9), rgba(0, 170, 255, 0.8));
-  box-shadow: 0 0 12px rgba(0, 204, 255, 0.5), inset 0 0 6px rgba(0, 255, 255, 0.3);
-  border-color: rgba(0, 204, 255, 0.6);
+  background: rgba(189, 170, 124, 0.9);
+  border-color: rgba(189, 170, 124, 0.6);
 }
 
 /* Recipe List Styles */
@@ -582,28 +532,23 @@
   font-size: 11px;
   cursor: pointer;
   border: 2px solid #00ff88;
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.3), rgba(0, 200, 100, 0.4));
+  background: rgba(0, 255, 136, 0.3);
   color: #ffffff;
   border-radius: 3px;
   transition: all 0.3s ease;
   white-space: nowrap;
-  box-shadow: 0 0 10px rgba(0, 255, 136, 0.2), inset 0 0 8px rgba(0, 255, 136, 0.1);
-  text-shadow: 0 0 5px rgba(0, 255, 136, 0.6);
 }
 
 .craftButton:hover {
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.5), rgba(0, 200, 100, 0.6));
+  background: rgba(0, 255, 136, 0.5);
   transform: translateY(-2px);
-  box-shadow: 0 0 15px rgba(0, 255, 136, 0.4), inset 0 0 12px rgba(0, 255, 136, 0.2);
 }
 
 .craftButton:disabled {
-  background: linear-gradient(135deg, rgba(60, 60, 80, 0.6), rgba(50, 50, 70, 0.7));
+  background: rgba(60, 60, 80, 0.6);
   border-color: rgba(100, 100, 120, 0.4);
   color: #888;
   cursor: not-allowed;
-  box-shadow: none;
-  text-shadow: none;
 }
 
 /* <<< ADDED: Ensure title in right pane has no top margin >>> */
@@ -651,11 +596,11 @@
 }
 
 .filterButton {
-  background: linear-gradient(135deg, rgba(0, 170, 255, 0.3), rgba(0, 150, 220, 0.4));
-  border: 2px solid rgba(0, 170, 255, 0.5);
+  background: rgba(189, 170, 124, 0.3);
+  border: 2px solid rgba(189, 170, 124, 0.5);
   border-radius: 4px;
   padding: 6px 8px;
-  color: #00aaff;
+  color: var(--game-ui-muted);
   font-family: inherit;
   font-size: 10px;
   cursor: pointer;
@@ -663,16 +608,13 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 10px rgba(0, 170, 255, 0.2), inset 0 0 8px rgba(0, 170, 255, 0.1);
-  text-shadow: 0 0 5px rgba(0, 170, 255, 0.6);
   transition: all 0.3s ease;
 }
 
 .filterButton:hover {
-  background: linear-gradient(135deg, rgba(0, 170, 255, 0.5), rgba(0, 150, 220, 0.6));
-  border-color: rgba(0, 170, 255, 0.7);
+  background: rgba(189, 170, 124, 0.5);
+  border-color: rgba(189, 170, 124, 0.7);
   transform: translateY(-2px);
-  box-shadow: 0 0 15px rgba(0, 170, 255, 0.4), inset 0 0 12px rgba(0, 170, 255, 0.2);
 }
 
 .filterDropdown {
@@ -680,11 +622,9 @@
   top: 100%;
   right: 0;
   margin-top: 2px;
-  background: linear-gradient(135deg, rgba(30, 15, 50, 0.98), rgba(20, 10, 40, 0.99));
-  border: 2px solid #00aaff;
+  background: var(--game-ui-panel);
+  border: 2px solid var(--game-ui-border);
   border-radius: 8px;
-  box-shadow: 0 0 30px rgba(0, 170, 255, 0.4), inset 0 0 20px rgba(0, 170, 255, 0.1);
-  backdrop-filter: blur(10px);
   z-index: 150;
   min-width: 140px;
   max-height: 250px;
@@ -693,12 +633,11 @@
 
 .filterOption {
   padding: 10px 14px;
-  color: #00ffff;
+  color: var(--game-ui-accent);
   font-size: 11px;
   cursor: pointer;
-  border-bottom: 2px solid rgba(0, 170, 255, 0.2);
+  border-bottom: 2px solid rgba(189, 170, 124, 0.2);
   transition: all 0.2s ease;
-  text-shadow: 0 0 5px rgba(0, 255, 255, 0.4);
 }
 
 .filterOption:last-child {
@@ -706,20 +645,17 @@
 }
 
 .filterOption:hover {
-  background: linear-gradient(135deg, rgba(0, 170, 255, 0.2), rgba(0, 150, 220, 0.3));
-  color: #00aaff;
-  box-shadow: inset 0 0 10px rgba(0, 170, 255, 0.1);
+  background: rgba(189, 170, 124, 0.2);
+  color: var(--game-ui-muted);
 }
 
 .filterOptionSelected {
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.2), rgba(0, 200, 100, 0.3));
+  background: rgba(0, 255, 136, 0.2);
   color: #00ff88;
-  text-shadow: 0 0 8px rgba(0, 255, 136, 0.6);
-  box-shadow: inset 0 0 10px rgba(0, 255, 136, 0.1);
 }
 
 .filterOptionSelected:hover {
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.3), rgba(0, 200, 100, 0.4));
+  background: rgba(0, 255, 136, 0.3);
 }
 
 .equipmentSlot {
@@ -772,11 +708,10 @@
 .craftableItemsSection {
     height: 250px;
     margin-bottom: 15px;
-    border: 2px solid rgba(0, 170, 255, 0.3);
+    border: 2px solid rgba(189, 170, 124, 0.3);
     border-radius: 6px;
     padding: 5px;
-    background: linear-gradient(135deg, rgba(15, 15, 35, 0.8), rgba(10, 10, 25, 0.9));
-    box-shadow: inset 0 0 15px rgba(0, 170, 255, 0.1);
+    background: var(--game-ui-inset);
 }
 
 .craftableItemsGrid {
@@ -790,11 +725,10 @@
 
 .craftingQueueSection {
     height: 220px;
-    border: 2px solid rgba(0, 170, 255, 0.3);
+    border: 2px solid rgba(189, 170, 124, 0.3);
     border-radius: 6px;
     padding: 5px;
-    background: linear-gradient(135deg, rgba(15, 15, 35, 0.8), rgba(10, 10, 25, 0.9));
-    box-shadow: inset 0 0 15px rgba(0, 170, 255, 0.1);
+    background: var(--game-ui-inset);
     display: flex;
     flex-direction: column;
 }
@@ -864,7 +798,7 @@
 .interactionButton {
     margin-top: 10px;
     padding: 8px 15px;
-    border: 2px solid rgba(0, 170, 255, 0.5);
+    border: 2px solid rgba(189, 170, 124, 0.5);
     border-radius: 4px;
     cursor: pointer;
     font-weight: bold;
@@ -873,45 +807,41 @@
     font-family: inherit;
     font-size: 11px;
     white-space: nowrap;
-    box-shadow: 0 0 10px rgba(0, 170, 255, 0.2), inset 0 0 8px rgba(0, 170, 255, 0.1);
-    text-shadow: 0 0 5px currentColor;
 }
 
 .interactionButton:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-  background: linear-gradient(135deg, rgba(60, 60, 80, 0.6), rgba(50, 50, 70, 0.7));
+  background: rgba(60, 60, 80, 0.6);
   color: #888;
   border-color: rgba(100, 100, 120, 0.4);
 }
 
 /* Specific styles for campfire actions */
 .lightFireButton {
-  background: linear-gradient(135deg, rgba(230, 126, 34, 0.8), rgba(211, 84, 0, 0.9));
+  background: rgba(230, 126, 34, 0.8);
   border-color: #ff8800;
 }
 
 .lightFireButton:not(:disabled):hover {
-  background: linear-gradient(135deg, rgba(243, 156, 18, 0.9), rgba(230, 126, 34, 1));
+  background: rgba(243, 156, 18, 0.9);
   transform: translateY(-2px);
-  box-shadow: 0 0 20px rgba(255, 136, 0, 0.5), inset 0 0 12px rgba(255, 136, 0, 0.2);
 }
 
 .extinguishButton {
-  background: linear-gradient(135deg, rgba(192, 57, 43, 0.8), rgba(169, 50, 38, 0.9));
+  background: rgba(192, 57, 43, 0.8);
   border-color: #ff3366;
 }
 
 .extinguishButton:not(:disabled):hover {
-  background: linear-gradient(135deg, rgba(231, 76, 60, 0.9), rgba(192, 57, 43, 1));
+  background: rgba(231, 76, 60, 0.9);
   transform: translateY(-2px);
-  box-shadow: 0 0 20px rgba(255, 51, 102, 0.5), inset 0 0 12px rgba(255, 51, 102, 0.2);
 }
 
 /* Ensure disabled styles take precedence */
 .lightFireButton:disabled,
 .extinguishButton:disabled {
-   background: linear-gradient(135deg, rgba(60, 60, 80, 0.6), rgba(50, 50, 70, 0.7));
+   background: rgba(60, 60, 80, 0.6);
    border-color: rgba(100, 100, 120, 0.4);
 }
 
@@ -926,31 +856,20 @@
 
 /* General Styles */
 .sectionTitle {
-  color: #00ffff;
+  color: var(--game-ui-accent);
   margin-bottom: 10px;
   text-align: center;
   font-size: 1.1em; 
   letter-spacing: 2px;
   text-transform: uppercase;
   margin-top: 0;
-  text-shadow: 0 0 10px rgba(0, 255, 255, 0.8), 0 0 20px rgba(0, 255, 255, 0.4);
-  animation: titleGlow 2s ease-in-out infinite alternate;
-}
-
-@keyframes titleGlow {
-  0% { 
-    text-shadow: 0 0 10px rgba(0, 255, 255, 0.8), 0 0 20px rgba(0, 255, 255, 0.4);
-  }
-  100% { 
-    text-shadow: 0 0 15px rgba(0, 255, 255, 1), 0 0 30px rgba(0, 255, 255, 0.6);
-  }
 }
 
 .slot {
   width: 64px;
   height: 64px;
-  background: linear-gradient(135deg, rgba(20, 30, 60, 0.8), rgba(15, 25, 50, 0.9));
-  border: 2px solid rgba(0, 170, 255, 0.4);
+  background: var(--game-ui-inset);
+  border: 2px solid rgba(189, 170, 124, 0.4);
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -958,23 +877,19 @@
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
-  box-shadow: inset 0 0 10px rgba(0, 170, 255, 0.1);
   transition: all 0.2s ease;
 }
 
 .slot:hover {
-    border-color: #00aaff;
-    box-shadow: 0 0 10px rgba(0, 170, 255, 0.4), inset 0 0 15px rgba(0, 170, 255, 0.2);
+    border-color: var(--game-ui-border);
 }
 
 /* Selected slot styling */
 .selectedSlot {
-    border-color: #00ffff !important;
-    box-shadow: 0 0 15px rgba(0, 255, 255, 0.6), inset 0 0 20px rgba(0, 255, 255, 0.2) !important;
-    background: linear-gradient(135deg, rgba(0, 170, 255, 0.2), rgba(0, 150, 255, 0.3)) !important;
+    border-color: var(--game-ui-accent) !important;
+    background: rgba(189, 170, 124, 0.2) !important;
 }
 
-/* Custom Scrollbar Styles - Cyberpunk theme */
 .craftableItemsSection::-webkit-scrollbar,
 .craftingQueueList::-webkit-scrollbar {
   width: 8px;
@@ -984,29 +899,27 @@
 .craftingQueueList::-webkit-scrollbar-track {
   background: rgba(30, 15, 50, 0.8);
   border-radius: 4px;
-  border: 1px solid rgba(0, 170, 255, 0.2);
+  border: 1px solid rgba(189, 170, 124, 0.2);
 }
 
 .craftableItemsSection::-webkit-scrollbar-thumb,
 .craftingQueueList::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, rgba(0, 170, 255, 0.8), rgba(0, 150, 255, 0.6));
+  background: rgba(189, 170, 124, 0.8);
   border-radius: 4px;
-  border: 1px solid rgba(0, 170, 255, 0.4);
-  box-shadow: 0 0 8px rgba(0, 170, 255, 0.3), inset 0 0 4px rgba(0, 255, 255, 0.2);
+  border: 1px solid rgba(189, 170, 124, 0.4);
 }
 
 .craftableItemsSection::-webkit-scrollbar-thumb:hover,
 .craftingQueueList::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, rgba(0, 200, 255, 0.9), rgba(0, 170, 255, 0.8));
-  box-shadow: 0 0 12px rgba(0, 204, 255, 0.5), inset 0 0 6px rgba(0, 255, 255, 0.3);
-  border-color: rgba(0, 204, 255, 0.6);
+  background: rgba(189, 170, 124, 0.9);
+  border-color: rgba(189, 170, 124, 0.6);
 }
 
 /* Class for scrollable areas */
 .scrollableSection {
   overflow-y: auto;
   scrollbar-width: thin; /* For Firefox */
-  scrollbar-color: rgba(0, 170, 255, 0.8) rgba(30, 15, 50, 0.8); /* For Firefox - thumb track */
+  scrollbar-color: rgba(189, 170, 124, 0.8) rgba(30, 15, 50, 0.8); /* For Firefox - thumb track */
 }
 
 /* Style scrollbar for Webkit browsers */
@@ -1016,18 +929,16 @@
 .scrollableSection::-webkit-scrollbar-track {
   background: rgba(30, 15, 50, 0.8);
   border-radius: 4px;
-  border: 1px solid rgba(0, 170, 255, 0.2);
+  border: 1px solid rgba(189, 170, 124, 0.2);
 }
 .scrollableSection::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, rgba(0, 170, 255, 0.8), rgba(0, 150, 255, 0.6));
+  background: rgba(189, 170, 124, 0.8);
   border-radius: 4px;
-  border: 1px solid rgba(0, 170, 255, 0.4);
-  box-shadow: 0 0 8px rgba(0, 170, 255, 0.3), inset 0 0 4px rgba(0, 255, 255, 0.2);
+  border: 1px solid rgba(189, 170, 124, 0.4);
 }
 .scrollableSection::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, rgba(0, 200, 255, 0.9), rgba(0, 170, 255, 0.8));
-  box-shadow: 0 0 12px rgba(0, 204, 255, 0.5), inset 0 0 6px rgba(0, 255, 255, 0.3);
-  border-color: rgba(0, 204, 255, 0.6);
+  background: rgba(189, 170, 124, 0.9);
+  border-color: rgba(189, 170, 124, 0.6);
 }
 
 /* Recipe List Styles */
@@ -1171,28 +1082,23 @@
   font-size: 11px;
   cursor: pointer;
   border: 2px solid #00ff88;
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.3), rgba(0, 200, 100, 0.4));
+  background: rgba(0, 255, 136, 0.3);
   color: #ffffff;
   border-radius: 3px;
   transition: all 0.3s ease;
   white-space: nowrap;
-  box-shadow: 0 0 10px rgba(0, 255, 136, 0.2), inset 0 0 8px rgba(0, 255, 136, 0.1);
-  text-shadow: 0 0 5px rgba(0, 255, 136, 0.6);
 }
 
 .craftButton:hover {
-  background: linear-gradient(135deg, rgba(0, 255, 136, 0.5), rgba(0, 200, 100, 0.6));
+  background: rgba(0, 255, 136, 0.5);
   transform: translateY(-2px);
-  box-shadow: 0 0 15px rgba(0, 255, 136, 0.4), inset 0 0 12px rgba(0, 255, 136, 0.2);
 }
 
 .craftButton:disabled {
-  background: linear-gradient(135deg, rgba(60, 60, 80, 0.6), rgba(50, 50, 70, 0.7));
+  background: rgba(60, 60, 80, 0.6);
   border-color: rgba(100, 100, 120, 0.4);
   color: #888;
   cursor: not-allowed;
-  box-shadow: none;
-  text-shadow: none;
 }
 
 /* ========================================
@@ -1334,24 +1240,21 @@
   padding: 8px 10px;
   font-family: inherit;
   font-size: 11px;
-  background: linear-gradient(135deg, rgba(20, 30, 60, 0.8), rgba(15, 25, 50, 0.9));
-  color: #00ffff;
-  border: 2px solid rgba(0, 170, 255, 0.4);
+  background: var(--game-ui-inset);
+  color: var(--game-ui-accent);
+  border: 2px solid rgba(189, 170, 124, 0.4);
   border-radius: 4px;
   box-sizing: border-box;
-  text-shadow: 0 0 4px rgba(0, 255, 255, 0.4);
   transition: all 0.3s ease;
 }
 
 .craftingSearchInput::placeholder {
-  color: rgba(0, 170, 255, 0.6);
-  text-shadow: 0 0 4px rgba(0, 170, 255, 0.3);
+  color: rgba(189, 170, 124, 0.6);
   opacity: 1;
 }
 
 .craftingSearchInput:focus {
   outline: none;
-  border-color: #00aaff;
-  background: linear-gradient(135deg, rgba(0, 170, 255, 0.15), rgba(0, 150, 255, 0.1));
-  box-shadow: inset 0 0 15px rgba(0, 255, 255, 0.2), 0 0 10px rgba(0, 170, 255, 0.3);
-} 
+  border-color: var(--game-ui-border);
+  background: rgba(189, 170, 124, 0.15);
+}

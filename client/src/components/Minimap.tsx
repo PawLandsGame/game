@@ -12,17 +12,13 @@ const worldAspectRatio = worldPixelHeight / worldPixelWidth;
 const BASE_MINIMAP_WIDTH = 750; // Base width for calculation (wider to accommodate more tabs/content)
 const calculatedMinimapHeight = BASE_MINIMAP_WIDTH * worldAspectRatio;
 
-// Minimap constants - UPDATED TO CYBERPUNK THEME
+// Minimap constants
 const MINIMAP_WIDTH = BASE_MINIMAP_WIDTH;
 const MINIMAP_HEIGHT = Math.round(calculatedMinimapHeight); // Use calculated height
 
-// Cyberpunk color scheme
-const MINIMAP_BG_COLOR = 'rgba(20, 30, 45, 0.98)'; // Dark blue-black
-const MINIMAP_BORDER_COLOR = '#00d4ff'; // Bright cyan border
+const MINIMAP_BG_COLOR = '#23251f';
+const MINIMAP_BORDER_COLOR = '#777363';
 const MINIMAP_BORDER_WIDTH = 2;
-const MINIMAP_INNER_BORDER_COLOR = '#7c3aed'; // Purple inner border
-const MINIMAP_INNER_BORDER_WIDTH = 1;
-const MINIMAP_GLOW_COLOR = '#00d4ff'; // Cyan glow effect
 
 // Tab and X button functionality now handled by React components
 const PLAYER_DOT_SIZE = 3;
@@ -726,34 +722,12 @@ export function drawMinimapOntoCanvas({
   const timeOfDayTag = worldState?.timeOfDay?.tag;
   const showNightLights = timeOfDayTag ? isNightTimeOfDay(timeOfDayTag) : false;
 
-  // --- Apply Retro Styling --- 
-  ctx.save(); // Save context before applying shadow/styles
-
-  // Apply cyberpunk glow shadow effect (optimized - reduced blur)
-  const shadowOffset = 4;
-  ctx.shadowColor = MINIMAP_GLOW_COLOR;
-  ctx.shadowBlur = 8; // Reduced from 12 for better performance
-  ctx.fillStyle = 'rgba(0,0,0,0.8)';
-  ctx.fillRect(minimapX + shadowOffset, minimapY + shadowOffset, minimapWidth, minimapHeight);
-  ctx.shadowBlur = 0; // Reset shadow
-
-  // 1. Draw Overall Minimap Background (optimized - solid color instead of gradient)
+  ctx.save();
   ctx.fillStyle = MINIMAP_BG_COLOR;
   ctx.fillRect(minimapX, minimapY, minimapWidth, minimapHeight);
-
-  // Draw enhanced cyberpunk border with glow effect (optimized - reduced blur)
   ctx.strokeStyle = MINIMAP_BORDER_COLOR;
   ctx.lineWidth = MINIMAP_BORDER_WIDTH;
-  ctx.shadowColor = MINIMAP_GLOW_COLOR;
-  ctx.shadowBlur = 6; // Reduced from 8 for better performance
   ctx.strokeRect(minimapX, minimapY, minimapWidth, minimapHeight);
-  ctx.shadowBlur = 0; // Reset shadow
-  
-  // Draw inner border for more definition with purple accent
-  ctx.strokeStyle = MINIMAP_INNER_BORDER_COLOR;
-  ctx.lineWidth = MINIMAP_INNER_BORDER_WIDTH;
-  ctx.strokeRect(minimapX + MINIMAP_BORDER_WIDTH, minimapY + MINIMAP_BORDER_WIDTH, 
-                 minimapWidth - MINIMAP_BORDER_WIDTH * 2, minimapHeight - MINIMAP_BORDER_WIDTH * 2);
 
   // Clip drawing to minimap bounds (optional, but good practice)
   ctx.beginPath();

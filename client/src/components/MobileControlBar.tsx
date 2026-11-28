@@ -44,23 +44,21 @@ const MobileControlBar: React.FC<MobileControlBarProps> = ({
                     width: '56px',
                     height: '56px',
                     borderRadius: '50%',
-                    background: isMapOpen 
-                        ? 'linear-gradient(135deg, rgba(0, 200, 150, 0.9), rgba(0, 150, 120, 0.95))'
-                        : 'linear-gradient(135deg, rgba(20, 40, 80, 0.9), rgba(10, 30, 70, 0.95))',
-                    border: isMapOpen 
-                        ? '3px solid #00ffaa'
-                        : '3px solid #00aaff',
-                    color: '#00ffff',
+                    background: isMapOpen
+                        ? 'var(--game-ui-hover)'
+                        : 'var(--game-ui-panel)',
+                    border: isMapOpen
+                        ? '2px solid var(--game-ui-accent)'
+                        : '2px solid var(--game-ui-border)',
+                    color: 'var(--game-ui-text)',
                     cursor: 'pointer',
-                    boxShadow: isMapOpen
-                        ? '0 0 20px rgba(0, 255, 170, 0.6), inset 0 0 15px rgba(0, 255, 170, 0.2)'
-                        : '0 0 15px rgba(0, 170, 255, 0.4), inset 0 0 10px rgba(0, 170, 255, 0.1)',
                     transition: 'all 0.3s ease',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     flexDirection: 'column',
                 }}
+                aria-pressed={isMapOpen}
                 aria-label="Toggle map and interfaces"
             >
                 {/* Map icon - simple grid/compass design */}
@@ -75,9 +73,8 @@ const MobileControlBar: React.FC<MobileControlBarProps> = ({
                 </svg>
                 <span style={{
                     fontSize: '7px',
-                    fontFamily: '"Press Start 2P", cursive',
+                    fontFamily: 'system-ui, sans-serif',
                     marginTop: '2px',
-                    textShadow: '0 0 4px rgba(0, 255, 255, 0.8)',
                 }}>
                     MAP
                 </span>
@@ -91,11 +88,10 @@ const MobileControlBar: React.FC<MobileControlBarProps> = ({
                         width: '56px',
                         height: '56px',
                         borderRadius: '50%',
-                        background: 'linear-gradient(135deg, rgba(255, 180, 0, 0.9), rgba(220, 140, 0, 0.95))',
-                        border: '3px solid #ffcc00',
+                        background: '#715725',
+                        border: '2px solid var(--game-ui-accent)',
                         color: '#fff8e0',
                         cursor: 'pointer',
-                        boxShadow: '0 0 20px rgba(255, 200, 0, 0.6), inset 0 0 15px rgba(255, 200, 0, 0.2)',
                         transition: 'all 0.3s ease',
                         display: 'flex',
                         alignItems: 'center',
@@ -114,9 +110,8 @@ const MobileControlBar: React.FC<MobileControlBarProps> = ({
                     </svg>
                     <span style={{
                         fontSize: '6px',
-                        fontFamily: '"Press Start 2P", cursive',
+                        fontFamily: 'system-ui, sans-serif',
                         marginTop: '2px',
-                        textShadow: '0 0 4px rgba(255, 255, 200, 0.8)',
                         whiteSpace: 'nowrap',
                     }}>
                         {interactableLabel ? interactableLabel.substring(0, 5).toUpperCase() : 'USE'}
@@ -131,23 +126,21 @@ const MobileControlBar: React.FC<MobileControlBarProps> = ({
                     width: '56px',
                     height: '56px',
                     borderRadius: '50%',
-                    background: isChatOpen 
-                        ? 'linear-gradient(135deg, rgba(0, 200, 150, 0.9), rgba(0, 150, 120, 0.95))'
-                        : 'linear-gradient(135deg, rgba(30, 15, 50, 0.9), rgba(20, 10, 40, 0.95))',
-                    border: isChatOpen 
-                        ? '3px solid #00ffaa'
-                        : '3px solid #00aaff',
-                    color: '#00ffff',
+                    background: isChatOpen
+                        ? 'var(--game-ui-hover)'
+                        : 'var(--game-ui-panel)',
+                    border: isChatOpen
+                        ? '2px solid var(--game-ui-accent)'
+                        : '2px solid var(--game-ui-border)',
+                    color: 'var(--game-ui-text)',
                     cursor: 'pointer',
-                    boxShadow: isChatOpen
-                        ? '0 0 20px rgba(0, 255, 170, 0.6), inset 0 0 15px rgba(0, 255, 170, 0.2)'
-                        : '0 0 20px rgba(0, 170, 255, 0.5), inset 0 0 15px rgba(0, 170, 255, 0.2)',
                     transition: 'all 0.3s ease',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
                     flexDirection: 'column',
                 }}
+                aria-pressed={isChatOpen}
                 aria-label="Toggle SOVA chat"
             >
                 {/* SOVA AI icon - stylized eye/radar design */}
@@ -166,9 +159,8 @@ const MobileControlBar: React.FC<MobileControlBarProps> = ({
                 </svg>
                 <span style={{
                     fontSize: '6px',
-                    fontFamily: '"Press Start 2P", cursive',
+                    fontFamily: 'system-ui, sans-serif',
                     marginTop: '1px',
-                    textShadow: '0 0 4px rgba(0, 255, 255, 0.8)',
                     letterSpacing: '1px',
                 }}>
                     SOVA

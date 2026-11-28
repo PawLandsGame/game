@@ -20,16 +20,16 @@ import { PopulatedItem } from './InventoryUI';
 import { DragSourceSlotInfo, DraggedItemInfo } from '../types/dragDropTypes';
 import { PlacementItemInfo } from '../hooks/usePlacementManager';
 
-// Style constants - Cyberpunk SOVA theme
-const UI_BG_COLOR = 'linear-gradient(135deg, rgba(30, 15, 50, 0.95), rgba(20, 10, 40, 0.98))';
-const UI_BORDER_COLOR = '#00aaff';
-const UI_SHADOW = '0 0 30px rgba(0, 170, 255, 0.3), inset 0 0 20px rgba(0, 170, 255, 0.1)';
-const UI_FONT_FAMILY = '"Press Start 2P", cursive';
+// Style constants
+const UI_BG_COLOR = 'var(--game-ui-panel)';
+const UI_BORDER_COLOR = 'var(--game-ui-border)';
+const UI_SHADOW = 'var(--game-ui-shadow)';
+const UI_FONT_FAMILY = 'system-ui, sans-serif';
 const SLOT_SIZE = 60; // Size of each hotbar slot in pixels (desktop)
 const MOBILE_SLOT_SIZE = 48; // Size of each hotbar slot in pixels (mobile)
 const SLOT_MARGIN = 6;
 const MOBILE_SLOT_MARGIN = 4;
-const SELECTED_BORDER_COLOR = '#00ffff';
+const SELECTED_BORDER_COLOR = 'var(--game-ui-accent)';
 const CONSUMPTION_COOLDOWN_MICROS = 1_000_000; // 1 second, matches server
 const DEFAULT_CLIENT_ANIMATION_DURATION_MS = CONSUMPTION_COOLDOWN_MICROS / 1000; // Duration for client animation
 const BANDAGE_CLIENT_ANIMATION_DURATION_MS = 5000; // 5 seconds for bandage visual cooldown
@@ -1656,7 +1656,7 @@ connection.reducers.quickMoveToBrothPot({
             height: '20px',
             background: 'rgba(10, 5, 20, 0.9)',
             borderRadius: '4px',
-            border: '1px solid rgba(0, 170, 255, 0.4)',
+            border: '1px solid var(--game-ui-border)',
             boxShadow: '0 0 10px rgba(0, 0, 0, 0.5)',
             zIndex: 99,
             overflow: 'hidden',
@@ -1724,7 +1724,7 @@ connection.reducers.quickMoveToBrothPot({
         padding: `${slotMargin}px`,
         borderRadius: isMobile ? '6px' : '8px',
         border: `${isMobile ? 1 : 2}px solid ${UI_BORDER_COLOR}`,
-        boxShadow: isMobile ? '0 0 15px rgba(0, 170, 255, 0.2)' : UI_SHADOW,
+        boxShadow: UI_SHADOW,
         fontFamily: UI_FONT_FAMILY,
         zIndex: isMobile ? 9997 : 100, // Below mobile controls and status bars
         backdropFilter: 'blur(10px)',
@@ -1756,10 +1756,10 @@ connection.reducers.quickMoveToBrothPot({
                   alignItems: 'center',
                   width: `${slotSize}px`,
                   height: `${slotSize}px`,
-                  border: `${isMobile ? 1 : 2}px solid ${index === selectedSlot ? SELECTED_BORDER_COLOR : 'rgba(0, 170, 255, 0.4)'}`,
+                  border: `${isMobile ? 1 : 2}px solid ${index === selectedSlot ? SELECTED_BORDER_COLOR : UI_BORDER_COLOR}`,
                   background: isDisabledByWater 
-                    ? 'linear-gradient(135deg, rgba(100, 150, 255, 0.2), rgba(80, 130, 200, 0.3))' 
-                    : 'linear-gradient(135deg, rgba(20, 30, 60, 0.8), rgba(15, 25, 50, 0.9))',
+                    ? 'var(--game-ui-hover)'
+                    : 'var(--game-ui-inset)',
                   borderRadius: isMobile ? '3px' : '4px',
                   marginLeft: index > 0 ? `${slotMargin}px` : '0px',
                   transition: 'all 0.2s ease',
@@ -1767,9 +1767,6 @@ connection.reducers.quickMoveToBrothPot({
                   cursor: isDisabledByWater ? 'not-allowed' : 'pointer',
                   overflow: 'hidden',
                   opacity: isDisabledByWater ? 0.6 : 1.0,
-                  boxShadow: index === selectedSlot 
-                    ? (isMobile ? '0 0 10px rgba(0, 255, 255, 0.5)' : '0 0 15px rgba(0, 255, 255, 0.6), inset 0 0 20px rgba(0, 255, 255, 0.2)')
-                    : 'inset 0 0 10px rgba(0, 170, 255, 0.1)',
               }}
               isDraggingOver={false}
               overlayProgress={
@@ -2138,21 +2135,21 @@ connection.reducers.quickMoveToBrothPot({
             left: `${tooltip.position.x}px`,
             top: `${tooltip.position.y}px`,
             transform: 'translate(-100%, -50%)',
-            background: 'linear-gradient(135deg, rgba(30, 15, 50, 0.98), rgba(20, 10, 40, 0.99))',
+            background: UI_BG_COLOR,
             border: `2px solid ${UI_BORDER_COLOR}`,
             borderRadius: '6px',
             padding: '8px 12px',
             fontFamily: UI_FONT_FAMILY,
             fontSize: '12px',
             color: '#ffffff',
-            boxShadow: '0 0 20px rgba(0, 170, 255, 0.4), inset 0 0 15px rgba(0, 170, 255, 0.1)',
+            boxShadow: UI_SHADOW,
             zIndex: 10001,
             pointerEvents: 'none',
             whiteSpace: 'nowrap',
             backdropFilter: 'blur(10px)',
           }}
         >
-          <div style={{ fontWeight: 'bold', marginBottom: '2px', color: '#00ffff', textShadow: '0 0 8px rgba(0, 255, 255, 0.6)' }}>
+          <div style={{ fontWeight: 'bold', marginBottom: '2px', color: 'var(--game-ui-accent)' }}>
             {tooltip.content.name}
           </div>
           {tooltip.content.consumableStats && (

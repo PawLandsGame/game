@@ -1491,10 +1491,10 @@ const PlayerUI: React.FC<PlayerUIProps> = ({
                         right: '10px',
                         display: 'flex',
                         gap: '6px',
-                        background: 'linear-gradient(135deg, rgba(10, 5, 20, 0.92), rgba(20, 10, 40, 0.95))',
+                        background: 'var(--game-ui-panel)',
                         padding: '6px 10px',
                         borderRadius: '16px',
-                        border: '1px solid rgba(0, 170, 255, 0.5)',
+                        border: '1px solid var(--game-ui-border)',
                         boxShadow: '0 2px 10px rgba(0, 0, 0, 0.5)',
                         zIndex: 9996,
                     }}>
@@ -1626,16 +1626,15 @@ const PlayerUI: React.FC<PlayerUIProps> = ({
                     position: 'fixed',
                     bottom: '15px',
                     right: '15px',
-                    background: 'linear-gradient(135deg, rgba(30, 15, 50, 0.9), rgba(20, 10, 40, 0.95))',
-                    color: '#00ffff',
+                    background: 'var(--game-ui-panel)',
+                    color: 'var(--game-ui-text)',
                     padding: '15px 18px',
-                    borderRadius: '10px',
-                    border: '2px solid #00aaff',
-                    fontFamily: '"Press Start 2P", cursive',
+                    borderRadius: '6px',
+                    border: '1px solid var(--game-ui-border)',
+                    fontFamily: 'system-ui, sans-serif',
                     minWidth: '220px',
-                    boxShadow: '0 0 25px rgba(0, 170, 255, 0.4), inset 0 0 15px rgba(0, 170, 255, 0.1)',
+                    boxShadow: 'var(--game-ui-shadow)',
                     zIndex: 50, // Keep below inventory/overlay
-                    textShadow: '0 0 6px rgba(0, 255, 255, 0.6)',
                 }}>
                     {/* Status Bars mapping */}
                     <StatusBar 

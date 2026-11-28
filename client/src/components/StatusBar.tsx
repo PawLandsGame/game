@@ -49,14 +49,7 @@ const StatusBar: React.FC<StatusBarProps> = ({
     }
   };
 
-  // Get scan line color that matches the bar color theme
-  const getScanLineColor = () => {
-    // Match the scan line color to the bar color for themed effect
-    return barColor;
-  };
-
   const iconSrc = getIcon();
-  const scanLineColor = getScanLineColor();
 
   React.useEffect(() => {
     // Glow Pulse Keyframes
@@ -219,10 +212,9 @@ const StatusBar: React.FC<StatusBarProps> = ({
       display: 'flex',
       alignItems: 'center',
       marginBottom: '5px', // Reduced from 8px
-      fontFamily: 'Courier New, Consolas, Monaco, monospace',
+      fontFamily: 'system-ui, sans-serif',
       fontSize: '10px',
-      color: '#00ffff',
-      textShadow: '0 0 4px rgba(0, 255, 255, 0.6)',
+      color: 'var(--game-ui-text)',
       height: '22px', // Reduced from 28px for more compact layout
     }}>
       {/* Icon */}
@@ -258,17 +250,6 @@ const StatusBar: React.FC<StatusBarProps> = ({
           <div style={pendingHealBarStyle}></div>
         )}
 
-        {/* Cyberpunk scan line effect - now matches bar color theme */}
-        <div style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          height: '1px', // Reduced scan line thickness
-          background: `linear-gradient(90deg, transparent, ${scanLineColor}, transparent)`,
-          animation: 'statusScan 3s linear infinite',
-          opacity: 0.8,
-        }} />
       </div>
 
       {/* Value Text - Only show current value, larger font */}
@@ -279,7 +260,6 @@ const StatusBar: React.FC<StatusBarProps> = ({
         textAlign: 'right',
         fontWeight: 'bold', // Make numbers bolder
         animation: glow || hasBleedEffect || hasSeawaterPoisoningEffect || hasFoodPoisoningEffect ? 'pulse 1.5s ease-in-out infinite alternate' : 'none',
-        textShadow: glow || hasBleedEffect ? '0 0 8px rgba(255, 102, 102, 0.8)' : hasSeawaterPoisoningEffect ? '0 0 8px rgba(102, 255, 136, 0.8)' : hasFoodPoisoningEffect ? '0 0 8px rgba(255, 204, 102, 0.8)' : '0 0 4px rgba(255, 255, 255, 0.6)',
       }}>
         {Math.round(value)}
       </span>
@@ -288,10 +268,6 @@ const StatusBar: React.FC<StatusBarProps> = ({
         @keyframes pulse {
           0% { opacity: 1; }
           100% { opacity: 0.6; }
-        }
-        @keyframes statusScan {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
         }
       `}</style>
     </div>

@@ -1,16 +1,14 @@
 .tooltipContainer {
   position: fixed; /* Fixed position to float over other UI */
-  background: linear-gradient(135deg, rgba(30, 15, 50, 0.98), rgba(20, 10, 40, 0.99));
-  border: 2px solid #00aaff;
+  background: var(--game-ui-panel);
+  border: 2px solid var(--game-ui-border);
   border-radius: 8px;
   padding: 12px 10px;
-  color: #00ffff;
-  font-family: 'Courier New', Consolas, Monaco, monospace;
+  color: var(--game-ui-accent);
+  font-family: system-ui, sans-serif;
   font-size: 0.8rem;
   z-index: 200;
   width: 300px;
-  box-shadow: 0 0 30px rgba(0, 170, 255, 0.4), inset 0 0 20px rgba(0, 170, 255, 0.1);
-  backdrop-filter: blur(10px);
   pointer-events: none;
   line-height: 1.4;
   display: flex;
@@ -18,7 +16,6 @@
   gap: 6px;
   overflow-wrap: break-word;
   box-sizing: border-box;
-  text-shadow: 0 0 5px rgba(0, 255, 255, 0.4);
   animation: tooltipFadeIn 0.15s ease-out;
 }
 
@@ -38,9 +35,8 @@
   font-size: 0.9rem;
   margin-bottom: 4px;
   padding-bottom: 4px;
-  border-bottom: 2px solid rgba(0, 170, 255, 0.4);
+  border-bottom: 2px solid rgba(189, 170, 124, 0.4);
   text-align: center;
-  text-shadow: 0 0 8px rgba(0, 255, 255, 0.6);
 }
 
 .tooltipName.simple {
@@ -58,11 +54,10 @@
 
 .tooltipCategory {
   font-size: 0.7rem;
-  color: #00aaff;
+  color: var(--game-ui-muted);
   text-align: center;
   margin-bottom: 2px;
   font-style: italic;
-  text-shadow: 0 0 5px rgba(0, 170, 255, 0.5);
 }
 
 .tooltipDescription {
@@ -70,13 +65,12 @@
   color: rgba(0, 255, 255, 0.8);
   margin-bottom: 6px;
   white-space: pre-wrap;
-  text-shadow: 0 0 4px rgba(0, 255, 255, 0.3);
 }
 
 .tooltipStatsSection {
   margin-top: 4px;
   padding-top: 6px;
-  border-top: 2px dashed rgba(0, 170, 255, 0.3);
+  border-top: 2px dashed rgba(189, 170, 124, 0.3);
   display: flex;
   flex-direction: column;
   gap: 3px;
@@ -89,32 +83,28 @@
 }
 
 .statLabel {
-  color: #00aaff;
+  color: var(--game-ui-muted);
   margin-right: 8px;
-  text-shadow: 0 0 4px rgba(0, 170, 255, 0.4);
 }
 
 .statValue {
-  color: #00ffff;
+  color: var(--game-ui-accent);
   font-weight: bold;
-  text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
 }
 
 /* Example stat value colors */
 .statValue.positive { 
   color: #00ff88;
-  text-shadow: 0 0 6px rgba(0, 255, 136, 0.6);
 }
 .statValue.negative { 
   color: #ff3366;
-  text-shadow: 0 0 6px rgba(255, 51, 102, 0.6);
 }
 
 /* Crafting costs section */
 .tooltipCraftingCosts {
   margin-top: 6px;
   padding-top: 8px;
-  border-top: 2px dashed rgba(0, 170, 255, 0.3);
+  border-top: 2px dashed rgba(189, 170, 124, 0.3);
   display: flex;
   flex-direction: column;
   gap: 4px;
@@ -122,10 +112,9 @@
 
 .craftingCostsHeader {
   font-size: 0.7rem;
-  color: #00aaff;
+  color: var(--game-ui-muted);
   font-weight: bold;
   margin-bottom: 2px;
-  text-shadow: 0 0 5px rgba(0, 170, 255, 0.5);
 }
 
 .craftingCostRow {
@@ -146,12 +135,10 @@
 .craftingCostName {
   color: rgba(0, 255, 255, 0.9);
   flex: 1;
-  text-shadow: 0 0 4px rgba(0, 255, 255, 0.3);
 }
 
 .craftingCostValue {
   font-weight: bold;
-  text-shadow: 0 0 5px currentColor;
 }
 
 /* Flexible ingredient alternatives section */
@@ -169,7 +156,6 @@
   color: #ffc800;
   font-weight: bold;
   margin-bottom: 2px;
-  text-shadow: 0 0 5px rgba(255, 200, 0, 0.5);
 }
 
 /* Grid layout - columns set via inline style based on count */
@@ -207,7 +193,6 @@
   color: rgba(0, 255, 255, 0.9);
   flex: 1;
   min-width: 0;
-  text-shadow: 0 0 4px rgba(0, 255, 255, 0.3);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -216,7 +201,6 @@
 .alternativeCount {
   font-weight: bold;
   font-size: 0.72rem;
-  text-shadow: 0 0 5px currentColor;
   min-width: 16px;
   text-align: right;
 }
@@ -230,5 +214,4 @@
   border-top: 1px solid rgba(255, 200, 0, 0.2);
   font-size: 0.72rem;
   color: #ffc800;
-  text-shadow: 0 0 4px rgba(255, 200, 0, 0.4);
 }
