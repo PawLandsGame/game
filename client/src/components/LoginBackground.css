@@ -1,0 +1,111 @@
+.login-scene {
+    --login-background-top: 0px;
+}
+
+.login-scene--mobile {
+    --login-background-top: 70px;
+}
+
+.login-background-effects {
+    position: absolute;
+    top: var(--login-background-top);
+    left: 0;
+    width: 100%;
+    aspect-ratio: 1086 / 1448; /* Match pawlands-login.webp so the effects track the artwork. */
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.login-background-fire {
+    position: absolute;
+    left: 10%;
+    top: 79%;
+    width: 19%;
+    height: 15%;
+    background: radial-gradient(ellipse, #ff9b4540, transparent 67%);
+    animation: login-fire-glow 2.6s steps(5, end) infinite alternate;
+}
+
+.login-background-fire::before,
+.login-background-fire::after {
+    content: '';
+    position: absolute;
+    top: 53%;
+    left: 49%;
+    width: clamp(2px, 0.28vw, 5px);
+    aspect-ratio: 1;
+    background: #ffbf73;
+    box-shadow: 0.9vw -1.4vw #f78c4e, -0.6vw -2.1vw #ffac5e;
+    animation: login-fire-sparks 3.3s steps(18, end) infinite;
+}
+
+.login-background-fire::after {
+    left: 56%;
+    animation-duration: 4.1s;
+    animation-delay: -2.1s;
+}
+
+.login-background-water {
+    position: absolute;
+    inset: 0;
+}
+
+.login-background-water::before,
+.login-background-water::after {
+    content: '';
+    position: absolute;
+    top: 39%;
+    left: 92%;
+    width: 2.3%;
+    height: clamp(1px, 0.15vw, 3px);
+    background: #ffb18d;
+    box-shadow: -1.8vw 2.8vw #f9a3a6, 0.9vw 8.2vw #f7a395, 0.2vw 11.4vw #e794a4;
+    animation: login-water-glints 4.6s steps(8, end) infinite;
+}
+
+.login-background-water::after {
+    top: 61.5%;
+    left: 96%;
+    animation-delay: -2.3s;
+    animation-duration: 5.7s;
+}
+
+.login-background-waterfall {
+    position: absolute;
+    top: 28%;
+    left: 85.2%;
+    width: clamp(1px, 0.19vw, 4px);
+    height: 0.8%;
+    background: #c1bcf1;
+    box-shadow: -0.55vw 0.65vw #a59cd6, 0.7vw -0.8vw #c1bcf1;
+    animation: login-waterfall-flow 1.9s steps(12, end) infinite;
+}
+
+@keyframes login-waterfall-flow {
+    0% { opacity: 0; transform: translate(0.8vw, -1.5vw); }
+    30% { opacity: 0.48; }
+    100% { opacity: 0; transform: translate(-1vw, 4vw); }
+}
+
+@keyframes login-fire-glow {
+    0%, 52% { opacity: 0.4; }
+    25%, 82% { opacity: 0.85; }
+    100% { opacity: 0.6; }
+}
+
+@keyframes login-fire-sparks {
+    0% { opacity: 0; transform: translate(0, 0); }
+    20% { opacity: 0.8; }
+    100% { opacity: 0; transform: translate(1.8vw, -7vw); }
+}
+
+@keyframes login-water-glints {
+    0%, 100% { opacity: 0; transform: translateX(-0.35vw) scaleX(0.6); }
+    45% { opacity: 0.52; transform: translateX(0.35vw) scaleX(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .login-background-effects {
+        display: none;
+    }
+}

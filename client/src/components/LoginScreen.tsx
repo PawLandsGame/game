@@ -22,6 +22,7 @@ import { faDiscord, faXTwitter, faGithub } from '@fortawesome/free-brands-svg-ic
 import { faBars, faTimes, faChevronDown, faChevronRight } from '@fortawesome/free-solid-svg-icons';
 import loginBackground from '../assets/ui/pawlands-login.webp';
 import logo from '../assets/ui/logo_alt.png';
+import './LoginBackground.css';
 
 // Style Constants (Consider moving to a shared file)
 const UI_BG_COLOR = 'rgba(40, 40, 60, 0.85)';
@@ -822,7 +823,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                 </div>
             )}
 
-            <div style={{
+            <div className={isMobile ? 'login-scene login-scene--mobile' : 'login-scene'} style={{
                 minHeight: '100vh', // Ensure page is tall enough to scroll
                 width: '100%', // Match the background image width exactly
                 margin: 0,
@@ -830,7 +831,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                 backgroundColor: '#000000', // Pure black background to match gradient
                 backgroundImage: backgroundLoaded ? `url(${loginBackground})` : 'none',
                 backgroundSize: '100% auto', // Show full width, scale height proportionally
-                backgroundPosition: isMobile ? 'center 70px' : 'center top', // Mobile: push down by nav bar height
+                backgroundPosition: 'center var(--login-background-top)',
                 backgroundRepeat: 'no-repeat',
                 backgroundAttachment: 'scroll',
                 fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
@@ -841,6 +842,14 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                 boxSizing: 'border-box', // Include padding and border in width calculations
                 transition: 'background-image 0.3s ease-in-out',
             }}>
+                {backgroundLoaded && (
+                    <div className="login-background-effects" aria-hidden="true">
+                        <div className="login-background-fire" />
+                        <div className="login-background-water">
+                            <div className="login-background-waterfall" />
+                        </div>
+                    </div>
+                )}
                 {/* Gradient Overlay - Very aggressive transition to eliminate flat line */}
                 <div style={{
                     position: 'absolute',
