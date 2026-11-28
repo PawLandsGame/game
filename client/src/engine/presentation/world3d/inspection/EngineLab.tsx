@@ -4,6 +4,7 @@ import { createInspectionWorld, INSPECTION_WEAPONS } from '../inspectionWorld';
 import type { InspectionScene } from '../inspectionWorld';
 import type { PresentationStatus, VisualDebugMode } from '../visualContract';
 import { WORLD_3D } from '../visualContract';
+import { gameplayKey } from '../../../../utils/gameplayKey';
 import './EngineLab.css';
 
 /** Inspection shares the production presentation path and needs no account/server. */
@@ -78,7 +79,8 @@ export default function EngineLab() {
     let wasInside = !settings.current.inside;
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.target instanceof HTMLInputElement || event.target instanceof HTMLButtonElement || event.target instanceof HTMLSelectElement) return;
-      const key = event.key.toLowerCase();
+      const key = gameplayKey(event);
+      if (!key) return;
       keys.add(key);
       if ([' ', 'arrowup', 'arrowdown', 'arrowleft', 'arrowright'].includes(key)) event.preventDefault();
       if (key === ' ' && !event.repeat) player.jumpStartTimeMs = BigInt(Math.floor(epochMs + time * 1000));
@@ -87,7 +89,7 @@ export default function EngineLab() {
         if (Math.hypot(player.positionX - (door.posX ?? 0), player.positionY - (door.posY ?? 0)) < 140) door.isOpen = !door.isOpen;
       }
     };
-    const onKeyUp = (event: KeyboardEvent) => keys.delete(event.key.toLowerCase());
+    const onKeyUp = (event: KeyboardEvent) => keys.delete(gameplayKey(event));
     const onBlur = () => keys.clear();
     const onAttack = () => { equipment.swingStartTimeMs = BigInt(Math.floor(epochMs + time * 1000)); };
     window.addEventListener('keydown', onKeyDown);
