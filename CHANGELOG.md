@@ -1,5 +1,18 @@
 # Changelog
 
+## [1.2.0](https://github.com/PawLandsGame/game/compare/v1.1.0...v1.2.0) (2026-11-28)
+
+
+### Features
+
+* **client:** перевести подсказки по выживанию и панели контейнеров ([cd7c830](https://github.com/PawLandsGame/game/commit/cd7c830cde7d5c708ab632e47d1a304fe769cad1))
+
+
+### Bug Fixes
+
+* **client:** привязать управление к физическим клавишам ([d892a43](https://github.com/PawLandsGame/game/commit/d892a43fc98cd74957860eaea654146e69f6e65b))
+* **client:** упростить оформление игрового интерфейса ([2e6d43a](https://github.com/PawLandsGame/game/commit/2e6d43a2e40994ae57467e4b4e72910062ab6057))
+
 ## [1.1.0](https://github.com/PawLandsGame/game/compare/v1.0.1...v1.1.0) (2026-11-28)
 
 
