@@ -1,5 +1,14 @@
 # Changelog
 
+## [1.1.0](https://github.com/PawLandsGame/game/compare/v1.0.1...v1.1.0) (2026-11-28)
+
+
+### Features
+
+* **dokploy:** автоматизировать публикацию игрового модуля ([e20cbd6](https://github.com/PawLandsGame/game/commit/e20cbd60824ae26abbccf2ef9b1ecd9eef01fa72))
+* **клиент:** сделать русский языком игры по умолчанию ([44b3ff7](https://github.com/PawLandsGame/game/commit/44b3ff72a1ebae03f57c13a7c92005734e08c9f9))
+* **лендинг:** оживить пиксельный фон главной страницы ([8ecae3f](https://github.com/PawLandsGame/game/commit/8ecae3fe49d90ad1efb05cfb5f1d3b15c200cf46))
+
 ## [1.0.1](https://github.com/PawLandsGame/game/compare/v1.0.0...v1.0.1) (2026-11-26)
 
 
