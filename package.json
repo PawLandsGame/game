@@ -1,7 +1,7 @@
 {
   "name": "vibe-coding-starter-pack-2d-survival",
   "private": true,
-  "version": "1.1.0",
+  "version": "1.2.0",
   "type": "module",
   "scripts": {
     "verify:ui-unchanged": "node scripts/verify-ui-unchanged.mjs",
