@@ -1,3 +1,4 @@
+import { gameplayKey } from '../utils/gameplayKey';
 import { useState, useMemo, useCallback, useEffect } from 'react';
 import type { Identity } from 'spacetimedb';
 import type { AlkContract, AlkContractKind, AlkPlayerContract } from '../generated/types';
@@ -71,6 +72,7 @@ export function useAlkPanelController({ onClose }: { onClose: () => void }) {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      const key = gameplayKey(e);
       const target = e.target as HTMLElement;
       if (isSearchFocused && (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA')) {
         if (e.key === 'Escape' && searchQuery) {
@@ -101,7 +103,7 @@ export function useAlkPanelController({ onClose }: { onClose: () => void }) {
         }
       }
 
-      if (e.key === 'w' || e.key === 'W' || e.key === 'a' || e.key === 'A' || e.key === 's' || e.key === 'S' || e.key === 'd' || e.key === 'D') {
+      if (key === 'w' || key === 'a' || key === 's' || key === 'd') {
         if (isInputFocused || !(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement)) {
           e.stopPropagation();
         }
@@ -109,10 +111,10 @@ export function useAlkPanelController({ onClose }: { onClose: () => void }) {
 
       if (isInputFocused) {
         if (
-          e.key === 'y' || e.key === 'Y' || e.key === 'k' || e.key === 'K' ||
-          e.key === 'g' || e.key === 'G' ||
-          e.key === 'e' || e.key === 'E' || e.key === 'r' || e.key === 'R' ||
-          e.key === 'f' || e.key === 'F' || e.key === 'q' || e.key === 'Q' ||
+          key === 'y' || key === 'k' ||
+          key === 'g' ||
+          key === 'e' || key === 'r' ||
+          key === 'f' || key === 'q' ||
           e.key === 'Tab'
         ) {
           e.stopPropagation();

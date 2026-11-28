@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext';
 import React, { useMemo, useState, useCallback } from 'react';
 import { 
     TutorialQuestDefinition, 
@@ -59,6 +60,7 @@ const QuestsPanel: React.FC<QuestsPanelProps> = ({
     addSOVAMessage,
     seenTutorialIds,
 }) => {
+    const { t } = useLanguage();
     const {
         tutorialQuestDefinitions,
         dailyQuestDefinitions,
@@ -255,7 +257,7 @@ const QuestsPanel: React.FC<QuestsPanelProps> = ({
                         textShadow: GLOW_CYAN,
                     }}>
                         <span style={{ fontSize: isMobile ? '20px' : '26px' }}>📡</span>
-                        <span>SOVA DIRECTIVES</span>
+                        <span>{t("SOVA DIRECTIVES")}</span>
                     </div>
                     <button 
                         style={{
@@ -282,7 +284,7 @@ const QuestsPanel: React.FC<QuestsPanelProps> = ({
                             e.currentTarget.style.boxShadow = 'none';
                         }}
                     >
-                        CLOSE [ESC]
+                        {t("CLOSE [ESC]")}
                     </button>
                 </div>
 
@@ -334,7 +336,7 @@ const QuestsPanel: React.FC<QuestsPanelProps> = ({
                         }}
                     >
                         <span style={{ fontSize: isMobile ? '16px' : '18px' }}>🎯</span>
-                        <span>Primary Mission</span>
+                        <span>{t("Primary Mission")}</span>
                         {tutorialProgress?.tutorialCompleted && (
                             <span style={{ 
                                 color: '#4ade80', 
@@ -391,7 +393,7 @@ const QuestsPanel: React.FC<QuestsPanelProps> = ({
                         <span style={{ fontSize: isMobile ? '16px' : '18px' }}>
                             {tutorialProgress?.tutorialCompleted ? '📋' : '🔒'}
                         </span>
-                        <span>Daily Training</span>
+                        <span>{t("Daily Training")}</span>
                         {tutorialProgress?.tutorialCompleted ? (
                             <span style={{ 
                                 color: dailyQuestsWithDefs.filter(d => d.quest.status.tag === 'Completed').length === dailyQuestsWithDefs.length && dailyQuestsWithDefs.length > 0
@@ -413,7 +415,7 @@ const QuestsPanel: React.FC<QuestsPanelProps> = ({
                                 borderRadius: '3px',
                                 whiteSpace: 'nowrap',
                             }}>
-                                UNAVAILABLE
+                                {t("UNAVAILABLE")}
                             </span>
                         )}
                     </button>
@@ -459,8 +461,8 @@ const QuestsPanel: React.FC<QuestsPanelProps> = ({
                         }}
                     >
                         <span style={{ fontSize: isMobile ? '16px' : '18px' }}>🔊</span>
-                        <span style={{ display: isMobile ? 'none' : 'inline' }}>Audio Logs</span>
-                        <span style={{ display: isMobile ? 'inline' : 'none' }}>Audio</span>
+                        <span style={{ display: isMobile ? 'none' : 'inline' }}>{t("Audio Logs")}</span>
+                        <span style={{ display: isMobile ? 'inline' : 'none' }}>{t("Audio")}</span>
                         <span style={{ 
                             color: unlockedTutorials.length > 0 ? '#4ade80' : '#9ca3af', 
                             fontSize: isMobile ? '10px' : '12px',
@@ -554,7 +556,7 @@ const QuestsPanel: React.FC<QuestsPanelProps> = ({
                                     <div style={{ marginBottom: '12px' }}>
                                         {(currentTutorialQuest as any).objectiveLogic?.tag === 'Or' && (
                                             <div style={{ color: '#fbbf24', fontSize: isMobile ? '10px' : '12px', marginBottom: '8px', fontWeight: 'bold', textAlign: 'center' }}>
-                                                — OR —
+                                                {t("— OR —")}
                                             </div>
                                         )}
                                         <div style={{
@@ -594,11 +596,11 @@ const QuestsPanel: React.FC<QuestsPanelProps> = ({
                                     <div style={{ display: 'flex', gap: '20px', fontSize: isMobile ? '11px' : '13px' }}>
                                         <span style={{ color: '#fbbf24', display: 'flex', alignItems: 'center', gap: '6px' }}>
                                             <span>⚡</span>
-                                            <span>{currentTutorialQuest.xpReward.toString()} XP</span>
+                                            <span>{currentTutorialQuest.xpReward.toString()} {t("XP")}</span>
                                         </span>
                                         <span style={{ color: '#a78bfa', display: 'flex', alignItems: 'center', gap: '6px' }}>
                                             <span>💎</span>
-                                            <span>{currentTutorialQuest.shardReward.toString()} Shards</span>
+                                            <span>{currentTutorialQuest.shardReward.toString()} {t("Shards")}</span>
                                         </span>
                                     </div>
                                 </div>
@@ -612,7 +614,7 @@ const QuestsPanel: React.FC<QuestsPanelProps> = ({
                                         borderLeft: `4px solid ${SOVA_PURPLE}`,
                                     }}>
                                         <span style={{ color: SOVA_PURPLE, fontSize: '11px', display: 'block', marginBottom: '8px', fontWeight: 'bold' }}>
-                                            SOVA:
+                                            {t("SOVA:")}
                                         </span>
                                         <span style={{ color: '#d1d5db', fontSize: isMobile ? '11px' : '12px', fontStyle: 'italic', lineHeight: 1.6 }}>
                                             "{currentTutorialQuest.sovaStartMessage}"
@@ -631,8 +633,7 @@ const QuestsPanel: React.FC<QuestsPanelProps> = ({
                                 border: '1px solid rgba(74, 222, 128, 0.25)',
                                 lineHeight: 1.6,
                             }}>
-                                🎖️ Calibration protocol complete. You've proven yourself capable, Agent. 
-                                Continue with daily training to maintain peak performance.
+                                {t("🎖️ Calibration protocol complete. You've proven yourself capable, Agent. Continue with daily training to maintain peak performance.")}
                             </div>
                         ) : (
                             <div style={{ 
@@ -644,7 +645,7 @@ const QuestsPanel: React.FC<QuestsPanelProps> = ({
                                 borderRadius: '12px',
                                 border: '1px dashed rgba(107, 114, 128, 0.4)',
                             }}>
-                                ⏳ No active mission. Initializing directive uplink...
+                                {t("⏳ No active mission. Initializing directive uplink...")}
                             </div>
                         )}
 
@@ -663,7 +664,7 @@ const QuestsPanel: React.FC<QuestsPanelProps> = ({
                                     letterSpacing: '1px',
                                 }}>
                                     <span>📊</span>
-                                    <span>Calibration Progress</span>
+                                    <span>{t("Calibration Progress")}</span>
                                 </div>
                                 <div style={{ 
                                     display: 'flex', 
@@ -704,7 +705,7 @@ const QuestsPanel: React.FC<QuestsPanelProps> = ({
                                     })}
                                 </div>
                                 <div style={{ color: '#6b7280', fontSize: isMobile ? '11px' : '13px', marginTop: '14px', textAlign: 'center' }}>
-                                    Mission {(tutorialProgress?.currentQuestIndex || 0) + 1} of {sortedTutorialQuests.length}
+                                    {t("Mission")} {(tutorialProgress?.currentQuestIndex || 0) + 1} of {sortedTutorialQuests.length}
                                 </div>
                             </div>
                         )}
@@ -738,7 +739,7 @@ const QuestsPanel: React.FC<QuestsPanelProps> = ({
                                     textTransform: 'uppercase',
                                     letterSpacing: '1px',
                                 }}>
-                                    Daily Training Unavailable
+                                    {t("Daily Training Unavailable")}
                                 </div>
                                 <div style={{ 
                                     color: '#6b7280', 
@@ -747,8 +748,7 @@ const QuestsPanel: React.FC<QuestsPanelProps> = ({
                                     maxWidth: '400px',
                                     margin: '0 auto',
                                 }}>
-                                    Complete the Primary Mission (calibration) to unlock daily training objectives. 
-                                    Finish all calibration protocols in the Primary Mission tab first.
+                                    {t("Complete the Primary Mission (calibration) to unlock daily training objectives. Finish all calibration protocols in the Primary Mission tab first.")}
                                 </div>
                                 <button
                                     onClick={() => setActiveTab('mission')}
@@ -777,7 +777,7 @@ const QuestsPanel: React.FC<QuestsPanelProps> = ({
                                         e.currentTarget.style.boxShadow = 'none';
                                     }}
                                 >
-                                    Go to Primary Mission →
+                                    {t("Go to Primary Mission →")}
                                 </button>
                             </div>
                         ) : dailyQuestsWithDefs.length > 0 ? (
@@ -854,7 +854,7 @@ const QuestsPanel: React.FC<QuestsPanelProps> = ({
                                                 <div style={{ display: 'flex', gap: '16px', fontSize: isMobile ? '10px' : '12px' }}>
                                                     <span style={{ color: '#fbbf24', display: 'flex', alignItems: 'center', gap: '5px' }}>
                                                         <span>⚡</span>
-                                                        <span>{quest.xpReward.toString()} XP</span>
+                                                        <span>{quest.xpReward.toString()} {t("XP")}</span>
                                                     </span>
                                                     <span style={{ color: '#a78bfa', display: 'flex', alignItems: 'center', gap: '5px' }}>
                                                         <span>💎</span>
@@ -877,7 +877,7 @@ const QuestsPanel: React.FC<QuestsPanelProps> = ({
                                 border: '1px dashed rgba(107, 114, 128, 0.4)',
                                 lineHeight: 1.6,
                             }}>
-                                ⏳ Daily training assignments not yet initialized. Check back soon.
+                                {t("⏳ Daily training assignments not yet initialized. Check back soon.")}
                             </div>
                         )}
                         </>
@@ -904,14 +904,14 @@ const QuestsPanel: React.FC<QuestsPanelProps> = ({
                                 gap: '8px',
                             }}>
                                 <span>📡</span>
-                                <span>SOVA Audio Logs</span>
+                                <span>{t("SOVA Audio Logs")}</span>
                             </div>
                             <div style={{
                                 color: '#9ca3af',
                                 fontSize: isMobile ? '10px' : '12px',
                                 lineHeight: 1.5,
                             }}>
-                                Replay archived SOVA transmissions. Click any entry to listen again.
+                                {t("Replay archived SOVA transmissions. Click any entry to listen again.")}
                             </div>
                         </div>
 
@@ -984,7 +984,7 @@ const QuestsPanel: React.FC<QuestsPanelProps> = ({
                                                         fontSize: isMobile ? '9px' : '11px',
                                                         lineHeight: 1.4,
                                                     }}>
-                                                        {isUnlocked ? tutorial.description : 'Not yet discovered'}
+                                                        {isUnlocked ? tutorial.description : t("Not yet discovered")}
                                                     </div>
                                                 </div>
                                                 
@@ -1015,7 +1015,7 @@ const QuestsPanel: React.FC<QuestsPanelProps> = ({
                                 lineHeight: 1.6,
                                 textAlign: 'center',
                             }}>
-                                🔇 No audio logs recorded yet. Explore the island to unlock SOVA transmissions.
+                                {t("🔇 No audio logs recorded yet. Explore the island to unlock SOVA transmissions.")}
                             </div>
                         )}
                         </>

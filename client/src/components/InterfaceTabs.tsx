@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext';
 import React, { useState } from 'react';
 import './InterfaceTabs.css';
 
@@ -16,6 +17,7 @@ const InterfaceTabs: React.FC<InterfaceTabsProps> = ({
   hideEncyclopedia = false,
   hideCairns = false
 }) => {
+  const { t } = useLanguage();
   const [hoveredTab, setHoveredTab] = useState<string | null>(null);
 
   const isMinimapActive = currentView === 'minimap';
@@ -36,7 +38,7 @@ const InterfaceTabs: React.FC<InterfaceTabsProps> = ({
         onMouseEnter={() => setHoveredTab('minimap')}
         onMouseLeave={() => setHoveredTab(null)}
       >
-        GRU MAPS
+        {t("GRU MAPS")}
       </button>
       
       {/* Encyclopedia Tab - conditionally rendered */}
@@ -47,7 +49,7 @@ const InterfaceTabs: React.FC<InterfaceTabsProps> = ({
           onMouseEnter={() => setHoveredTab('encyclopedia')}
           onMouseLeave={() => setHoveredTab(null)}
         >
-          ENCYCLOPEDIA
+          {t("ENCYCLOPEDIA")}
         </button>
       )}
       
@@ -58,19 +60,19 @@ const InterfaceTabs: React.FC<InterfaceTabsProps> = ({
         onMouseEnter={() => setHoveredTab('memory-grid')}
         onMouseLeave={() => setHoveredTab(null)}
       >
-        MEMORY GRID
+        {t("MEMORY GRID")}
       </button>
       
       {/* ALK Provisioning Tab */}
       <button
         type="button"
         className={`tab alk-tab ${isAlkActive ? 'active' : 'inactive'} ${hoveredTab === 'alk' ? 'hovered' : ''}`}
-        title="Hotkey: K"
+        title={t("Hotkey: K")}
         onClick={() => onViewChange('alk')}
         onMouseEnter={() => setHoveredTab('alk')}
         onMouseLeave={() => setHoveredTab(null)}
       >
-        ALK BOARD
+        {t("ALK BOARD")}
       </button>
       
       {/* CAIRNS Tab - conditionally rendered */}
@@ -81,7 +83,7 @@ const InterfaceTabs: React.FC<InterfaceTabsProps> = ({
           onMouseEnter={() => setHoveredTab('cairns')}
           onMouseLeave={() => setHoveredTab(null)}
         >
-          CAIRNS
+          {t("CAIRNS")}
         </button>
       )}
       
@@ -92,7 +94,7 @@ const InterfaceTabs: React.FC<InterfaceTabsProps> = ({
         onMouseEnter={() => setHoveredTab('matronage')}
         onMouseLeave={() => setHoveredTab(null)}
       >
-        MATRONAGE
+        {t("MATRONAGE")}
       </button>
       
       {/* LEADERBOARD Tab */}
@@ -102,19 +104,19 @@ const InterfaceTabs: React.FC<InterfaceTabsProps> = ({
         onMouseEnter={() => setHoveredTab('leaderboard')}
         onMouseLeave={() => setHoveredTab(null)}
       >
-        LEADERBOARD
+        {t("LEADERBOARD")}
       </button>
       
       {/* ACHIEVEMENTS Tab */}
       <button
         type="button"
         className={`tab achievements-tab ${isAchievementsActive ? 'active' : 'inactive'} ${hoveredTab === 'achievements' ? 'hovered' : ''}`}
-        title="Hotkey: Y"
+        title={t("Hotkey: Y")}
         onClick={() => onViewChange('achievements')}
         onMouseEnter={() => setHoveredTab('achievements')}
         onMouseLeave={() => setHoveredTab(null)}
       >
-        ACHIEVEMENTS
+        {t("ACHIEVEMENTS")}
       </button>
     </div>
   );

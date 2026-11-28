@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext';
 /**
  * InventoryUI.tsx
  * 
@@ -204,6 +205,7 @@ const InventoryUI: React.FC<InventoryUIProps> = ({
     // Radio Panel callback
     onOpenRadio,
 }) => {
+    const { t } = useLanguage();
     const isPlacingItem = placementInfo !== null;
     const prevInteractionTargetRef = useRef<typeof interactionTarget | undefined>(undefined);
     const inventoryPanelRef = useRef<HTMLDivElement>(null); // Ref for the main panel
@@ -292,10 +294,10 @@ const InventoryUI: React.FC<InventoryUIProps> = ({
         if (!item) return false;
         
         const searchLower = searchTerm.toLowerCase().trim();
-        const itemName = item.definition.name.toLowerCase();
+        const itemName = item.definition.name;
         
-        return itemName.includes(searchLower);
-    }, []);
+        return itemName.toLowerCase().includes(searchLower) || t(itemName).toLowerCase().includes(searchLower);
+    }, [t]);
 
     // Player Inventory & Equipment Data
     const { itemsByInvSlot, itemsByEquipSlot } = useMemo(() => {
@@ -1160,7 +1162,7 @@ connection.reducers.quickMoveToBrothPot({
 
             {/* Left Pane: Equipment */} 
             <div className={styles.leftPane}>
-                <h3 className={styles.sectionTitle}>EQUIPMENT</h3>
+                <h3 className={styles.sectionTitle}>{t("EQUIPMENT")}</h3>
                 <div className={styles.equipmentGrid}>
                     {EQUIPMENT_SLOT_LAYOUT.map(slotInfo => {
                         const item = itemsByEquipSlot.get(slotInfo.name);
@@ -1339,7 +1341,7 @@ connection.reducers.quickMoveToBrothPot({
 
             {/* Middle Pane: Inventory & Containers */} 
             <div className={styles.middlePane}>
-                <h3 className={styles.sectionTitle}>INVENTORY</h3>
+                <h3 className={styles.sectionTitle}>{t("INVENTORY")}</h3>
                 {/* Hot loot hint - only show when container is open */}
                 {interactionTarget && (
                     <div 
@@ -1353,13 +1355,13 @@ connection.reducers.quickMoveToBrothPot({
                             transition: 'all 0.2s ease',
                         }}
                     >
-                        {isHotLootActive ? '⚡ HOT LOOT ACTIVE ⚡' : '[ Hold H to hot loot ]'}
+                        {isHotLootActive ? t("⚡ HOT LOOT ACTIVE ⚡") : t("[ Hold H to hot loot ]")}
                     </div>
                 )}
                 <InventorySearchBar
                     searchTerm={inventorySearchTerm}
                     onSearchChange={setInventorySearchTerm}
-                    placeholder="Search inventory..."
+                    placeholder={t("Search inventory...")}
                 />
                 <div className={styles.inventoryGrid}>
                     {Array.from({ length: TOTAL_INVENTORY_SLOTS }).map((_, index) => {
@@ -1413,7 +1415,7 @@ connection.reducers.quickMoveToBrothPot({
                                 {item && isCombatLadleHot(item.instance, item.definition.name) && (
                                     <span
                                         style={{ position: 'absolute', top: '2px', left: '4px', fontSize: '12px', zIndex: 4, pointerEvents: 'none' }}
-                                        title="Hot! Use gloves to avoid burn damage"
+                                        title={t("Hot! Use gloves to avoid burn damage")}
                                     >
                                         🔥
                                     </span>

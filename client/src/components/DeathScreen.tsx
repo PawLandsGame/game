@@ -1,3 +1,5 @@
+import { gameplayKey } from '../utils/gameplayKey';
+import { useLanguage } from '../i18n/LanguageContext';
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
 import { SleepingBag } from '../generated/types';
 import { drawMinimapOntoCanvas, MINIMAP_DIMENSIONS, worldToMinimapCoords, calculateMinimapViewport } from './Minimap'; // Import Minimap drawing and helpers
@@ -57,6 +59,7 @@ const DeathScreen: React.FC<DeathScreenProps> = ({
   campfireWarmthImage,
   torchOnImage,
 }) => {
+  const { t } = useLanguage();
   const worldTables = useGameScreenWorldTables();
   const sleepingBags = worldTables.sleepingBags;
   const players = worldTables.players;
@@ -149,7 +152,7 @@ const DeathScreen: React.FC<DeathScreenProps> = ({
   // --- Block G key (minimap toggle) completely while death screen is open ---
   useEffect(() => {
     const handleKeyEvent = (event: KeyboardEvent) => {
-      if (event.key === 'G' || event.key === 'g') {
+      if (gameplayKey(event) === 'g') {
         event.preventDefault();
         event.stopPropagation();
         event.stopImmediatePropagation(); // Stop all other handlers
@@ -407,34 +410,34 @@ const DeathScreen: React.FC<DeathScreenProps> = ({
               const killerId = localPlayerDeathMarker.killedBy?.toHexString();
               const killer = players.get(killerId || '');
               const killerName = killer?.username || 'Unknown Player';
-              deathMessage = `was killed by ${killerName}`;
+              deathMessage = `${t('was killed by')} ${killerName}`;
             } catch (error) {
               console.error('[DeathScreen] Error getting killer info:', error);
-              deathMessage = 'was killed by Unknown Player';
+              deathMessage = t('was killed by Unknown Player');
             }
           } else {
             // Convert death cause to lowercase sentence format
             const cause = localPlayerDeathMarker.deathCause || 'Environment';
             if (cause === 'Cinder Fox') {
-              deathMessage = '🦊 was mauled by a Cinder Fox';
+              deathMessage = t('🦊 was mauled by a Cinder Fox');
             } else if (cause === 'Tundra Wolf') {
-              deathMessage = '🐺 was killed by a Tundra Wolf';
+              deathMessage = t('🐺 was killed by a Tundra Wolf');
             } else if (cause === 'Cable Viper') {
-              deathMessage = '🐍 was struck down by a Cable Viper';
+              deathMessage = t('🐍 was struck down by a Cable Viper');
             } else if (cause === 'Suicide') {
-              deathMessage = '⚰️ took their own life';
+              deathMessage = t('⚰️ took their own life');
             } else if (cause === 'Starvation') {
-              deathMessage = '🍖 starved to death';
+              deathMessage = t('🍖 starved to death');
             } else if (cause === 'Dehydration') {
-              deathMessage = '💧 died of thirst';
+              deathMessage = t('💧 died of thirst');
             } else if (cause === 'Exposure') {
-              deathMessage = '🥶 died from exposure';
+              deathMessage = t('🥶 died from exposure');
             } else if (cause === 'Bleeding') {
-              deathMessage = '🩸 bled to death';
+              deathMessage = t('🩸 bled to death');
             } else if (cause === 'Knocked Out') {
-              deathMessage = '💥 died while unconscious';
+              deathMessage = t('💥 died while unconscious');
             } else {
-              deathMessage = `💀 died from ${cause}`;
+              deathMessage = `${t('💀 died from')} ${cause}`;
             }
           }
           
@@ -466,7 +469,7 @@ const DeathScreen: React.FC<DeathScreenProps> = ({
             disabled={isRespawning}
             style={isRespawning ? styles.buttonLoading : styles.buttonEnabled}
           >
-            {isRespawning ? 'Respawning...' : 'Respawn Randomly'}
+            {isRespawning ? t("Respawning...") : t("Respawn Randomly")}
           </button>
 
           {/* Nearest Sleeping Bag Respawn Button */}
@@ -476,20 +479,20 @@ const DeathScreen: React.FC<DeathScreenProps> = ({
               disabled={isRespawning}
               style={isRespawning ? styles.buttonLoading : styles.buttonYellow}
             >
-              {isRespawning ? 'Respawning...' : 'Respawn at Nearest Sleeping Bag'}
+              {isRespawning ? t("Respawning...") : t("Respawn at Nearest Sleeping Bag")}
             </button>
           ) : (
             <button
               disabled
               style={styles.buttonDisabled}
             >
-              No Sleeping Bags Available
+              {t("No Sleeping Bags Available")}
             </button>
           )}
         </div>
         
         {ownedBags.size === 0 && (
-            <p style={styles.noBagsText}>No sleeping bags placed.</p>
+            <p style={styles.noBagsText}>{t("No sleeping bags placed.")}</p>
         )}
       </div>
       </div>

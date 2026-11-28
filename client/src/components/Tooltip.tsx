@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext';
 import React from 'react';
 import styles from './Tooltip.module.css';
 
@@ -45,6 +46,7 @@ const formatCategoryName = (category: string): string => {
 };
 
 const Tooltip: React.FC<TooltipProps> = ({ content, visible, position }) => {
+  const { t } = useLanguage();
   if (!visible || !content) {
     return null;
   }
@@ -58,7 +60,7 @@ const Tooltip: React.FC<TooltipProps> = ({ content, visible, position }) => {
   const altCount = content.alternatives?.length ?? 0;
   const columns = altCount > 0 ? Math.min(3, Math.ceil(altCount / 2)) : 3;
   const maxNameLen = altCount > 0
-    ? Math.max(...content.alternatives!.map((a) => a.name.length), 10)
+    ? Math.max(...content.alternatives!.map((a) => t(a.name).length), 10)
     : 0;
   const pxPerChar = 8; // Approximate for 0.7rem monospace (slightly generous for long names)
   const cellWidth = 18 + 6 + maxNameLen * pxPerChar + 16 + 10; // icon + gap + name + count + padding
@@ -77,15 +79,15 @@ const Tooltip: React.FC<TooltipProps> = ({ content, visible, position }) => {
   return (
     <div className={styles.tooltipContainer} style={tooltipStyle}>
       <div className={`${styles.tooltipName} ${content.rarity ? styles[content.rarity.toLowerCase()] : ''} ${isSimple ? styles.simple : ''}`}>
-        {content.name}
+        {t(content.name)}
       </div>
-      {content.category && <div className={styles.tooltipCategory}>{formatCategoryName(content.category)}</div>}
-      {content.description && <div className={styles.tooltipDescription}>{content.description}</div>}
+      {content.category && <div className={styles.tooltipCategory}>{t(formatCategoryName(content.category))}</div>}
+      {content.description && <div className={styles.tooltipDescription}>{t(content.description)}</div>}
       {content.stats && content.stats.length > 0 && (
         <div className={styles.tooltipStatsSection}>
           {content.stats.map((stat, index) => (
             <div key={index} className={styles.tooltipStat}>
-              <span className={styles.statLabel}>{stat.label}:</span>
+              <span className={styles.statLabel}>{t(stat.label)}:</span>
               <span className={styles.statValue} style={{ color: stat.color }}>
                 {stat.value}
               </span>
@@ -95,15 +97,15 @@ const Tooltip: React.FC<TooltipProps> = ({ content, visible, position }) => {
       )}
       {content.craftingCosts && content.craftingCosts.length > 0 && (
         <div className={styles.tooltipCraftingCosts}>
-          <div className={styles.craftingCostsHeader}>Resources Required:</div>
+          <div className={styles.craftingCostsHeader}>{t("Resources Required:")}</div>
           {content.craftingCosts.map((cost, index) => (
             <div key={index} className={styles.craftingCostRow}>
               <img 
                 src={cost.iconPath} 
-                alt={cost.name}
+                alt={t(cost.name)}
                 className={styles.craftingCostIcon}
               />
-              <span className={styles.craftingCostName}>{cost.name}</span>
+              <span className={styles.craftingCostName}>{t(cost.name)}</span>
               <span 
                 className={styles.craftingCostValue}
                 style={{ color: cost.hasEnough ? '#00ff88' : '#ff3366' }}
@@ -117,7 +119,7 @@ const Tooltip: React.FC<TooltipProps> = ({ content, visible, position }) => {
       {content.alternatives && content.alternatives.length > 0 && (
         <div className={styles.tooltipAlternatives}>
           <div className={styles.alternativesHeader}>
-            Accepts any of these{content.alternativesRequired ? ` (need ${content.alternativesRequired})` : ''}:
+            {t("Accepts any of these")}{content.alternativesRequired ? ` (need ${content.alternativesRequired})` : ''}:
           </div>
           <div
             className={styles.alternativesGrid}
@@ -129,10 +131,10 @@ const Tooltip: React.FC<TooltipProps> = ({ content, visible, position }) => {
                 <div key={index} className={styles.alternativeRow}>
                   <img
                     src={alt.iconPath}
-                    alt={alt.name}
+                    alt={t(alt.name)}
                     className={styles.alternativeIcon}
                   />
-                  <span className={styles.alternativeName}>{alt.name}</span>
+                  <span className={styles.alternativeName}>{t(alt.name)}</span>
                   <span
                     className={styles.alternativeCount}
                     style={{ color: hasEnough ? '#00ff88' : alt.available > 0 ? '#f0ad4e' : '#ff3366' }}
@@ -144,7 +146,7 @@ const Tooltip: React.FC<TooltipProps> = ({ content, visible, position }) => {
             })}
           </div>
           <div className={styles.alternativesTotal}>
-            <span>Combined:</span>
+            <span>{t("Combined:")}</span>
             <span style={{
               color: content.alternativesRequired && content.alternatives.reduce((s, a) => s + a.available, 0) >= content.alternativesRequired
                 ? '#00ff88' : '#ff3366',

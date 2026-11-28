@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext';
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import './CyberpunkLoadingScreen.css';
 import sovaImage from '../assets/ui/sova.png';
@@ -8,6 +9,7 @@ interface CyberpunkErrorBarProps {
 }
 
 export const CyberpunkErrorBar: React.FC<CyberpunkErrorBarProps> = ({ message }) => {
+    const { t } = useLanguage();
     const [isVisible, setIsVisible] = useState(false);
 
     useEffect(() => {
@@ -38,11 +40,11 @@ export const CyberpunkErrorBar: React.FC<CyberpunkErrorBarProps> = ({ message })
             <div className="error-content">
                 <div className="error-header">
                     <div className="error-icon">⚠</div>
-                    <div className="error-title">BABACHAIN NETWORK ERROR</div>
+                    <div className="error-title">{t("BABACHAIN NETWORK ERROR")}</div>
                 </div>
                 <div className="error-text">
                     <div className="error-message">
-                        {getLoreConsistentMessage(message)}
+                        {t(getLoreConsistentMessage(message))}
                     </div>
                 </div>
             </div>
@@ -272,6 +274,7 @@ const CyberpunkLoadingScreen: React.FC<CyberpunkLoadingScreenProps> = ({
     hasStoredUsername = false,
     hasLastKnownPlayer = false,
 }) => {
+    const { t } = useLanguage();
 
     const [visibleLogs, setVisibleLogs] = useState<string[]>([]);
     const [currentLogIndex, setCurrentLogIndex] = useState(0);
@@ -320,23 +323,23 @@ const CyberpunkLoadingScreen: React.FC<CyberpunkLoadingScreenProps> = ({
         // intermediate counts that would appear stuck. The progress bar shows real-time progress,
         // and we only show final counts when loading is complete.
         if (!authLoading && !spacetimeLoading && assetProgress) {
-            const finalCacheInfo = assetProgress.fromCache > 0 ? ` (${assetProgress.fromCache} cached)` : '';
+            const finalCacheInfo = assetProgress.fromCache > 0 ? ` (${assetProgress.fromCache} ${t("cached")})` : '';
             
             if (assetProgress.phase === 'critical') {
                 baseLogs.push("└─ [INIT] Initializing core rendering systems...");
-                baseLogs.push(`└─ [ASSETS] ${assetProgress.phaseName}...`);
+                baseLogs.push(`└─ [ASSETS] ${t(assetProgress.phaseName)}...`);
             } else if (assetProgress.phase === 'important') {
                 baseLogs.push("└─ [CORE] Core systems loaded successfully.");
-                baseLogs.push(`└─ [ASSETS] ${assetProgress.phaseName}...`);
+                baseLogs.push(`└─ [ASSETS] ${t(assetProgress.phaseName)}...`);
             } else if (assetProgress.phase === 'secondary') {
                 baseLogs.push("└─ [CORE] Core systems loaded successfully.");
                 baseLogs.push("└─ [ENV] Environment textures loaded.");
-                baseLogs.push(`└─ [ASSETS] ${assetProgress.phaseName}...`);
+                baseLogs.push(`└─ [ASSETS] ${t(assetProgress.phaseName)}...`);
             } else if (assetProgress.phase === 'complete') {
                 // Only show final accurate counts when loading is truly complete
                 baseLogs.push("└─ [CORE] Core systems loaded successfully.");
                 baseLogs.push("└─ [ENV] Environment textures loaded.");
-                baseLogs.push(`└─ [LOAD] Item database: ${assetProgress.totalCount}/${assetProgress.totalCount} assets${finalCacheInfo}`);
+                baseLogs.push(`└─ [LOAD] ${t("Item database:")} ${assetProgress.totalCount}/${assetProgress.totalCount} ${t("assets")}${finalCacheInfo}`);
             }
         }
 
@@ -355,7 +358,7 @@ const CyberpunkLoadingScreen: React.FC<CyberpunkLoadingScreenProps> = ({
         }
 
         return baseLogs;
-    }, [authLoading, spacetimeLoading, musicPreloadProgress, musicPreloadComplete, assetProgress, assetsLoaded]);
+    }, [authLoading, spacetimeLoading, musicPreloadProgress, musicPreloadComplete, assetProgress, assetsLoaded, t]);
 
     // Auto-scroll to bottom function
     const scrollToBottom = () => {
@@ -658,7 +661,7 @@ const CyberpunkLoadingScreen: React.FC<CyberpunkLoadingScreenProps> = ({
         <img 
             ref={sovaAvatarRef}
             src={sovaImage} 
-            alt="Sova Avatar" 
+            alt={t("Sova Avatar")}
             className={`sova-avatar ${
                 isSovaSpeaking ? 'speaking' : ''
             } ${
@@ -716,16 +719,16 @@ const CyberpunkLoadingScreen: React.FC<CyberpunkLoadingScreenProps> = ({
                     <>
                         <div className="audio-icon">🔊</div>
                         <div className="audio-prompt-text">
-                            <div className="audio-prompt-title">RESUME SOVA AUDIO</div>
-                            <div className="audio-prompt-subtitle">{isMobile ? 'Tap SOVA to enable' : 'Tap SOVA or click anywhere'}</div>
+                            <div className="audio-prompt-title">{t("RESUME SOVA AUDIO")}</div>
+                            <div className="audio-prompt-subtitle">{isMobile ? t("Tap SOVA to enable") : t("Tap SOVA or click anywhere")}</div>
                         </div>
                     </>
                 ) : (
                     <>
                         <div className="audio-icon">🔊</div>
                         <div className="audio-prompt-text">
-                            <div className="audio-prompt-title">AUDIO AVAILABLE</div>
-                            <div className="audio-prompt-subtitle">{isMobile ? 'Tap button to enable SOVA' : 'Click anywhere to enable SOVA audio'}</div>
+                            <div className="audio-prompt-title">{t("AUDIO AVAILABLE")}</div>
+                            <div className="audio-prompt-subtitle">{isMobile ? t("Tap button to enable SOVA") : t("Click anywhere to enable SOVA audio")}</div>
                         </div>
                         <button 
                             className="enable-audio-button" 
@@ -736,7 +739,7 @@ const CyberpunkLoadingScreen: React.FC<CyberpunkLoadingScreenProps> = ({
                                 touchAction: 'manipulation',
                             }}
                         >
-                            ENABLE AUDIO
+                            {t("ENABLE AUDIO")}
                         </button>
                     </>
                 )}
@@ -793,10 +796,10 @@ const CyberpunkLoadingScreen: React.FC<CyberpunkLoadingScreenProps> = ({
                 
                 <div className="console-header">
                     <div className="console-title">
-                        {authLoading ? 'NEURAL IDENTITY VERIFICATION' : 'SENTIENT OCULAR VIRTUAL ASSISTANT'}
+                        {authLoading ? t("NEURAL IDENTITY VERIFICATION") : t("SENTIENT OCULAR VIRTUAL ASSISTANT")}
                     </div>
                     <div className="console-subtitle">
-                        {authLoading ? 'Rozhkov Neuroscience Authentication Protocol v2.47' : 'Arkyv Node • Zvezdanet Mesh Network • Quantum Consensus'}
+                        {authLoading ? t("Rozhkov Neuroscience Authentication Protocol v2.47") : t("Arkyv Node • Zvezdanet Mesh Network • Quantum Consensus")}
                     </div>
                 </div>
 
@@ -804,7 +807,7 @@ const CyberpunkLoadingScreen: React.FC<CyberpunkLoadingScreenProps> = ({
                     {visibleLogs.map((log, index) => (
                         <div key={index} className={`log-line ${index === visibleLogs.length - 1 ? 'typing' : ''}`}>
                             <span className="log-prefix">[{String(index + 1).padStart(2, '0')}]</span>
-                            <span className="log-text">{log}</span>
+                            <span className="log-text">{t(log)}</span>
                         </div>
                     ))}
                     {currentLogIndex < logs.length && (
@@ -817,7 +820,7 @@ const CyberpunkLoadingScreen: React.FC<CyberpunkLoadingScreenProps> = ({
                         <div className="continue-prompt">
                             <div className="log-line">
                                 <span className="log-prefix">[{'>>'}]</span>
-                                <span className="log-text">System ready. Neural link established.</span>
+                                <span className="log-text">{t("System ready. Neural link established.")}</span>
                             </div>
                             <button 
                                 className="continue-button"
@@ -828,8 +831,8 @@ const CyberpunkLoadingScreen: React.FC<CyberpunkLoadingScreenProps> = ({
                                     touchAction: 'manipulation',
                                 }}
                             >
-                                <span className="continue-text">ENTER BABACHAIN NETWORK</span>
-                                <span className="continue-subtitle">{isMobile ? 'Tap to access reality' : 'Click to access reality'}</span>
+                                <span className="continue-text">{t("ENTER BABACHAIN NETWORK")}</span>
+                                <span className="continue-subtitle">{isMobile ? t("Tap to access reality") : t("Click to access reality")}</span>
                             </button>
                         </div>
                     )}
@@ -840,7 +843,7 @@ const CyberpunkLoadingScreen: React.FC<CyberpunkLoadingScreenProps> = ({
                     <div className="asset-progress-container">
                         <div className="asset-progress-header">
                             <span className="asset-progress-label">
-                                {assetProgress.phaseName.toUpperCase()}
+                                {t(assetProgress.phaseName).toUpperCase()}
                             </span>
                             <span className="asset-progress-percent">
                                 {Math.round(assetProgress.totalProgress * 100)}%
@@ -857,9 +860,9 @@ const CyberpunkLoadingScreen: React.FC<CyberpunkLoadingScreenProps> = ({
                             />
                         </div>
                         <div className="asset-progress-stats">
-                            <span>{assetProgress.loadedCount}/{assetProgress.totalCount} assets</span>
+                            <span>{assetProgress.loadedCount}/{assetProgress.totalCount} {t("assets")}</span>
                             {assetProgress.fromCache > 0 && (
-                                <span className="cache-indicator">⚡ {assetProgress.fromCache} cached</span>
+                                <span className="cache-indicator">⚡ {assetProgress.fromCache} {t("cached")}</span>
                             )}
                         </div>
                     </div>
@@ -869,15 +872,15 @@ const CyberpunkLoadingScreen: React.FC<CyberpunkLoadingScreenProps> = ({
                     <div className="status-indicators">
                         <div className="status-item">
                             <span className={`status-dot ${!authLoading ? 'active' : 'loading'}`}></span>
-                            <span>NEURAL LINK</span>
+                            <span>{t("NEURAL LINK")}</span>
                         </div>
                         <div className="status-item">
                             <span className={`status-dot ${!spacetimeLoading ? 'active' : 'loading'}`}></span>
-                            <span>QUANTUM TUNNEL</span>
+                            <span>{t("QUANTUM TUNNEL")}</span>
                         </div>
                         <div className="status-item">
                             <span className={`status-dot ${assetsLoaded ? 'active' : 'loading'}`}></span>
-                            <span>ASSET MATRIX</span>
+                            <span>{t("ASSET MATRIX")}</span>
                         </div>
                     </div>
                 </div>

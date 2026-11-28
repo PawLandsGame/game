@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext';
 import React from 'react';
 import GameMenuButton from './GameMenuButton';
 import GameMenu from './GameMenu';
@@ -59,6 +60,7 @@ export default function GameScreenOverlayUI({
   onDismissQuestCompletion,
   hasNewQuestNotification,
 }: GameScreenOverlayUIProps) {
+  const { t } = useLanguage();
   const gameUI = useGameUI();
   const {
     currentMenu,
@@ -98,7 +100,7 @@ export default function GameScreenOverlayUI({
       {!isMobile && autoActionStates.isAutoAttacking && (
         <div style={{ position: 'fixed', top: '70px', right: '15px', display: 'flex', flexDirection: 'column', gap: '8px', zIndex: 50, pointerEvents: 'none' }}>
           <div style={{ backgroundColor: 'rgba(40, 40, 60, 0.85)', color: 'white', padding: '8px 12px', borderRadius: '4px', fontSize: '10px', fontFamily: '"Press Start 2P", cursive', fontWeight: 'normal', textAlign: 'center', border: '1px solid #a0a0c0', boxShadow: '2px 2px 0px rgba(0,0,0,0.5)', width: '140px', animation: 'pulse 2s infinite' }}>
-            ⚔️ AUTO ATTACK (Z)
+            {t("⚔️ AUTO ATTACK (Z)")}
           </div>
         </div>
       )}
@@ -128,13 +130,12 @@ export default function GameScreenOverlayUI({
             onClick={(e) => e.stopPropagation()}
           >
             <div style={{ color: '#00ddff', fontSize: '16px', marginBottom: '12px', textShadow: '0 0 10px rgba(0, 221, 255, 0.5)', fontWeight: 'bold' }}>
-              NEUROVEIL™ REFRESH REQUEST
+              {t("NEUROVEIL™ REFRESH REQUEST")}
             </div>
             <div style={{ color: '#e0e0e0', fontSize: '14px', lineHeight: '1.6', marginBottom: '24px', padding: '16px', backgroundColor: 'rgba(0, 0, 0, 0.3)', borderRadius: '4px' }}>
-              Reconnect to refresh your game session.
-              This will reinitialize your session with the latest quantum state synchronization.
+              {t("Reconnect to refresh your game session. This will reinitialize your session with the latest quantum state synchronization.")}
               <br /><br />
-              Proceed with Neuroveil™ Refresh?
+              {t("Proceed with Neuroveil™ Refresh?")}
             </div>
             <div style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
               <button
@@ -151,7 +152,7 @@ export default function GameScreenOverlayUI({
                   e.currentTarget.style.boxShadow = '0 0 15px rgba(255, 140, 0, 0.3), inset 0 0 10px rgba(255, 140, 0, 0.1)';
                 }}
               >
-                REFRESH NEUROVEIL™
+                {t("REFRESH NEUROVEIL™")}
               </button>
               <button
                 onClick={onRefreshCancel}
@@ -167,7 +168,7 @@ export default function GameScreenOverlayUI({
                   e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 170, 255, 0.3), inset 0 0 10px rgba(0, 170, 255, 0.1)';
                 }}
               >
-                CANCEL
+                {t("CANCEL")}
               </button>
             </div>
           </div>
@@ -198,7 +199,7 @@ export default function GameScreenOverlayUI({
           aria-live="polite"
           style={{ position: 'fixed', left: '50%', transform: 'translateX(-50%)', bottom: '80px', padding: '10px 18px', background: 'rgba(40, 180, 80, 0.95)', border: '1px solid rgba(80, 255, 120, 0.6)', borderRadius: '6px', color: '#ffffff', fontSize: '11px', fontFamily: '"Press Start 2P", monospace', textAlign: 'center', zIndex: 1001, boxShadow: '0 2px 12px rgba(0,0,0,0.4)' }}
         >
-          Copied to clipboard
+          {t("Copied to clipboard")}
         </div>
       )}
 

@@ -1,3 +1,4 @@
+import { gameplayKey } from '../utils/gameplayKey';
 import { useState, useEffect, useMemo, useCallback } from 'react';
 import type { Identity } from 'spacetimedb';
 import { useGameConnection } from '../contexts/GameConnectionContext';
@@ -32,19 +33,20 @@ export function useMatronagePanelController() {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      const key = gameplayKey(e);
       if (!isInputFocused) return;
       if (
-        e.key === 'w' || e.key === 'W' || e.key === 'a' || e.key === 'A' ||
-        e.key === 's' || e.key === 'S' || e.key === 'd' || e.key === 'D' ||
+        key === 'w' || key === 'a' ||
+        key === 's' || key === 'd' ||
         e.key === 'ArrowUp' || e.key === 'ArrowDown' || e.key === 'ArrowLeft' || e.key === 'ArrowRight'
       ) {
         e.stopPropagation();
       }
       if (
-        e.key === 'y' || e.key === 'Y' || e.key === 'k' || e.key === 'K' ||
-        e.key === 'g' || e.key === 'G' ||
-        e.key === 'e' || e.key === 'E' || e.key === 'r' || e.key === 'R' ||
-        e.key === 'f' || e.key === 'F' || e.key === 'q' || e.key === 'Q' ||
+        key === 'y' || key === 'k' ||
+        key === 'g' ||
+        key === 'e' || key === 'r' ||
+        key === 'f' || key === 'q' ||
         e.key === 'Tab'
       ) {
         e.stopPropagation();

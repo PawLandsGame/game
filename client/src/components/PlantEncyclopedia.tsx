@@ -1,3 +1,4 @@
+import { gameplayKey } from '../utils/gameplayKey';
 import React, { useMemo, useState, useCallback } from 'react';
 import { PlantConfigDefinition, PlantCategory } from '../generated/types';
 import { getItemIcon } from '../utils/itemIconUtils';
@@ -426,7 +427,7 @@ const PlantEncyclopedia: React.FC<PlantEncyclopediaProps> = ({ plantConfigs, dis
 onKeyDown={(e) => {
                               // Prevent ALL game control keys from bubbling up to the game
                               const gameControlKeys = ['f', 'g', ' ', 'e', 'w', 'a', 's', 'd', 'z', 'c', 'm', 'y', 'k', 'r', 'q', 'tab'];
-                              const key = e.key.toLowerCase();
+                              const key = gameplayKey(e);
                               
                               if (gameControlKeys.includes(key)) {
                                 // Prevent game actions but allow typing in the input

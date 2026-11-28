@@ -1,3 +1,5 @@
+import { useLanguage } from '../i18n/LanguageContext';
+import { gameplayKey } from '../utils/gameplayKey';
 /**
  * CraftingScreen.tsx
  * 
@@ -67,6 +69,7 @@ const CraftingScreen: React.FC<CraftingScreenProps> = ({
     purchasedMemoryNodes = new Set(['center']),
     activeConsumableEffects,
 }) => {
+    const { t } = useLanguage();
     const [currentTime, setCurrentTime] = useState(Date.now());
     const [craftQuantities, setCraftQuantities] = useState<Map<string, number>>(new Map());
     const [searchTerm, setSearchTerm] = useState<string>(() => {
@@ -340,12 +343,12 @@ const CraftingScreen: React.FC<CraftingScreenProps> = ({
                 if (!outputDef) return false;
 
                 // Match output name
-                if (outputDef.name.toLowerCase().includes(term)) return true;
+                if ([outputDef.name, t(outputDef.name)].some(name => name.toLowerCase().includes(term))) return true;
 
                 // Match ingredient names
                 return recipe.ingredients.some(ing => {
                     const ingDef = itemDefinitions.get(ing.itemDefId.toString());
-                    return ingDef?.name.toLowerCase().includes(term);
+                    return ingDef && [ingDef.name, t(ingDef.name)].some(name => name.toLowerCase().includes(term));
                 });
             });
         }
@@ -387,7 +390,7 @@ const CraftingScreen: React.FC<CraftingScreenProps> = ({
             // FOURTH PRIORITY: Alphabetical
             return aName.localeCompare(bName);
         });
-    }, [recipes, selectedCategory, searchTerm, itemDefinitions, canCraft, isRecipeUnlockedByMemoryGrid]);
+    }, [recipes, selectedCategory, searchTerm, itemDefinitions, canCraft, isRecipeUnlockedByMemoryGrid, t]);
 
     // --- Crafting Handlers ---
     const handleCraftItem = (recipeId: bigint, quantity: number) => {
@@ -445,7 +448,7 @@ const CraftingScreen: React.FC<CraftingScreenProps> = ({
     const handleSearchKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
         // 'y' achievements, 'k' ALK board, etc.
         const gameControlKeys = ['f', 'g', ' ', 'e', 'w', 'a', 's', 'd', 'z', 'c', 'm', 'b', 'y', 'k'];
-        const key = event.key.toLowerCase();
+        const key = gameplayKey(event);
 
         if (gameControlKeys.includes(key)) {
             event.stopPropagation();
@@ -553,7 +556,7 @@ const CraftingScreen: React.FC<CraftingScreenProps> = ({
 
             {/* Left Sidebar - Categories */}
             <div className={styles.categorySidebar}>
-                <h3 className={styles.sidebarTitle}>CATEGORIES</h3>
+                <h3 className={styles.sidebarTitle}>{t("CATEGORIES")}</h3>
                 <div className={styles.categoryList}>
                     {CATEGORIES.map(category => (
                         <div
@@ -562,7 +565,7 @@ const CraftingScreen: React.FC<CraftingScreenProps> = ({
                             onClick={() => handleCategoryChange(category.id)}
                         >
                             <span className={styles.categoryIcon}>{category.icon}</span>
-                            <span className={styles.categoryName}>{category.name}</span>
+                            <span className={styles.categoryName}>{t(category.name)}</span>
                             <span className={styles.categoryCount}>{categoryCounts.get(category.id) || 0}</span>
                         </div>
                     ))}
@@ -572,7 +575,7 @@ const CraftingScreen: React.FC<CraftingScreenProps> = ({
             {/* Main Content */}
             <div className={styles.mainContent}>
                 <div className={styles.header}>
-                    <h2 className={styles.title}>CRAFTING</h2>
+                    <h2 className={styles.title}>{t("CRAFTING")}</h2>
                     <div className={styles.searchContainer}>
                         <input
                             ref={searchInputRef}
@@ -580,7 +583,7 @@ const CraftingScreen: React.FC<CraftingScreenProps> = ({
                             className={styles.searchInput}
                             value={searchTerm}
                             onChange={(e) => handleSearchChange(e.target.value)}
-                            placeholder="Search by item or ingredient name..."
+                            placeholder={t("Search by item or ingredient name...")}
                             onFocus={() => onSearchFocusChange?.(true)}
                             onBlur={() => onSearchFocusChange?.(false)}
                             onKeyDown={handleSearchKeyDown}
@@ -598,7 +601,7 @@ const CraftingScreen: React.FC<CraftingScreenProps> = ({
                         {filteredRecipes.length === 0 ? (
                             <div className={styles.emptyState}>
                                 <div className={styles.emptyStateIcon}>🔍</div>
-                                <div className={styles.emptyStateText}>No recipes found</div>
+                                <div className={styles.emptyStateText}>{t("No recipes found")}</div>
                             </div>
                         ) : (
                             <div className={styles.recipeList}>
@@ -632,7 +635,7 @@ const CraftingScreen: React.FC<CraftingScreenProps> = ({
                                             >
                                                 <img
                                                     src={getItemIcon(outputDef.iconAssetName, 'crafting')}
-                                                    alt={outputDef.name}
+                                                    alt={t(outputDef.name)}
                                                     style={{ filter: !isMemoryGridUnlocked ? 'grayscale(60%) brightness(0.7)' : 'none' }}
                                                 />
                                                 {!isMemoryGridUnlocked && (
@@ -644,7 +647,7 @@ const CraftingScreen: React.FC<CraftingScreenProps> = ({
                                             <div className={styles.recipeContent}>
                                                 <div className={`${styles.recipeName} ${!isMemoryGridUnlocked ? styles.recipeNameLocked : ''}`}>
                                                     {!isMemoryGridUnlocked && <span className={styles.lockIcon}>🔒</span>}
-                                                    {outputDef.name}
+                                                    {t(outputDef.name)}
                                                     {recipe.outputQuantity > 1 && <span style={{ color: '#888', fontSize: '12px' }}> x{recipe.outputQuantity}</span>}
                                                 </div>
 
@@ -667,7 +670,7 @@ const CraftingScreen: React.FC<CraftingScreenProps> = ({
                                                         gap: '4px'
                                                     }}>
                                                         <span>🍳</span>
-                                                        <span>Requires <strong>{requiredStation}</strong> nearby</span>
+                                                        <span>{t("Requires")} <strong>{requiredStation}</strong> nearby</span>
                                                     </div>
                                                 )}
 
@@ -735,7 +738,7 @@ const CraftingScreen: React.FC<CraftingScreenProps> = ({
                                                                         <div className={styles.ingredientIcon}>
                                                                             <img
                                                                                 src={getItemIcon(ingDef?.iconAssetName || '', 'crafting')}
-                                                                                alt={ingDef?.name || 'Unknown'}
+                                                                                alt={t(ingDef?.name || 'Unknown')}
                                                                             />
                                                                         </div>
                                                                     )}
@@ -777,7 +780,7 @@ const CraftingScreen: React.FC<CraftingScreenProps> = ({
                                                             if (e.key === '+' || e.key === '-') e.preventDefault();
                                                             // Block game control keys (y/k map panels, etc.)
                                                             const gameControlKeys = ['f', 'g', ' ', 'e', 'w', 'a', 's', 'd', 'z', 'c', 'm', 'b', 'y', 'k'];
-                                                            if (gameControlKeys.includes(e.key.toLowerCase())) {
+                                                            if (gameControlKeys.includes(gameplayKey(e))) {
                                                                 e.stopPropagation();
                                                             }
                                                         }}
@@ -801,7 +804,7 @@ const CraftingScreen: React.FC<CraftingScreenProps> = ({
                                                     }}
                                                     disabled={maxCraftable <= 0}
                                                 >
-                                                    MAX
+                                                    {t("MAX")}
                                                 </button>
                                                 <button
                                                     className={`${styles.craftBtn} ${!isMemoryGridUnlocked ? styles.craftBtnLocked : ''} ${(requiredStation && !hasStationAccess) ? styles.craftBtnLocked : ''}`}
@@ -809,7 +812,7 @@ const CraftingScreen: React.FC<CraftingScreenProps> = ({
                                                     disabled={!isCraftable}
                                                     title={requiredStation && !hasStationAccess ? `Requires ${requiredStation} nearby` : undefined}
                                                 >
-                                                    {!isMemoryGridUnlocked ? 'LOCKED' : (requiredStation && !hasStationAccess) ? 'STATION' : 'CRAFT'}
+                                                    {!isMemoryGridUnlocked ? t("LOCKED") : (requiredStation && !hasStationAccess) ? t('STATION') : t('CRAFT')}
                                                 </button>
                                             </div>
                                         </div>
@@ -822,10 +825,10 @@ const CraftingScreen: React.FC<CraftingScreenProps> = ({
                     {/* Crafting Queue */}
                     <div className={styles.queueSection}>
                         <div className={styles.queueHeader}>
-                            <h4 className={styles.queueTitle}>CRAFTING QUEUE ({playerQueue.length})</h4>
+                            <h4 className={styles.queueTitle}>{t("CRAFTING QUEUE (")}{playerQueue.length})</h4>
                             {playerQueue.length > 0 && (
                                 <button className={styles.cancelAllBtn} onClick={handleCancelAllCrafting}>
-                                    CANCEL ALL
+                                    {t("CANCEL ALL")}
                                 </button>
                             )}
                         </div>
@@ -846,35 +849,35 @@ const CraftingScreen: React.FC<CraftingScreenProps> = ({
                                             e.preventDefault();
                                             if (!isFirst) handleMoveToFront(item.queueItemId);
                                         }}
-                                        title={isFirst ? 'Already first in queue' : 'Right-click to move to front'}
+                                        title={isFirst ? t("Already first in queue") : t("Right-click to move to front")}
                                     >
                                         <div className={styles.queueItemIcon}>
                                             {outputDef && (
                                                 <img
                                                     src={getItemIcon(outputDef.iconAssetName, 'crafting')}
-                                                    alt={outputDef?.name || 'Crafting'}
+                                                    alt={t(outputDef?.name || 'Crafting')}
                                                 />
                                             )}
                                         </div>
                                         <div className={styles.queueItemInfo}>
                                             <div className={styles.queueItemName}>
-                                                {outputDef?.name || 'Unknown Item'}
+                                                {t(outputDef?.name || 'Unknown Item')}
                                             </div>
                                             <div className={styles.queueItemTime}>
-                                                {remainingTime > 0 ? `${remainingTime}s remaining` : 'Completing...'}
+                                                {remainingTime > 0 ? `${remainingTime}s remaining` : t("Completing...")}
                                             </div>
                                         </div>
                                         <button
                                             className={styles.queueItemCancelBtn}
                                             onClick={() => handleCancelCraft(item.queueItemId)}
                                         >
-                                            CANCEL
+                                            {t("CANCEL")}
                                         </button>
                                     </div>
                                 );
                             })}
                             {playerQueue.length === 0 && (
-                                <div className={styles.emptyQueue}>No items in queue</div>
+                                <div className={styles.emptyQueue}>{t("No items in queue")}</div>
                             )}
                         </div>
                     </div>

@@ -1,3 +1,4 @@
+import { LanguageProvider } from "./i18n/LanguageProvider";
 // Silence console.log in production - MUST be first import
 import './utils/productionLogger';
 
@@ -108,5 +109,5 @@ if (import.meta.env.DEV) {
 }
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
-  <App />
+  <LanguageProvider><App /></LanguageProvider>
 );

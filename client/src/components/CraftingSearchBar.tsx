@@ -1,3 +1,5 @@
+import { useLanguage } from '../i18n/LanguageContext';
+import { gameplayKey } from '../utils/gameplayKey';
 import React, { useRef, useState } from 'react';
 import styles from './InventoryUI.module.css'; // Reuse existing styles if applicable, or create new ones
 import { ItemCategory } from '../generated/types';
@@ -215,7 +217,8 @@ export const calculateRecipePredictionScore = (
 export const sortRecipesByPrediction = (
   recipes: Recipe[],
   playerInventory: PlayerInventory,
-  playerHotbar?: PlayerInventory
+  playerHotbar?: PlayerInventory,
+  translateName: (name: string) => string = name => name,
 ): Recipe[] => {
   return recipes
     .map(recipe => ({
@@ -244,7 +247,8 @@ export const filterAndSortRecipes = (
   searchTerm: string,
   selectedCategory: string,
   playerInventory: PlayerInventory,
-  playerHotbar?: PlayerInventory
+  playerHotbar?: PlayerInventory,
+  translateName: (name: string) => string = name => name,
 ): Recipe[] => {
   let filtered = recipes;
   
@@ -255,10 +259,11 @@ export const filterAndSortRecipes = (
   
   // Search term filter
   const term = searchTerm.trim().toLowerCase();
+  const searchNames = (name: string) => [name.toLowerCase(), translateName(name).toLowerCase()];
   if (term) {
     filtered = filtered.filter(recipe => 
-      recipe.name.toLowerCase().includes(term) ||
-      recipe.materials.some(mat => mat.itemId.toLowerCase().includes(term))
+      searchNames(recipe.name).some(name => name.includes(term)) ||
+      recipe.materials.some(mat => searchNames(mat.itemId).some(name => name.includes(term)))
     );
   }
   
@@ -267,8 +272,8 @@ export const filterAndSortRecipes = (
     .map(recipe => ({
       recipe,
       canCraft: canCraftRecipe(recipe, playerInventory),
-      isExactMatch: term ? recipe.name.toLowerCase() === term : false,
-      isStartsWith: term ? recipe.name.toLowerCase().startsWith(term) : false,
+      isExactMatch: term ? searchNames(recipe.name).includes(term) : false,
+      isStartsWith: term ? searchNames(recipe.name).some(name => name.startsWith(term)) : false,
       score: calculateRecipePredictionScore(recipe, playerInventory, playerHotbar)
     }))
     .sort((a, b) => {
@@ -310,6 +315,7 @@ interface CraftingSearchBarProps {
 }
 
 const CraftingSearchBar: React.FC<CraftingSearchBarProps> = (props) => {
+  const { t } = useLanguage();
   const {
     searchTerm,
     onSearchChange,
@@ -339,7 +345,8 @@ const CraftingSearchBar: React.FC<CraftingSearchBarProps> = (props) => {
         searchTerm, 
         selectedCategory, 
         playerInventory, 
-        playerHotbar
+        playerHotbar,
+        t,
       );
       
       // Create a simple fingerprint of the result to avoid redundant updates
@@ -349,13 +356,13 @@ const CraftingSearchBar: React.FC<CraftingSearchBarProps> = (props) => {
         onFilteredRecipesChange?.(filteredAndSorted);
       }
     }
-  }, [recipes, searchTerm, selectedCategory, playerInventory, playerHotbar]); // Removed onFilteredRecipesChange from deps
+  }, [recipes, searchTerm, selectedCategory, playerInventory, playerHotbar, t]); // Removed onFilteredRecipesChange from deps
 
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     // Prevent ALL game control keys from bubbling up to the game
     // 'y' achievements, 'k' ALK board, 'b' building menu, etc.
     const gameControlKeys = ['f', 'g', ' ', 'e', 'w', 'a', 's', 'd', 'z', 'c', 'm', 'y', 'k', 'b'];
-    const key = event.key.toLowerCase();
+    const key = gameplayKey(event);
     
     if (gameControlKeys.includes(key)) {
       // Prevent game actions but allow typing in the input
@@ -416,7 +423,7 @@ const CraftingSearchBar: React.FC<CraftingSearchBarProps> = (props) => {
           <button
             className={styles.filterButton}
             onClick={handleFilterClick}
-            title="Filter by category"
+            title={t("Filter by category")}
           >
             <FontAwesomeIcon icon={faChevronDown} />
           </button>
@@ -471,7 +478,7 @@ const CraftingSearchBar: React.FC<CraftingSearchBarProps> = (props) => {
                     }
                   }}
                 >
-                  {label}
+                  {t(label)}
                 </div>
               ))}
             </div>

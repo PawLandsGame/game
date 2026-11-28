@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext';
 import React, { useMemo } from 'react';
 import styles from './MenuComponents.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -75,6 +76,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
     onBack,
     onClose,
 }) => {
+    const { t } = useLanguage();
     const {
         allShadowsEnabled,
         treeShadowsEnabled,
@@ -280,7 +282,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                             letterSpacing: '2px',
                         }}
                     >
-                        VISUAL CORTEX MODULE
+                        {t("VISUAL CORTEX MODULE")}
                     </h2>
                     <div
                         style={{
@@ -293,7 +295,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                             textShadow: '0 0 8px rgba(0, 255, 136, 0.6)',
                         }}
                     >
-                        Neural Imaging Processing Interface v0.82
+                        {t("Neural Imaging Processing Interface v0.82")}
                     </div>
                 </div>
 
@@ -323,7 +325,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                             letterSpacing: '1px',
                             textAlign: 'left',
                         }}>
-                            VISUAL PRESETS
+                            {t("VISUAL PRESETS")}
                         </div>
                         <div
                             style={{
@@ -360,9 +362,8 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                             textAlign: 'left',
                             lineHeight: 1.55,
                         }}>
-                            Shadows, weather, clouds, water FX, full particles, and vegetation animation.
-                            Choose <strong style={{ color: '#7cd8ff' }}>Performance</strong>
-                            {' '}for a lighter GPU load. You can still fine-tune every option below.
+                            {t("Shadows, weather, clouds, water FX, full particles, and vegetation animation. Choose")} <strong style={{ color: '#7cd8ff' }}>{t("Performance")}</strong>
+                            {' '}{t("for a lighter GPU load. You can still fine-tune every option below.")}
                         </div>
                         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                             <button
@@ -391,7 +392,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                                     opacity: activeVisualPreset === 'advanced' ? 1 : 0.82,
                                 }}
                             >
-                                ADVANCED GRAPHICS
+                                {t("ADVANCED GRAPHICS")}
                                 {activeVisualPreset === 'advanced' ? ' ✓' : ''}
                             </button>
                             <button
@@ -420,7 +421,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                                     opacity: activeVisualPreset === 'performance' ? 1 : 0.82,
                                 }}
                             >
-                                PERFORMANCE
+                                {t("PERFORMANCE")}
                                 {activeVisualPreset === 'performance' ? ' ✓' : ''}
                             </button>
                         </div>
@@ -435,7 +436,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                         textAlign: 'left',
                         opacity: 0.9,
                     }}>
-                        CORE VISUALS
+                        {t("CORE VISUALS")}
                     </div>
 
                     {/* Tree Shadows Setting */}
@@ -459,7 +460,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                                     fontSize: '14px',
                                 }}
                             />
-                            ALL SHADOWS: {allShadowsEnabled ? 'ENABLED' : 'DISABLED'}
+                            {t("ALL SHADOWS:")} {allShadowsEnabled ? t("ENABLED") : t("DISABLED")}
                         </div>
                         <div style={{
                             fontFamily: '"Press Start 2P", cursive',
@@ -471,8 +472,8 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                             textAlign: 'left',
                         }}>
                             {allShadowsEnabled
-                                ? 'Dynamic shadows enabled for trees, resources, structures, and overlays'
-                                : 'All in-world shadows disabled for maximum clarity/performance'
+                                ? t("Dynamic shadows enabled for trees, resources, structures, and overlays")
+                                : t("All in-world shadows disabled for maximum clarity/performance")
                             }
                         </div>
                         <div style={{
@@ -501,7 +502,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                                         accentColor: '#00ff88',
                                     }}
                                 />
-                                ENABLE ALL SHADOWS
+                                {t("ENABLE ALL SHADOWS")}
                             </label>
                         </div>
                     </div>
@@ -527,7 +528,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                                     fontSize: '14px',
                                 }}
                             />
-                            PRECIPITATION: {weatherOverlayEnabled ? 'ENABLED' : 'DISABLED'}
+                            {t("PRECIPITATION:")} {weatherOverlayEnabled ? t("ENABLED") : t("DISABLED")}
                         </div>
                         <div style={{
                             fontFamily: '"Press Start 2P", cursive',
@@ -539,8 +540,8 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                             textAlign: 'left',
                         }}>
                             {weatherOverlayEnabled 
-                                ? 'Rain and snow particles enabled' 
-                                : 'Rain and snow disabled'
+                                ? t("Rain and snow particles enabled")
+                                : t("Rain and snow disabled")
                             }
                         </div>
                         <div style={{
@@ -569,7 +570,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                                         accentColor: '#44aaff',
                                     }}
                                 />
-                                ENABLE RAIN/SNOW
+                                {t("ENABLE RAIN/SNOW")}
                             </label>
                         </div>
                     </div>
@@ -587,7 +588,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                             alignItems: 'center',
                             gap: '12px',
                         }}>
-                            STORM ATMOSPHERE: {stormAtmosphereEnabled ? 'ENABLED' : 'DISABLED'}
+                            {t("STORM ATMOSPHERE:")} {stormAtmosphereEnabled ? t("ENABLED") : t("DISABLED")}
                         </div>
                         <div style={{
                             fontFamily: '"Press Start 2P", cursive',
@@ -599,8 +600,8 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                             textAlign: 'left',
                         }}>
                             {stormAtmosphereEnabled
-                                ? 'Storm darkening, desaturation, and mood enabled'
-                                : 'No storm tinting/darkening'
+                                ? t("Storm darkening, desaturation, and mood enabled")
+                                : t("No storm tinting/darkening")
                             }
                         </div>
                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-start', gap: '15px' }}>
@@ -620,7 +621,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                                     onChange={(e) => onStormAtmosphereChange(e.target.checked)}
                                     style={{ marginRight: '10px', transform: 'scale(1.5)', accentColor: '#5cb8ff' }}
                                 />
-                                ENABLE STORM LOOK
+                                {t("ENABLE STORM LOOK")}
                             </label>
                         </div>
                     </div>
@@ -647,7 +648,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                                     fontSize: '14px',
                                 }}
                             />
-                            GRASS RENDERING: {grassEnabled ? 'ENABLED' : 'DISABLED'}
+                            {t("GRASS RENDERING:")} {grassEnabled ? t("ENABLED") : t("DISABLED")}
                         </div>
                         <div style={{
                             fontFamily: '"Press Start 2P", cursive',
@@ -659,8 +660,8 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                             textAlign: 'left',
                         }}>
                             {grassEnabled 
-                                ? 'Grass subscriptions active - may impact performance' 
-                                : 'Grass disabled for better performance'
+                                ? t("Grass subscriptions active - may impact performance")
+                                : t("Grass disabled for better performance")
                             }
                         </div>
                         <div style={{
@@ -689,7 +690,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                                         accentColor: '#88cc44',
                                     }}
                                 />
-                                ENABLE GRASS
+                                {t("ENABLE GRASS")}
                             </label>
                         </div>
                     </div>
@@ -716,7 +717,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                                     fontSize: '14px',
                                 }}
                             />
-                            STATUS OVERLAYS: {statusOverlaysEnabled ? 'ENABLED' : 'DISABLED'}
+                            {t("STATUS OVERLAYS:")} {statusOverlaysEnabled ? t("ENABLED") : t("DISABLED")}
                         </div>
                         <div style={{
                             fontFamily: '"Press Start 2P", cursive',
@@ -728,8 +729,8 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                             textAlign: 'left',
                         }}>
                             {statusOverlaysEnabled 
-                                ? 'Screen effects show when cold or low health' 
-                                : 'Cold/health screen effects disabled'
+                                ? t("Screen effects show when cold or low health")
+                                : t("Cold/health screen effects disabled")
                             }
                         </div>
                         <div style={{
@@ -758,7 +759,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                                         accentColor: '#ff5566',
                                     }}
                                 />
-                                ENABLE OVERLAYS
+                                {t("ENABLE OVERLAYS")}
                             </label>
                         </div>
                     </div>
@@ -784,7 +785,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                                     fontSize: '14px',
                                 }}
                             />
-                            PLAYER NAMES: {alwaysShowPlayerNames ? 'ALWAYS VISIBLE' : 'HOVER ONLY'}
+                            {t("PLAYER NAMES:")} {alwaysShowPlayerNames ? t("ALWAYS VISIBLE") : t("HOVER ONLY")}
                         </div>
                         <div style={{
                             fontFamily: '"Press Start 2P", cursive',
@@ -796,8 +797,8 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                             textAlign: 'left',
                         }}>
                             {alwaysShowPlayerNames 
-                                ? 'Player names shown above all characters' 
-                                : 'Player names shown only when hovering'
+                                ? t("Player names shown above all characters")
+                                : t("Player names shown only when hovering")
                             }
                         </div>
                         <div style={{
@@ -826,7 +827,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                                         accentColor: '#00ffff',
                                     }}
                                 />
-                                ALWAYS SHOW NAMES
+                                {t("ALWAYS SHOW NAMES")}
                             </label>
                         </div>
                     </div>
@@ -841,37 +842,37 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                         textAlign: 'left',
                         opacity: 0.9,
                     }}>
-                        PERFORMANCE
+                        {t("PERFORMANCE")}
                     </div>
 
                     {/* Clouds Setting */}
                     <div style={settingCardStyle}>
                         <div style={{ fontFamily: '"Press Start 2P", cursive', fontSize: '16px', color: '#a8d9ff', marginBottom: '12px', textShadow: '0 0 8px #a8d9ff', letterSpacing: '1px' }}>
-                            CLOUDS: {cloudsEnabled ? 'ENABLED' : 'DISABLED'}
+                            {t("CLOUDS:")} {cloudsEnabled ? t("ENABLED") : t("DISABLED")}
                         </div>
                         <div style={{ fontFamily: '"Press Start 2P", cursive', fontSize: '12px', color: '#d6ebff', marginBottom: '8px', opacity: 0.7, letterSpacing: '0.5px', textAlign: 'left' }}>
-                            High-atmosphere cloud layer rendered over world.
+                            {t("High-atmosphere cloud layer rendered over world.")}
                         </div>
                         <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontFamily: '"Press Start 2P", cursive', fontSize: '14px', color: cloudsEnabled ? '#a8d9ff' : '#666', textShadow: cloudsEnabled ? '0 0 5px #a8d9ff' : 'none' }}>
                             <input type="checkbox" checked={cloudsEnabled} onChange={(e) => onCloudsEnabledChange(e.target.checked)} style={{ marginRight: '10px', transform: 'scale(1.5)', accentColor: '#a8d9ff' }} />
-                            ENABLE CLOUDS
+                            {t("ENABLE CLOUDS")}
                         </label>
                     </div>
 
                     {/* Water Surface Effects */}
                     <div style={settingCardStyle}>
                         <div style={{ fontFamily: '"Press Start 2P", cursive', fontSize: '16px', color: '#55d6ff', marginBottom: '12px', textShadow: '0 0 8px #55d6ff', letterSpacing: '1px' }}>
-                            WATER SURFACE FX: {waterSurfaceEffectsEnabled ? 'ENABLED' : 'DISABLED'}
+                            {t("WATER SURFACE FX:")} {waterSurfaceEffectsEnabled ? t("ENABLED") : t("DISABLED")}
                         </div>
                         <div style={{ fontFamily: '"Press Start 2P", cursive', fontSize: '12px', color: '#baf3ff', marginBottom: '8px', opacity: 0.7, letterSpacing: '0.5px', textAlign: 'left' }}>
-                            Voronoi/caustic/ripple water rendering and shoreline treatment.
+                            {t("Voronoi/caustic/ripple water rendering and shoreline treatment.")}
                         </div>
                         <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontFamily: '"Press Start 2P", cursive', fontSize: '14px', color: waterSurfaceEffectsEnabled ? '#55d6ff' : '#666', textShadow: waterSurfaceEffectsEnabled ? '0 0 5px #55d6ff' : 'none', marginBottom: '10px' }}>
                             <input type="checkbox" checked={waterSurfaceEffectsEnabled} onChange={(e) => onWaterSurfaceEffectsEnabledChange(e.target.checked)} style={{ marginRight: '10px', transform: 'scale(1.5)', accentColor: '#55d6ff' }} />
-                            ENABLE WATER FX
+                            {t("ENABLE WATER FX")}
                         </label>
                         <div style={{ fontFamily: '"Press Start 2P", cursive', fontSize: '12px', color: '#baf3ff', marginBottom: '8px', opacity: 0.8, letterSpacing: '0.5px' }}>
-                            WATER FX INTENSITY: {Math.round(waterSurfaceEffectsIntensity)}%
+                            {t("WATER FX INTENSITY:")} {Math.round(waterSurfaceEffectsIntensity)}%
                         </div>
                         <input
                             type="range"
@@ -888,10 +889,10 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                     {/* Particle Quality */}
                     <div style={{ marginBottom: '25px' }}>
                         <div style={{ fontFamily: '"Press Start 2P", cursive', fontSize: '16px', color: '#ffd46a', marginBottom: '12px', textShadow: '0 0 8px #ffd46a', letterSpacing: '1px' }}>
-                            WORLD PARTICLES: {worldParticlesQuality === 2 ? 'FULL' : worldParticlesQuality === 1 ? 'LOW' : 'OFF'}
+                            {t("WORLD PARTICLES:")} {worldParticlesQuality === 2 ? t("FULL") : worldParticlesQuality === 1 ? t('LOW') : t('OFF')}
                         </div>
                         <div style={{ fontFamily: '"Press Start 2P", cursive', fontSize: '12px', color: '#ffeab4', marginBottom: '8px', opacity: 0.75, letterSpacing: '0.5px', textAlign: 'left' }}>
-                            Controls ambient and combat particles for performance tuning.
+                            {t("Controls ambient and combat particles for performance tuning.")}
                         </div>
                         <select
                             value={worldParticlesQuality}
@@ -907,23 +908,23 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                                 fontSize: '11px',
                             }}
                         >
-                            <option value={0}>OFF</option>
-                            <option value={1}>LOW</option>
-                            <option value={2}>FULL</option>
+                            <option value={0}>{t("OFF")}</option>
+                            <option value={1}>{t("LOW")}</option>
+                            <option value={2}>{t("FULL")}</option>
                         </select>
                     </div>
 
                     {/* Footprints */}
                     <div style={settingCardStyle}>
                         <div style={{ fontFamily: '"Press Start 2P", cursive', fontSize: '16px', color: '#9ce7a5', marginBottom: '12px', textShadow: '0 0 8px #9ce7a5', letterSpacing: '1px' }}>
-                            FOOTPRINTS: {footprintsEnabled ? 'ENABLED' : 'DISABLED'}
+                            {t("FOOTPRINTS:")} {footprintsEnabled ? t("ENABLED") : t("DISABLED")}
                         </div>
                         <div style={{ fontFamily: '"Press Start 2P", cursive', fontSize: '12px', color: '#cdf4d2', marginBottom: '8px', opacity: 0.75, letterSpacing: '0.5px', textAlign: 'left' }}>
-                            Ground footprints in sand/snow. Cosmetic only.
+                            {t("Ground footprints in sand/snow. Cosmetic only.")}
                         </div>
                         <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontFamily: '"Press Start 2P", cursive', fontSize: '14px', color: footprintsEnabled ? '#9ce7a5' : '#666', textShadow: footprintsEnabled ? '0 0 5px #9ce7a5' : 'none' }}>
                             <input type="checkbox" checked={footprintsEnabled} onChange={(e) => onFootprintsEnabledChange(e.target.checked)} style={{ marginRight: '10px', transform: 'scale(1.5)', accentColor: '#9ce7a5' }} />
-                            ENABLE FOOTPRINTS
+                            {t("ENABLE FOOTPRINTS")}
                         </label>
                     </div>
 
@@ -931,14 +932,14 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                     <div style={settingCardStyle}>
                         <div style={{ fontFamily: '"Press Start 2P", cursive', fontSize: '16px', color: '#88cc44', marginBottom: '12px', textShadow: '0 0 8px #88cc44', letterSpacing: '1px', display: 'flex', alignItems: 'center', gap: '12px' }}>
                             <FontAwesomeIcon icon={faLeaf} style={{ color: '#88cc44', textShadow: '0 0 8px #88cc44', fontSize: '14px' }} />
-                            VEGETATION ANIMATION: {grassAnimationEnabled ? 'ON' : 'OFF'}
+                            {t("VEGETATION ANIMATION:")} {grassAnimationEnabled ? t("ON") : t("OFF")}
                         </div>
                         <div style={{ fontFamily: '"Press Start 2P", cursive', fontSize: '12px', color: '#aaffaa', marginBottom: '8px', opacity: 0.75, letterSpacing: '0.5px', textAlign: 'left' }}>
-                            Weather-driven wind on grass, bushes, crops, tree foliage, and kelp. Turn off for a static pose.
+                            {t("Weather-driven wind on grass, bushes, crops, tree foliage, and kelp. Turn off for a static pose.")}
                         </div>
                         <label style={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontFamily: '"Press Start 2P", cursive', fontSize: '14px', color: grassAnimationEnabled ? '#88cc44' : '#666', textShadow: grassAnimationEnabled ? '0 0 5px #88cc44' : 'none' }}>
                             <input type="checkbox" checked={grassAnimationEnabled} onChange={(e) => onGrassAnimationEnabledChange(e.target.checked)} style={{ marginRight: '10px', transform: 'scale(1.5)', accentColor: '#88cc44' }} />
-                            ENABLE VEGETATION ANIMATION
+                            {t("ENABLE VEGETATION ANIMATION")}
                         </label>
                     </div>
 
@@ -946,7 +947,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                     <div style={settingCardStyle}>
                         <div style={{ fontFamily: '"Press Start 2P", cursive', fontSize: '16px', color: '#b8a0ff', marginBottom: '12px', textShadow: '0 0 8px #b8a0ff', letterSpacing: '1px', display: 'flex', alignItems: 'center', gap: '12px' }}>
                             <FontAwesomeIcon icon={faGears} style={{ color: '#b8a0ff', textShadow: '0 0 8px #b8a0ff', fontSize: '14px' }} />
-                            FIXED SIMULATION (30 Hz): {fixedSimulationMode.toUpperCase()}
+                            {t("FIXED SIMULATION (30 Hz):")} {fixedSimulationMode.toUpperCase()}
                         </div>
                         <div style={{ fontFamily: '"Press Start 2P", cursive', fontSize: '12px', color: '#d4c8ff', marginBottom: '8px', opacity: 0.75, letterSpacing: '0.5px', textAlign: 'left' }}>
                             {fixedSimulationMode === 'auto'
@@ -956,7 +957,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                                     : 'Forced variable timestep. Usually smoother/more responsive on 60 Hz displays.'}
                         </div>
                         <div style={{ fontFamily: '"Press Start 2P", cursive', fontSize: '11px', color: '#c7b7ff', marginBottom: '8px', opacity: 0.8, letterSpacing: '0.4px', textAlign: 'left' }}>
-                            Hint: if you use 120/144/165 Hz and notice micro-jitter, try AUTO or ON.
+                            {t("Hint: if you use 120/144/165 Hz and notice micro-jitter, try AUTO or ON.")}
                         </div>
                         <select
                             value={fixedSimulationMode}
@@ -972,9 +973,9 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                                 fontSize: '11px',
                             }}
                         >
-                            <option value="off">OFF (VARIABLE TIMESTEP)</option>
-                            <option value="auto">AUTO (USE DISPLAY REFRESH)</option>
-                            <option value="on">ON (FORCE FIXED 30 HZ)</option>
+                            <option value="off">{t("OFF (VARIABLE TIMESTEP)")}</option>
+                            <option value="auto">{t("AUTO (USE DISPLAY REFRESH)")}</option>
+                            <option value="on">{t("ON (FORCE FIXED 30 HZ)")}</option>
                         </select>
                     </div>
 
@@ -988,7 +989,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                         textAlign: 'left',
                         opacity: 0.9,
                     }}>
-                        POST PROCESSING
+                        {t("POST PROCESSING")}
                     </div>
 
                     {/* Bloom Filter Slider */}
@@ -1001,7 +1002,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                             textShadow: '0 0 8px #ffe066',
                             letterSpacing: '1px',
                         }}>
-                            BLOOM FILTER: {Math.round(bloomIntensity)}%
+                            {t("BLOOM FILTER:")} {Math.round(bloomIntensity)}%
                         </div>
                         <div style={{
                             fontFamily: '"Press Start 2P", cursive',
@@ -1012,7 +1013,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                             letterSpacing: '0.5px',
                             textAlign: 'left',
                         }}>
-                            Soft glow on bright areas. Tuned for a cozy, cinematic scene.
+                            {t("Soft glow on bright areas. Tuned for a cozy, cinematic scene.")}
                         </div>
                         <input
                             type="range"
@@ -1039,7 +1040,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                             textShadow: '0 0 8px #d0d8ff',
                             letterSpacing: '1px',
                         }}>
-                            VIGNETTE: {Math.round(vignetteIntensity)}%
+                            {t("VIGNETTE:")} {Math.round(vignetteIntensity)}%
                         </div>
                         <div style={{
                             fontFamily: '"Press Start 2P", cursive',
@@ -1050,7 +1051,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                             letterSpacing: '0.5px',
                             textAlign: 'left',
                         }}>
-                            Darkens screen edges for depth. Default is intentionally very subtle.
+                            {t("Darkens screen edges for depth. Default is intentionally very subtle.")}
                         </div>
                         <input
                             type="range"
@@ -1077,7 +1078,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                             textShadow: '0 0 8px #ff9ad1',
                             letterSpacing: '1px',
                         }}>
-                            CHROMATIC ABERRATION: {Math.round(chromaticAberrationIntensity)}%
+                            {t("CHROMATIC ABERRATION:")} {Math.round(chromaticAberrationIntensity)}%
                         </div>
                         <div style={{
                             fontFamily: '"Press Start 2P", cursive',
@@ -1088,7 +1089,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                             letterSpacing: '0.5px',
                             textAlign: 'left',
                         }}>
-                            Adds a subtle red/green edge split for film-like lens character.
+                            {t("Adds a subtle red/green edge split for film-like lens character.")}
                         </div>
                         <input
                             type="range"
@@ -1115,7 +1116,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                             textShadow: '0 0 8px #8effd1',
                             letterSpacing: '1px',
                         }}>
-                            SATURATION: {Math.round(colorCorrection)}%
+                            {t("SATURATION:")} {Math.round(colorCorrection)}%
                         </div>
                         <div style={{
                             fontFamily: '"Press Start 2P", cursive',
@@ -1126,7 +1127,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                             letterSpacing: '0.5px',
                             textAlign: 'left',
                         }}>
-                            Adjusts color intensity of the world. 50% is neutral.
+                            {t("Adjusts color intensity of the world. 50% is neutral.")}
                         </div>
                         <input
                             type="range"
@@ -1161,7 +1162,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                             textAlign: 'left',
                             letterSpacing: '0.7px',
                         }}>
-                            POST-PROCESSING PRESETS
+                            {t("POST-PROCESSING PRESETS")}
                         </div>
                         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap' }}>
                             <button
@@ -1194,7 +1195,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                                     e.currentTarget.style.boxShadow = '0 0 15px rgba(255, 122, 122, 0.35), inset 0 0 10px rgba(255, 122, 122, 0.12)';
                                 }}
                             >
-                                OFF (DEFAULT)
+                                {t("OFF (DEFAULT)")}
                             </button>
                             <button
                                 onClick={() => applyPostProcessingPreset('vibrant')}
@@ -1216,7 +1217,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                                     letterSpacing: '1px',
                                 }}
                             >
-                                VIBRANT
+                                {t("VIBRANT")}
                             </button>
                             <button
                                 onClick={() => applyPostProcessingPreset('desaturated')}
@@ -1238,7 +1239,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                                     letterSpacing: '1px',
                                 }}
                             >
-                                DESATURATED
+                                {t("DESATURATED")}
                             </button>
                         </div>
                     </div>
@@ -1274,7 +1275,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                             e.currentTarget.style.boxShadow = '0 0 15px rgba(255, 136, 51, 0.3), inset 0 0 10px rgba(255, 136, 51, 0.1)';
                         }}
                     >
-                        NEURAL INTERFACE MENU
+                        {t("NEURAL INTERFACE MENU")}
                     </button>
                     <button
                         onClick={onClose}
@@ -1304,7 +1305,7 @@ const GameVisualSettingsMenu: React.FC<GameVisualSettingsMenuProps> = ({
                             e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 170, 255, 0.3), inset 0 0 10px rgba(0, 170, 255, 0.1)';
                         }}
                     >
-                        RESUME CONSCIOUSNESS
+                        {t("RESUME CONSCIOUSNESS")}
                     </button>
                 </div>
                 

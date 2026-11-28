@@ -1,3 +1,5 @@
+import { useLanguage } from '../i18n/LanguageContext';
+import { gameplayKey } from '../utils/gameplayKey';
 import React, { useState, useMemo, useCallback } from 'react';
 import type { AchievementDefinition } from '../generated/types';
 import { useGameConnection } from '../contexts/GameConnectionContext';
@@ -35,6 +37,7 @@ const CATEGORY_ICONS: Record<string, string> = {
 type SortOption = 'alphabetical' | 'recent';
 
 const AchievementsPanel: React.FC = () => {
+  const { t } = useLanguage();
   const { dbIdentity: playerIdentity } = useGameConnection();
   const { setIsCraftingSearchFocused } = useGameUI();
   const { achievementDefinitions, playerAchievements } = useGameScreenWorldTables();
@@ -212,14 +215,14 @@ const AchievementsPanel: React.FC = () => {
         }}>
           <img 
             src={achievementsIcon} 
-            alt="Achievements" 
+            alt={t("Achievements")}
             style={{ 
               width: '28px', 
               height: '28px',
               imageRendering: 'pixelated',
             }} 
           />
-          ACHIEVEMENTS
+          {t("ACHIEVEMENTS")}
         </h2>
         
         {/* Progress bar with text inside */}
@@ -277,7 +280,7 @@ const AchievementsPanel: React.FC = () => {
           </span>
           <input
             type="text"
-            placeholder="Search achievements, descriptions, titles..."
+            placeholder={t("Search achievements, descriptions, titles...")}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             style={{
@@ -304,7 +307,7 @@ const AchievementsPanel: React.FC = () => {
             onKeyDown={(e) => {
               // Block game control keys from bubbling up to the game
               const gameControlKeys = ['f', 'g', ' ', 'e', 'w', 'a', 's', 'd', 'z', 'c', 'm', 'y', 'k', 'r', 'q', 'tab'];
-              const key = e.key.toLowerCase();
+              const key = gameplayKey(e);
               
               if (gameControlKeys.includes(key)) {
                 e.stopPropagation();
@@ -353,7 +356,7 @@ const AchievementsPanel: React.FC = () => {
           alignItems: 'center',
           gap: '8px',
         }}>
-          <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)' }}>Sort:</span>
+          <span style={{ fontSize: '11px', color: 'rgba(255, 255, 255, 0.6)' }}>{t("Sort:")}</span>
           <button
             onClick={() => setSortBy('alphabetical')}
             style={{
@@ -388,7 +391,7 @@ const AchievementsPanel: React.FC = () => {
               transition: 'all 0.2s ease',
             }}
           >
-            🕒 Recent
+            {t("🕒 Recent")}
           </button>
         </div>
 
@@ -411,7 +414,7 @@ const AchievementsPanel: React.FC = () => {
               accentColor: '#ffd700',
             }}
           />
-          Show Unlocked Only
+          {t("Show Unlocked Only")}
         </label>
       </div>
 
@@ -443,7 +446,7 @@ const AchievementsPanel: React.FC = () => {
             textTransform: 'uppercase',
           }}
         >
-          ALL
+          {t("ALL")}
         </button>
         
         {categories.map((category) => (
@@ -484,7 +487,7 @@ const AchievementsPanel: React.FC = () => {
             color: 'rgba(255, 255, 255, 0.6)',
           }}>
             <div style={{ fontSize: '24px', marginBottom: '10px' }}>🏆</div>
-            <div>No achievements found.</div>
+            <div>{t("No achievements found.")}</div>
             {searchQuery && (
               <div style={{ marginTop: '8px', fontSize: '12px' }}>
                 No results for "{searchQuery}". Try a different search term.
@@ -492,7 +495,7 @@ const AchievementsPanel: React.FC = () => {
             )}
             {showUnlockedOnly && !searchQuery && (
               <div style={{ marginTop: '8px', fontSize: '12px' }}>
-                Try showing all achievements.
+                {t("Try showing all achievements.")}
               </div>
             )}
           </div>
@@ -568,12 +571,12 @@ const AchievementsPanel: React.FC = () => {
                     }}>
                       {Number(achievement.xpReward) > 0 && (
                         <span style={{ color: '#00ffff' }}>
-                          +{Number(achievement.xpReward)} XP
+                          +{Number(achievement.xpReward)} {t("XP")}
                         </span>
                       )}
                       {achievement.titleReward && (
                         <span style={{ color: '#ff6b9d' }}>
-                          Title: {achievement.titleReward}
+                          {t("Title:")} {achievement.titleReward}
                         </span>
                       )}
                       {unlockTime && (

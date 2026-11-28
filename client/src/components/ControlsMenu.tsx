@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext';
 import React from 'react';
 import styles from './MenuComponents.module.css';
 import { controlSections } from '../utils/gameKnowledgeExtractor';
@@ -8,6 +9,7 @@ interface ControlsMenuProps {
 }
 
 const ControlsMenu: React.FC<ControlsMenuProps> = ({ onBack, onClose }) => {
+    const { t } = useLanguage();
     const handleBackdropClick = (e: React.MouseEvent) => {
         if (e.target === e.currentTarget) {
             onBack();
@@ -72,7 +74,7 @@ const ControlsMenu: React.FC<ControlsMenuProps> = ({ onBack, onClose }) => {
                         textShadow: '0 0 10px rgba(0, 255, 255, 0.8), 0 0 20px rgba(0, 255, 255, 0.4)',
                     }}
                 >
-                    MOTOR CORTEX INTERFACE
+                    {t("MOTOR CORTEX INTERFACE")}
                 </h2>
                 
                 <div
@@ -86,7 +88,7 @@ const ControlsMenu: React.FC<ControlsMenuProps> = ({ onBack, onClose }) => {
                         marginBottom: '25px',
                     }}
                 >
-                    Neural Input Mapping Protocol v0.82
+                    {t("Neural Input Mapping Protocol v0.82")}
                 </div>
 
                 <div 
@@ -104,7 +106,7 @@ const ControlsMenu: React.FC<ControlsMenuProps> = ({ onBack, onClose }) => {
                                     textShadow: '0 0 8px rgba(0, 170, 255, 0.8)',
                                 }}
                             >
-                                {section.title}
+                                {t(section.title)}
                             </h3>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
                                 {section.controls.map((control, controlIndex) => (
@@ -132,7 +134,7 @@ const ControlsMenu: React.FC<ControlsMenuProps> = ({ onBack, onClose }) => {
                                                 textShadow: '0 0 6px rgba(255, 221, 68, 0.6)',
                                             }}
                                         >
-                                            {control.key}
+                                            {t(control.key)}
                                         </span>
                                         <span
                                             style={{
@@ -145,7 +147,7 @@ const ControlsMenu: React.FC<ControlsMenuProps> = ({ onBack, onClose }) => {
                                                 textShadow: '0 0 4px rgba(255, 255, 255, 0.4)',
                                             }}
                                         >
-                                            {control.description}
+                                            {t(control.description)}
                                         </span>
                                     </div>
                                 ))}
@@ -183,7 +185,7 @@ const ControlsMenu: React.FC<ControlsMenuProps> = ({ onBack, onClose }) => {
                             e.currentTarget.style.boxShadow = '0 0 15px rgba(255, 136, 51, 0.3), inset 0 0 10px rgba(255, 136, 51, 0.1)';
                         }}
                     >
-                        NEURAL INTERFACE MENU
+                        {t("NEURAL INTERFACE MENU")}
                     </button>
                     <button
                         onClick={onClose}
@@ -213,7 +215,7 @@ const ControlsMenu: React.FC<ControlsMenuProps> = ({ onBack, onClose }) => {
                             e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 170, 255, 0.3), inset 0 0 10px rgba(0, 170, 255, 0.1)';
                         }}
                     >
-                        RESUME CONSCIOUSNESS
+                        {t("RESUME CONSCIOUSNESS")}
                     </button>
                 </div>
             </div>

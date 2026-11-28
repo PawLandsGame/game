@@ -1,3 +1,4 @@
+import { gameplayKey } from '../utils/gameplayKey';
 import { useState, useEffect, useCallback, useRef } from 'react';
 
 interface UseVoiceInterfaceProps {
@@ -36,7 +37,7 @@ export const useVoiceInterface = ({
     // Block if any UI is open or if already pressed
     if (isBlocked || isVKeyPressedRef.current) return;
 
-    if (event.key.toLowerCase() === 'v' && !event.repeat) {
+    if (gameplayKey(event) === 'v' && !event.repeat) {
       console.log('[VoiceInterface] V key pressed - starting voice interface');
       isVKeyPressedRef.current = true;
       keyDownTimeRef.current = Date.now();
@@ -50,7 +51,7 @@ export const useVoiceInterface = ({
   }, [isBlocked]);
 
   const handleKeyUp = useCallback((event: KeyboardEvent) => {
-    if (event.key.toLowerCase() === 'v' && isVKeyPressedRef.current) {
+    if (gameplayKey(event) === 'v' && isVKeyPressedRef.current) {
       console.log('[VoiceInterface] V key released - stopping voice interface');
       isVKeyPressedRef.current = false;
       

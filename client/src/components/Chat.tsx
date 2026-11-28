@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import ChatMessageHistory from './ChatMessageHistory';
 import ChatInput from './ChatInput';
@@ -30,23 +31,27 @@ type ChatTab = 'global' | 'sova' | 'team';
 type ChatMode = 'global' | 'team' | null; // null means no prefix (defaults to global)
 
 // SOVA Message Component - moved outside to prevent re-renders
-const SOVAMessage: React.FC<{message: {id: string, text: string, isUser: boolean, timestamp: Date}}> = React.memo(({ message }) => (
-  <div className={`${styles.message} ${message.isUser ? styles.sovaMessageUser : styles.sovaMessageBot}`}>
-    <div className={styles.messageHeader}>
-      <span className={`${styles.playerName} ${message.isUser ? styles.sovaPlayerNameUser : styles.sovaPlayerNameBot}`}>
-        {message.isUser ? 'You' : 'SOVA'}
-      </span>
-      <span className={styles.timestamp}>
-        {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
-      </span>
+const SOVAMessage: React.FC<{message: {id: string, text: string, isUser: boolean, timestamp: Date}}> = React.memo(({ message }) => {
+  const { t } = useLanguage();
+  return (
+    <div className={`${styles.message} ${message.isUser ? styles.sovaMessageUser : styles.sovaMessageBot}`}>
+      <div className={styles.messageHeader}>
+        <span className={`${styles.playerName} ${message.isUser ? styles.sovaPlayerNameUser : styles.sovaPlayerNameBot}`}>
+          {message.isUser ? t("You") : 'SOVA'}
+        </span>
+        <span className={styles.timestamp}>
+          {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
+        </span>
+      </div>
+      <div className={styles.messageContent}>
+        {message.text}
+      </div>
     </div>
-    <div className={styles.messageContent}>
-      {message.text}
-    </div>
-  </div>
-));
+  );
+});
 
 const Chat: React.FC<ChatProps> = ({ connection, onSOVAMessageAdderReady, isMobile = false, isMobileChatOpen = false, onSayCommand, onTitleSelect }) => {
+  const { t } = useLanguage();
   const { isChatting, setIsChatting } = useGameUI();
   const localPlayerIdentity = connection?.identity?.toHexString();
   const playerIdentity = connection?.identity ?? null;
@@ -851,7 +856,7 @@ const Chat: React.FC<ChatProps> = ({ connection, onSOVAMessageAdderReady, isMobi
       >
         <img 
           src="/favicon.png"
-          alt="Open chat"
+          alt={t("Open chat")}
           className={styles.sovaIcon}
         />
       </div>
@@ -878,7 +883,7 @@ const Chat: React.FC<ChatProps> = ({ connection, onSOVAMessageAdderReady, isMobi
             event.stopPropagation();
             setIsTitleMenuOpen((prev) => !prev);
           }}
-          title="Select active title"
+          title={t("Select active title")}
         >
           <FontAwesomeIcon icon={faGear} />
         </button>
@@ -889,7 +894,7 @@ const Chat: React.FC<ChatProps> = ({ connection, onSOVAMessageAdderReady, isMobi
               className={`${styles.titleMenuOption} ${!currentTitle ? styles.activeTitleOption : ''}`}
               onClick={() => handleTitleSelection(null)}
             >
-              No Title
+              {t("No Title")}
             </button>
             {availableTitles.length > 0 ? (
               availableTitles.map((title) => (
@@ -904,7 +909,7 @@ const Chat: React.FC<ChatProps> = ({ connection, onSOVAMessageAdderReady, isMobi
                 </button>
               ))
             ) : (
-              <div className={styles.titleMenuEmpty}>No titles unlocked</div>
+              <div className={styles.titleMenuEmpty}>{t("No titles unlocked")}</div>
             )}
           </div>
         )}
@@ -924,14 +929,14 @@ const Chat: React.FC<ChatProps> = ({ connection, onSOVAMessageAdderReady, isMobi
           className={`${styles.tab} ${activeTab === 'global' ? styles.activeTab : ''}`}
           onClick={() => handleTabSwitch('global')}
         >
-          Global
+          {t("Global")}
         </button>
         {matronageMembers?.get(localPlayerIdentity || '') && (
           <button 
             className={`${styles.tab} ${activeTab === 'team' ? styles.activeTab : ''}`}
             onClick={() => handleTabSwitch('team')}
           >
-            Team
+            {t("Team")}
           </button>
         )}
       </div>
@@ -961,14 +966,14 @@ const Chat: React.FC<ChatProps> = ({ connection, onSOVAMessageAdderReady, isMobi
               onCloseChat={handleCloseChat}
               isActive={isChatting}
               onlinePlayerNames={onlinePlayerNames}
-              placeholder={chatMode === 'team' ? 'Type message (Team mode) or /g for global...' : 'Type message or /t for team, /s to say locally...'}
+              placeholder={chatMode === 'team' ? t("Type message (Team mode) or /g for global...") : t("Type message or /t for team, /s to say locally...")}
             />
           ) : (
             <div 
               className={styles.chatPlaceholder} 
               onClick={handlePlaceholderClick}
             >
-              {chatMode === 'team' ? 'Press Enter to chat (Team mode)...' : 'Press Enter to chat...'}
+              {chatMode === 'team' ? t("Press Enter to chat (Team mode)...") : t("Press Enter to chat...")}
             </div>
           )}
         </>
@@ -996,14 +1001,14 @@ const Chat: React.FC<ChatProps> = ({ connection, onSOVAMessageAdderReady, isMobi
               onCloseChat={handleCloseChat}
               isActive={isChatting}
               onlinePlayerNames={onlinePlayerNames}
-              placeholder="Type message (Team) or /g for global, /s to say locally..."
+              placeholder={t("Type message (Team) or /g for global, /s to say locally...")}
             />
           ) : (
             <div 
               className={styles.chatPlaceholder} 
               onClick={handlePlaceholderClick}
             >
-              Press Enter to chat (Team)...
+              {t("Press Enter to chat (Team)...")}
             </div>
           )}
         </>
@@ -1013,9 +1018,9 @@ const Chat: React.FC<ChatProps> = ({ connection, onSOVAMessageAdderReady, isMobi
           <div className={styles.messageHistory}>
             {sovaMessages.length === 0 ? (
               <div className={styles.sovaWelcomeMessage}>
-                <span style={{ fontWeight: 600 }}>SOVA Online.</span>
+                <span style={{ fontWeight: 600 }}>{t("SOVA Online.")}</span>
                 <br />
-                Recon initiated. What intel do you require, agent?
+                {t("Recon initiated. What intel do you require, agent?")}
               </div>
             ) : (
               <>
@@ -1072,7 +1077,7 @@ const Chat: React.FC<ChatProps> = ({ connection, onSOVAMessageAdderReady, isMobi
               className={styles.chatPlaceholder} 
               onClick={handlePlaceholderClick}
             >
-              Ask SOVA anything...
+              {t("Ask SOVA anything...")}
             </div>
           )}
         </>
@@ -1083,7 +1088,7 @@ const Chat: React.FC<ChatProps> = ({ connection, onSOVAMessageAdderReady, isMobi
         <div className={styles.performanceReportModal}>
           <div className={styles.performanceReportContent}>
             <div className={styles.performanceReportTitle}>
-              📊 SOVA API PERFORMANCE REPORT
+              {t("📊 SOVA API PERFORMANCE REPORT")}
             </div>
             
             <pre className={styles.performanceReportText}>
@@ -1095,14 +1100,14 @@ const Chat: React.FC<ChatProps> = ({ connection, onSOVAMessageAdderReady, isMobi
                 onClick={handleCopyReport}
                 className={styles.modalButtonPrimary}
               >
-                COPY TO CLIPBOARD
+                {t("COPY TO CLIPBOARD")}
               </button>
               
               <button
                 onClick={() => setShowPerformanceReport(false)}
                 className={styles.modalButtonSecondary}
               >
-                CLOSE
+                {t("CLOSE")}
               </button>
             </div>
           </div>

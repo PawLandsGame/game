@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext';
 import React, { useEffect, useState } from 'react';
 import { KnockedOutStatus } from '../generated/types';
 import sovaIcon from '../assets/ui/sova.png';
@@ -10,6 +11,7 @@ interface CyberpunkKnockedOutScreenProps {
 const CyberpunkKnockedOutScreen: React.FC<CyberpunkKnockedOutScreenProps> = ({
   knockedOutStatus
 }) => {
+  const { t } = useLanguage();
   const [animationPhase, setAnimationPhase] = useState(0);
   const [glitchText, setGlitchText] = useState('NEURAL LINK COMPROMISED');
 
@@ -42,7 +44,7 @@ const CyberpunkKnockedOutScreen: React.FC<CyberpunkKnockedOutScreenProps> = ({
           </div>
           <div className="status-header">
             <div className="glitch-text">{glitchText}</div>
-            <div className="status-subtitle">Analyzing biometric data...</div>
+            <div className="status-subtitle">{t("Analyzing biometric data...")}</div>
           </div>
         </div>
       </div>
@@ -93,7 +95,7 @@ const CyberpunkKnockedOutScreen: React.FC<CyberpunkKnockedOutScreenProps> = ({
         <div className="status-header">
           <div className="glitch-text">{glitchText}</div>
           <div className="status-subtitle">
-            {criticalState ? 'CRITICAL CONDITION DETECTED' : 
+            {criticalState ? t("CRITICAL CONDITION DETECTED") :
              warningState ? 'UNSTABLE NEURAL PATTERNS' : 
              'MONITORING VITAL SIGNS'}
           </div>
@@ -105,7 +107,7 @@ const CyberpunkKnockedOutScreen: React.FC<CyberpunkKnockedOutScreenProps> = ({
           <div className="metric-row">
             <div className="metric-label">
               <span className="metric-icon">🧬</span>
-              RECOVERY PROBABILITY
+              {t("RECOVERY PROBABILITY")}
             </div>
             <div className="metric-value recovery">
               <div className="progress-bar">
@@ -122,7 +124,7 @@ const CyberpunkKnockedOutScreen: React.FC<CyberpunkKnockedOutScreenProps> = ({
           <div className="metric-row">
             <div className="metric-label">
               <span className="metric-icon">⚠️</span>
-              NEURAL DECAY RISK
+              {t("NEURAL DECAY RISK")}
             </div>
             <div className="metric-value death-risk">
               <div className="progress-bar">
@@ -140,7 +142,7 @@ const CyberpunkKnockedOutScreen: React.FC<CyberpunkKnockedOutScreenProps> = ({
             <div className="metric-row">
               <div className="metric-label">
                 <span className="metric-icon">⏱️</span>
-                STABILIZATION WINDOW
+                {t("STABILIZATION WINDOW")}
               </div>
               <div className="metric-value safe-time">
                 <span className="time-value">{Math.ceil(safeTime)}s</span>
@@ -152,12 +154,12 @@ const CyberpunkKnockedOutScreen: React.FC<CyberpunkKnockedOutScreenProps> = ({
           <div className="metric-row">
             <div className="metric-label">
               <span className="metric-icon">🛡️</span>
-              BIOMETRIC ENHANCEMENT
+              {t("BIOMETRIC ENHANCEMENT")}
             </div>
             <div className="metric-value survival-factor">
               <span className="multiplier">{survivalFactor.toFixed(2)}x</span>
               <div className="factor-breakdown">
-                (Nutrition • Hydration • Stamina • Thermal • Armor)
+                {t("(Nutrition • Hydration • Stamina • Thermal • Armor)")}
               </div>
             </div>
           </div>
@@ -167,16 +169,16 @@ const CyberpunkKnockedOutScreen: React.FC<CyberpunkKnockedOutScreenProps> = ({
         <div className="status-messages">
           <div className="message-line primary">
             <span className="message-icon">🔗</span>
-            NEURAL LINK PARTNER CAN INITIATE REVIVAL PROTOCOL
+            {t("NEURAL LINK PARTNER CAN INITIATE REVIVAL PROTOCOL")}
           </div>
           <div className="message-line secondary">
             <span className="message-icon">📊</span>
-            ENHANCED BIOMETRICS IMPROVE SURVIVAL PROBABILITY
+            {t("ENHANCED BIOMETRICS IMPROVE SURVIVAL PROBABILITY")}
           </div>
           {criticalState && (
             <div className="message-line critical">
               <span className="message-icon">🚨</span>
-              WARNING: NEURAL PATTERN DEGRADATION ACCELERATING
+              {t("WARNING: NEURAL PATTERN DEGRADATION ACCELERATING")}
             </div>
           )}
         </div>

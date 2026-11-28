@@ -1,3 +1,5 @@
+import LanguageSelect from './LanguageSelect';
+import { useLanguage } from '../i18n/LanguageContext';
 /**
  * LoginScreen.tsx
  * 
@@ -44,6 +46,7 @@ interface MobileNavMenuProps {
 }
 
 const MobileNavMenu: React.FC<MobileNavMenuProps> = ({ navItems, onNavigate, onPlayClick, userEmail, onLogout }) => {
+    const { t } = useLanguage();
     const [isOpen, setIsOpen] = useState(false);
 
     const handleNavClick = (selector: string) => {
@@ -137,7 +140,7 @@ const MobileNavMenu: React.FC<MobileNavMenuProps> = ({ navItems, onNavigate, onP
                                     textTransform: 'uppercase',
                                     letterSpacing: '1px',
                                 }}>
-                                    Signed in as
+                                    {t("Signed in as")}
                                 </p>
                                 <p style={{
                                     fontSize: '13px',
@@ -174,7 +177,7 @@ const MobileNavMenu: React.FC<MobileNavMenuProps> = ({ navItems, onNavigate, onP
                                         e.currentTarget.style.borderColor = 'rgba(255, 0, 100, 0.4)';
                                     }}
                                 >
-                                    Log out
+                                    {t("Log out")}
                                 </button>
                             </div>
                         )}
@@ -241,7 +244,7 @@ const MobileNavMenu: React.FC<MobileNavMenuProps> = ({ navItems, onNavigate, onP
                                 e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 140, 0, 0.3)';
                             }}
                         >
-                            PLAY
+                            {t("PLAY")}
                         </button>
                     </div>
                 </>
@@ -274,6 +277,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
     onlinePlayerCount,
     maxPlayerCount,
 }) => {
+    const { t } = useLanguage();
     // Get OpenAuth state and functions
     const {
         userProfile, // Contains { userId } after successful login 
@@ -629,7 +633,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                             e.currentTarget.style.boxShadow = '0 2px 10px rgba(255, 0, 100, 0.2)';
                         }}
                     >
-                        LOG OUT
+                        {t("LOG OUT")}
                     </button>
                 </div>
             )}
@@ -733,14 +737,14 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                         e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 140, 0, 0.3)';
                                     }}
                                 >
-                                    PLAY
+                                    {t("PLAY")}
                                 </button>
                             )}
                             <MobileNavMenu
                                 navItems={[
-                                    { label: 'ABOUT', selector: '[data-about-section]' },
-                                    { label: 'FEATURES', selector: '[data-features-section]' },
-                                    { label: 'FAQ', selector: '[data-faq-section]' },
+                                    { label: t("ABOUT"), selector: '[data-about-section]' },
+                                    { label: t("FEATURES"), selector: '[data-features-section]' },
+                                    { label: t("FAQ"), selector: '[data-faq-section]' },
                                 ]}
                                 onNavigate={smoothScrollTo}
                                 onPlayClick={scrollToTop}
@@ -756,9 +760,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                             fontSize: '14px',
                         }}>
                             {[
-                                { label: 'ABOUT', selector: '[data-about-section]' },
-                                { label: 'FEATURES', selector: '[data-features-section]' },
-                                { label: 'FAQ', selector: '[data-faq-section]' },
+                                { label: t("ABOUT"), selector: '[data-about-section]' },
+                                { label: t("FEATURES"), selector: '[data-features-section]' },
+                                { label: t("FAQ"), selector: '[data-faq-section]' },
                             ].map((item) => (
                                 <button
                                     key={item.label}
@@ -816,7 +820,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                     e.currentTarget.style.boxShadow = '0 4px 12px rgba(255, 140, 0, 0.3)';
                                 }}
                             >
-                                PLAY
+                                {t("PLAY")}
                             </button>
                         </nav>
                     )}
@@ -875,6 +879,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                     position: 'relative',
                     zIndex: 2, // Ensure content appears above the gradient overlay
                 }}>
+                    <LanguageSelect />
                     {/* Logo - Hidden on mobile since nav bar has logo */}
                     {!isMobile && (
                         <>
@@ -902,7 +907,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                             )}
                             <img
                                 src={logo}
-                                alt="PawLands Logo"
+                                alt={t("PawLands Logo")}
                                 loading="eager"
                                 fetchPriority="high"
                                 decoding="sync"
@@ -927,7 +932,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
 
                         {/* Display based on authentication and player existence */}
                         {authIsLoading ? (
-                            <p>Loading...</p>
+                            <p>{t("Loading...")}</p>
                         ) : (authError || connectionError) ? (
                             <>
                                 <p style={{
@@ -940,7 +945,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                     marginBottom: '20px',
                                     textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
                                 }}>
-                                    {connectionError || authError || 'Connection failed. Please ensure you have an internet connection and try again.'}<br />
+                                    {t(connectionError || authError || 'Connection failed. Please ensure you have an internet connection and try again.')}<br />
                                     {!connectionError && 'If the problem persists, please try signing out and signing in.'}
                                 </p>
                                 <div style={{ display: 'flex', flexDirection: 'row', gap: '15px', alignItems: 'center', justifyContent: 'center', width: '100%' }}>
@@ -989,7 +994,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                             overflow: 'hidden',
                                         }}
                                     >
-                                        {connectionError && connectionError.includes('Please refresh your browser') ? 'Refresh' : 'Try Again'}
+                                        {connectionError && connectionError.includes('Please refresh your browser') ? t("Refresh") : t("Try Again")}
                                     </button>
                                 </div>
                             </>
@@ -1000,7 +1005,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                     marginBottom: '20px',
                                     fontSize: '14px'
                                 }}>
-                                    Welcome back, {loggedInPlayer.username}!
+                                    {t("Welcome back,")} {loggedInPlayer.username}!
                                 </p>
                             ) : storedUsername ? (
                                 // We have a stored username, so this is an existing player reconnecting
@@ -1009,7 +1014,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                     fontSize: '14px'
                                 }}>
                                     {connectionError ?
-                                        `Playing as ${storedUsername}` :
+                                        `${t('Playing as')} ${storedUsername}` :
                                         `Welcome back, ${storedUsername}!`
                                     }
                                 </p>
@@ -1033,12 +1038,12 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                             letterSpacing: '0.5px',
                                             fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif",
                                         }}>
-                                            Choose Your Username
+                                            {t("Choose Your Username")}
                                         </label>
                                         <input
                                             ref={usernameInputRef}
                                             type="text"
-                                            placeholder="Enter username"
+                                            placeholder={t("Enter username")}
                                             value={inputUsername}
                                             onChange={(e) => setInputUsername(e.target.value)}
                                             onKeyDown={handleKeyDown}
@@ -1120,8 +1125,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                     }}
                                 >
                                     {(() => {
-                                        if (!isAuthenticated) return 'Start Your Journey';
-                                        return isWaitingForGame ? 'Connecting…' : 'Join Game';
+                                        if (!isAuthenticated) return t('Start Your Journey');
+                                        return isWaitingForGame ? t('Connecting…') : t('Join Game');
                                     })()}
                                 </button>
 
@@ -1151,7 +1156,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                             textShadow: '1px 1px 3px rgba(60,18,0,0.7)',
                                             letterSpacing: '0.7px',
                                         }}>
-                                            PawLands Alpha
+                                            {t("PawLands Alpha")}
                                         </span>
                                         <button
                                             type="button"
@@ -1204,7 +1209,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                                     zIndex: 1
                                                 }}
                                             >
-                                                learn more
+                                                {t("learn more")}
                                             </span>
                                         </button>
                                     </div>
@@ -1228,7 +1233,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                                 textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
                                                 letterSpacing: '0.5px',
                                             }}>
-                                                Players Online: {onlinePlayerCount} / {maxPlayerCount}
+                                                {t("Players Online:")} {onlinePlayerCount} / {maxPlayerCount}
                                             </span>
                                         </div>
                                     )}
@@ -1251,7 +1256,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                             textAlign: 'center',
                                             display: 'block',
                                         }}>
-                                            We're in Early Access Alpha. The server may be wiped anytime for updates, migrations, or fixes. Treat progress as temporary and enjoy the journey.
+                                            {t("We're in Early Access Alpha. The server may be wiped anytime for updates, migrations, or fixes. Treat progress as temporary and enjoy the journey.")}
                                         </span>
                                     </div>
 
@@ -1293,7 +1298,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                                 e.currentTarget.style.boxShadow = '0 0 12px rgba(255, 140, 0, 0.2)';
                                             }}
                                         >
-                                            System Requirements
+                                            {t("System Requirements")}
                                         </button>
                                         <button
                                             type="button"
@@ -1331,7 +1336,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                                 e.currentTarget.style.boxShadow = '0 0 12px rgba(255, 140, 0, 0.2)';
                                             }}
                                         >
-                                            FAQ
+                                            {t("FAQ")}
                                         </button>
                                     </div>
 
@@ -1407,27 +1412,27 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                         textTransform: 'uppercase',
                                         letterSpacing: '1.2px',
                                     }}>
-                                        System Requirements & Best Practices
+                                        {t("System Requirements & Best Practices")}
                                     </h3>
                                     <div style={{ color: 'rgba(255, 255, 255, 0.9)', fontSize: '14px', lineHeight: 1.6, textAlign: 'left' }}>
                                         <p style={{ marginTop: 0, marginBottom: '12px' }}>
-                                            <strong>Minimum:</strong> Modern browser (Chrome, Firefox, Edge), 4GB RAM, stable internet connection.
+                                            <strong>{t("Minimum:")}</strong> {t("Modern browser (Chrome, Firefox, Edge), 4GB RAM, stable internet connection.")}
                                         </p>
                                         <p style={{ marginBottom: '12px' }}>
-                                            <strong>Recommended:</strong> 8GB+ RAM, GPU for faster canvas rendering, broadband connection.
+                                            <strong>{t("Recommended:")}</strong> {t("8GB+ RAM, GPU for faster canvas rendering, broadband connection.")}
                                         </p>
                                         <p style={{ marginBottom: '16px' }}>
-                                            PawLands runs in your browser and shares CPU, GPU, and memory with other apps. For best performance:
+                                            {t("PawLands runs in your browser and shares CPU, GPU, and memory with other apps. For best performance:")}
                                         </p>
                                         <ul style={{ margin: '0 0 16px 0', paddingLeft: '20px', textAlign: 'left' }}>
-                                            <li style={{ marginBottom: '8px' }}>Close other games in the background</li>
-                                            <li style={{ marginBottom: '8px' }}>Close unnecessary browser tabs</li>
-                                            <li style={{ marginBottom: '8px' }}>Close heavy apps (video editors, IDEs, etc.)</li>
-                                            <li style={{ marginBottom: '8px' }}>Use a wired connection if possible</li>
-                                            <li style={{ marginBottom: '8px' }}>Close other games even when minimized</li>
+                                            <li style={{ marginBottom: '8px' }}>{t("Close other games in the background")}</li>
+                                            <li style={{ marginBottom: '8px' }}>{t("Close unnecessary browser tabs")}</li>
+                                            <li style={{ marginBottom: '8px' }}>{t("Close heavy apps (video editors, IDEs, etc.)")}</li>
+                                            <li style={{ marginBottom: '8px' }}>{t("Use a wired connection if possible")}</li>
+                                            <li style={{ marginBottom: '8px' }}>{t("Close other games even when minimized")}</li>
                                         </ul>
                                         <p style={{ marginBottom: 0, fontSize: '13px', color: 'rgba(255, 255, 255, 0.75)' }}>
-                                            Running multiple heavy applications at once will cause noticeable slowdown. For the smoothest experience, play PawLands when no other demanding games are running.
+                                            {t("Running multiple heavy applications at once will cause noticeable slowdown. For the smoothest experience, play PawLands when no other demanding games are running.")}
                                         </p>
                                     </div>
                                     <button
@@ -1446,7 +1451,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                             fontFamily: UI_FONT_FAMILY,
                                         }}
                                     >
-                                        Close
+                                        {t("Close")}
                                     </button>
                                 </div>
                             </div>
@@ -1465,7 +1470,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                     marginBottom: '20px',
                                     textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
                                 }}>
-                                    {localError}
+                                    {t(localError)}
                                 </p>
                                 <button
                                     onClick={() => window.location.reload()}
@@ -1485,7 +1490,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                         minWidth: '120px',
                                     }}
                                 >
-                                    Refresh
+                                    {t("Refresh")}
                                 </button>
                             </>
                         )}
@@ -1502,7 +1507,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                 borderRadius: '4px',
                                 textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
                             }}>
-                                {localError}
+                                {t(localError)}
                             </p>
                         )}
 
@@ -1543,7 +1548,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                         marginBottom: '30px',
                                         textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
                                     }}>
-                                        ABOUT
+                                        {t("ABOUT")}
                                     </div>
 
                                     <h2 style={{
@@ -1556,7 +1561,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                         fontWeight: 'bold',
                                         letterSpacing: '-1px',
                                     }}>
-                                        SURVIVE TOGETHER
+                                        {t("SURVIVE TOGETHER")}
                                     </h2>
 
                                     <p style={{
@@ -1568,7 +1573,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                         maxWidth: '800px',
                                         margin: '0 auto',
                                     }}>
-                                        Explore a changing world as a cat. Gather supplies, build a shelter and team up with other players to survive.
+                                        {t("Explore a changing world as a cat. Gather supplies, build a shelter and team up with other players to survive.")}
                                     </p>
 
                                     <p style={{
@@ -1580,7 +1585,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                         maxWidth: '700px',
                                         margin: '24px auto 0',
                                     }}>
-                                        Want to play offline solo? Clone the repo, follow the <a href="https://github.com/PawLandsGame/game/blob/main/README.md" target="_blank" rel="noopener noreferrer" style={{ color: '#ff8c00', textDecoration: 'underline' }}>Quick Local Setup in the README</a>, and play fully offline. Run <code style={{ backgroundColor: 'rgba(0,0,0,0.4)', padding: '2px 6px', borderRadius: '4px', fontSize: '14px' }}>git pull</code> when you want updates.{' '}
+                                        {t("Want to play offline solo? Clone the repo, follow the")} <a href="https://github.com/PawLandsGame/game/blob/main/README.md" target="_blank" rel="noopener noreferrer" style={{ color: '#ff8c00', textDecoration: 'underline' }}>{t("Quick Local Setup in the README")}</a>{t(", and play fully offline. Run")} <code style={{ backgroundColor: 'rgba(0,0,0,0.4)', padding: '2px 6px', borderRadius: '4px', fontSize: '14px' }}>git pull</code> {t("when you want updates.")}{' '}
                                         <button
                                             type="button"
                                             onClick={() => smoothScrollTo('[data-faq-section]')}
@@ -1596,7 +1601,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                                 fontSize: 'inherit',
                                             }}
                                         >
-                                            See FAQ for details
+                                            {t("See FAQ for details")}
                                         </button>
                                     </p>
                                 </div>
@@ -1626,7 +1631,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                         marginBottom: '30px',
                                         textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
                                     }}>
-                                        GAME FEATURES
+                                        {t("GAME FEATURES")}
                                     </div>
 
                                     <h2 style={{
@@ -1639,10 +1644,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                         fontWeight: 'bold',
                                         letterSpacing: '-1px',
                                     }}>
-                                        GATHER, CRAFT AND EXPLORE
+                                        {t("GATHER, CRAFT AND EXPLORE")}
                                     </h2>
 
-                                    <p>Explore a procedurally generated world with changing weather, day and night, and wildlife. Craft gear, build shelter, and form teams with other players.</p>
+                                    <p>{t("Explore a procedurally generated world with changing weather, day and night, and wildlife. Craft gear, build shelter, and form teams with other players.")}</p>
                                 </div>
 
                                 {/* FAQ Section */}
@@ -1669,7 +1674,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                         textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
                                         textAlign: 'center',
                                     }}>
-                                        FAQ
+                                        {t("FAQ")}
                                     </div>
 
                                     <h2 style={{
@@ -1682,8 +1687,8 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                         fontWeight: 'bold',
                                         letterSpacing: '-1px',
                                     }}>
-                                        FREQUENTLY<br />
-                                        ASKED QUESTIONS
+                                        {t("FREQUENTLY")}<br />
+                                        {t("ASKED QUESTIONS")}
                                     </h2>
 
                                     {/* FAQ Items */}
@@ -1698,7 +1703,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                                 answer: (
                                                     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
                                                         <p style={{ margin: 0, fontSize: '16px', lineHeight: '1.7', color: 'rgba(255, 255, 255, 0.85)' }}>
-                                                            Yes! You can run the game fully offline on your own machine. Clone the repo in a terminal:
+                                                            {t("Yes! You can run the game fully offline on your own machine. Clone the repo in a terminal:")}
                                                         </p>
                                                         <code style={{
                                                             display: 'block',
@@ -1714,7 +1719,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                                             git clone https://github.com/PawLandsGame/game.git
                                                         </code>
                                                         <p style={{ margin: 0, fontSize: '16px', lineHeight: '1.7', color: 'rgba(255, 255, 255, 0.85)' }}>
-                                                            Then follow the <a href="https://github.com/PawLandsGame/game/blob/main/README.md" target="_blank" rel="noopener noreferrer" style={{ color: '#ffb366', textDecoration: 'underline' }}>Quick Local Setup in the README</a>. Just run <code style={{ backgroundColor: 'rgba(0,0,0,0.4)', padding: '2px 6px', borderRadius: '4px', fontSize: '14px' }}>git pull</code> when you want the latest updates.
+                                                            {t("Then follow the")} <a href="https://github.com/PawLandsGame/game/blob/main/README.md" target="_blank" rel="noopener noreferrer" style={{ color: '#ffb366', textDecoration: 'underline' }}>{t("Quick Local Setup in the README")}</a>{t(". Just run")} <code style={{ backgroundColor: 'rgba(0,0,0,0.4)', padding: '2px 6px', borderRadius: '4px', fontSize: '14px' }}>git pull</code> {t("when you want the latest updates.")}
                                                         </p>
                                                     </div>
                                                 )
@@ -1752,10 +1757,10 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                                 answer: (
                                                 <>
                                                     <p style={{ margin: '0 0 16px 0' }}>
-                                                        A thriving network of settlements where survivors build lasting legacies together. Whether you spend your days tending crops in the sunshine or braving what comes after dark, there's a place for you. The island holds deeper secrets yet to be uncovered: ancient recipes, forgotten techniques, and perhaps answers to what corruption took root here long before any of us arrived. Seasons already test the hardiest souls.
+                                                        {t("A thriving network of settlements where survivors build lasting legacies together. Whether you spend your days tending crops in the sunshine or braving what comes after dark, there's a place for you. The island holds deeper secrets yet to be uncovered: ancient recipes, forgotten techniques, and perhaps answers to what corruption took root here long before any of us arrived. Seasons already test the hardiest souls.")}
                                                     </p>
                                                     <p style={{ margin: '0 0 16px 0' }}>
-                                                        PawLands is in development. The current focus is the 2D survival world and multiplayer systems.
+                                                        {t("PawLands is in development. The current focus is the 2D survival world and multiplayer systems.")}
                                                     </p>
                                                 </>
                                             )
@@ -1806,7 +1811,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                                             letterSpacing: '1px',
                                                             flex: 1,
                                                         }}>
-                                                            {faq.question}
+                                                            {t(faq.question)}
                                                         </h3>
                                                         <FontAwesomeIcon
                                                             icon={isExpanded ? faChevronDown : faChevronRight}
@@ -1830,7 +1835,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                                             overflowX: 'hidden',
                                                             borderTop: '1px solid rgba(255, 255, 255, 0.15)',
                                                         }}>
-                                                            {faq.answer}
+                                                            {typeof faq.answer === 'string' ? t(faq.answer) : faq.answer}
                                                         </div>
                                                     )}
                                                 </div>
@@ -1863,7 +1868,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                     textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
                                     textAlign: 'center',
                                 }}>
-                                    WHERE ARE WE IN DEVELOPMENT?
+                                    {t("WHERE ARE WE IN DEVELOPMENT?")}
                                 </div>
                                 <p style={{
                                     fontSize: '16px',
@@ -1873,7 +1878,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                     textAlign: 'left',
                                     margin: '0 0 24px 0',
                                 }}>
-                                    We've progressed from primitive survival to firearms! Crossbows, fire arrows, and now guns help you survive what emerges when the sun sets. Something ancient stirs on this island, echoes of a corruption no one fully understands. Use daylight to farm, trade, and prepare. When darkness falls, you'll need every advantage. The island never sleeps, and neither does its hunger.
+                                    {t("We've progressed from primitive survival to firearms! Crossbows, fire arrows, and now guns help you survive what emerges when the sun sets. Something ancient stirs on this island, echoes of a corruption no one fully understands. Use daylight to farm, trade, and prepare. When darkness falls, you'll need every advantage. The island never sleeps, and neither does its hunger.")}
                                 </p>
                                 <div style={{ overflowX: 'auto', maxWidth: '100%' }}>
                                     <table style={{
@@ -1898,7 +1903,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                                     letterSpacing: '1px',
                                                     textTransform: 'uppercase',
                                                 }}>
-                                                    Feature Group
+                                                    {t("Feature Group")}
                                                 </th>
                                                 <th style={{
                                                     textAlign: 'center',
@@ -1911,7 +1916,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                                     letterSpacing: '1px',
                                                     textTransform: 'uppercase',
                                                 }}>
-                                                    Status
+                                                    {t("Status")}
                                                 </th>
                                             </tr>
                                         </thead>
@@ -1936,7 +1941,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                             ].map((feature, index) => (
                                                 <tr key={index} style={{ backgroundColor: 'rgba(0, 100, 0, 0.2)', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
                                                     <td style={{ padding: '12px 16px', textAlign: 'left', color: 'rgba(255, 255, 255, 0.9)', fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif", fontSize: '14px', fontWeight: '500' }}>
-                                                        {feature.name}
+                                                        {t(feature.name)}
                                                     </td>
                                                     <td style={{ padding: '12px 16px', textAlign: 'center', fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif", fontSize: '12px', fontWeight: 'bold' }}>
                                                         <span style={{ backgroundColor: 'rgba(0, 150, 0, 0.8)', color: 'white', padding: '4px 12px', borderRadius: '12px', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
@@ -1955,7 +1960,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                             ].map((feature, index) => (
                                                 <tr key={`planned-${index}`} style={{ backgroundColor: 'rgba(150, 0, 0, 0.2)', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
                                                     <td style={{ padding: '12px 16px', textAlign: 'left', color: 'rgba(255, 255, 255, 0.9)', fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif", fontSize: '14px', fontWeight: '500' }}>
-                                                        {feature.name}
+                                                        {t(feature.name)}
                                                     </td>
                                                     <td style={{ padding: '12px 16px', textAlign: 'center', fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif", fontSize: '12px', fontWeight: 'bold' }}>
                                                         <span style={{ backgroundColor: 'rgba(100, 100, 100, 0.6)', color: 'rgba(255, 255, 255, 0.8)', padding: '4px 12px', borderRadius: '12px', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>
@@ -2006,7 +2011,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                             e.currentTarget.style.borderColor = 'rgba(255, 200, 120, 0.6)';
                                         }}
                                     >
-                                        {isAuthenticated ? 'Join Game' : 'Start Your Journey'}
+                                        {isAuthenticated ? t("Join Game") : t("Start Your Journey")}
                                     </button>
                                 </div>
                             </div>
@@ -2059,7 +2064,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                             e.currentTarget.style.transform = 'translateY(0)';
                             e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.3), 0 0 10px rgba(255,140,0,0.4)';
                         }}
-                        title="Back to Top"
+                        title={t("Back to Top")}
                     >
                         ↑
                     </button>
@@ -2121,7 +2126,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                         }}>
                             <img
                                 src={logo}
-                                alt="PawLands Logo"
+                                alt={t("PawLands Logo")}
                                 style={{
                                     width: '160px',
                                     height: 'auto',
@@ -2140,7 +2145,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                 textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
                                 fontFamily: "'Courier New', Consolas, Monaco, monospace",
                             }}>
-                                Based on open-source game code by{' '}
+                                {t("Based on open-source game code by")}{' '}
                                 <a
                                     href="https://martinerlic.com"
                                     target="_blank"
@@ -2185,7 +2190,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                 textShadow: '1px 1px 2px rgba(0,0,0,0.8)',
                                 fontFamily: "'Courier New', Consolas, Monaco, monospace",
                             }}>
-                                GAME
+                                {t("GAME")}
                             </h4>
                             <ul style={{
                                 listStyle: 'none',
@@ -2193,9 +2198,9 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                 margin: 0,
                             }}>
                                 {[
-                                    { label: 'ABOUT', action: 'about' },
-                                    { label: 'FEATURES', action: 'features' },
-                                    { label: 'FAQ', action: 'faq' },
+                                    { label: t("ABOUT"), action: 'about' },
+                                    { label: t("FEATURES"), action: 'features' },
+                                    { label: t("FAQ"), action: 'faq' },
                                 ].map((link) => (
                                     <li key={link.label} style={{ marginBottom: '12px' }}>
                                         <a
@@ -2243,7 +2248,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                 fontFamily: "'Courier New', Consolas, Monaco, monospace",
                                 textAlign: isMobile ? 'center' : 'right',
                             }}>
-                                CONNECT
+                                {t("CONNECT")}
                             </h4>
                             {/* Social Media Icons */}
                             <div style={{
@@ -2330,7 +2335,7 @@ const LoginScreen: React.FC<LoginScreenProps> = ({
                                     e.currentTarget.style.transform = 'translateY(0)';
                                     e.currentTarget.style.boxShadow = '0 4px 15px rgba(0,0,0,0.3), 0 0 10px rgba(255,140,0,0.4)';
                                 }}
-                                title="Back to Top"
+                                title={t("Back to Top")}
                             >
                                 ↑
                             </button>

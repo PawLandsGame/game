@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext';
 import React, { useEffect, useState } from 'react';
 import { NotificationItem } from '../types/notifications';
 import { itemIcons } from '../utils/itemIconUtils'; // Assuming you have this for item icons
@@ -16,6 +17,7 @@ const ItemAcquisitionNotificationUI: React.FC<ItemAcquisitionNotificationUIProps
   hasActiveCrafting = false,
   hasActiveStatusEffects = false // New prop with default false
 }) => {
+  const { t } = useLanguage();
   const [visibleNotifications, setVisibleNotifications] = useState<NotificationItem[]>([]);
 
   useEffect(() => {
@@ -120,7 +122,7 @@ const ItemAcquisitionNotificationUI: React.FC<ItemAcquisitionNotificationUIProps
             }}>
               <img 
                 src={itemIcons[notif.itemIcon] || itemIcons['unknown']}
-                alt={notif.itemName}
+                alt={t(notif.itemName)}
                 style={{ 
                   width: '20px', 
                   height: '20px', 
@@ -145,7 +147,7 @@ const ItemAcquisitionNotificationUI: React.FC<ItemAcquisitionNotificationUIProps
                   color: '#00ffff',
                   textShadow: isMostRecent ? '0 0 6px rgba(0, 255, 255, 0.6)' : 'none',
                 }}>
-                  {notif.itemName}
+                  {t(notif.itemName)}
                 </span>
                 {notif.currentTotalInInventory !== undefined && (
                     <span style={{ 

@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext';
 import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { createPortal } from 'react-dom';
 import { DbConnection } from '../generated';
@@ -158,6 +159,7 @@ const Hotbar: React.FC<HotbarProps> = ({
     isInventoryOpen,
     onSelectInventoryItem,
 }) => {
+  const { t } = useLanguage();
   const [selectedSlot, setSelectedSlot] = useState<number>(-1);
   const [isVisualCooldownActive, setIsVisualCooldownActive] = useState<boolean>(false);
   const [visualCooldownStartTime, setVisualCooldownStartTime] = useState<number | null>(null);
@@ -1798,7 +1800,7 @@ connection.reducers.quickMoveToBrothPot({
               {populatedItem && isCombatLadleHot(populatedItem.instance, populatedItem.definition.name) && (
                 <span
                   style={{ position: 'absolute', top: '2px', left: '4px', fontSize: '12px', zIndex: 4, pointerEvents: 'none' }}
-                  title="Hot! Use gloves to avoid burn damage"
+                  title={t("Hot! Use gloves to avoid burn damage")}
                 >
                   🔥
                 </span>
@@ -1999,7 +2001,7 @@ connection.reducers.quickMoveToBrothPot({
                   pointerEvents: 'none',
                   zIndex: 10
                 }}>
-                  Weapon: {isWeaponCooldownActive ? `${Math.round(weaponCooldownProgress * 100)}%` : 'inactive'}
+                  {t("Weapon:")} {isWeaponCooldownActive ? `${Math.round(weaponCooldownProgress * 100)}%` : 'inactive'}
                 </div>
               )}
               
@@ -2182,12 +2184,12 @@ connection.reducers.quickMoveToBrothPot({
           )}
           {tooltip.content.waterContentMl !== undefined && tooltip.content.waterCapacityMl !== undefined && (
             <div style={{ fontSize: '10px', color: 'rgba(100, 200, 255, 0.9)', marginBottom: '2px' }}>
-              {tooltip.content.isSaltWater ? '🌊' : '💧'} {tooltip.content.waterContentMl} / {tooltip.content.waterCapacityMl} mL
+              {tooltip.content.isSaltWater ? '🌊' : '💧'} {tooltip.content.waterContentMl} / {tooltip.content.waterCapacityMl} {t("mL")}
             </div>
           )}
           {tooltip.content.ammoCapacity !== undefined && (
             <div style={{ fontSize: '10px', color: 'rgba(255, 200, 100, 0.9)', marginBottom: '2px' }}>
-              🔫 Ammo: {tooltip.content.ammoLoaded ?? 0} / {tooltip.content.ammoCapacity}
+              {t("🔫 Ammo:")} {tooltip.content.ammoLoaded ?? 0} / {tooltip.content.ammoCapacity}
             </div>
           )}
           {tooltip.content.durability !== undefined && tooltip.content.maxDurability !== undefined && (
@@ -2202,7 +2204,7 @@ connection.reducers.quickMoveToBrothPot({
                     : 'rgba(50, 205, 50, 0.9)',  // Green for good
               marginBottom: '2px' 
             }}>
-              {tooltip.content.spoilageTimeRemaining ? '🍖' : '🔧'} Durability: {tooltip.content.durability} / {tooltip.content.maxDurability}
+              {tooltip.content.spoilageTimeRemaining ? '🍖' : '🔧'} {t("Durability:")} {tooltip.content.durability} / {tooltip.content.maxDurability}
               {tooltip.content.spoilageTimeRemaining && (
                 <span style={{ marginLeft: '8px', color: tooltip.content.spoilageTimeRemaining === 'Spoiled' ? 'rgba(255, 100, 100, 0.9)' : 'rgba(255, 200, 100, 0.9)' }}>
                   ({tooltip.content.spoilageTimeRemaining})
@@ -2211,7 +2213,7 @@ connection.reducers.quickMoveToBrothPot({
             </div>
           )}
           <div style={{ fontSize: '10px', color: 'rgba(255, 255, 255, 0.7)' }}>
-            Quantity: {tooltip.content.quantity}
+            {t("Quantity:")} {tooltip.content.quantity}
           </div>
         </div>,
         document.body

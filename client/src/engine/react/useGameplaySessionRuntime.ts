@@ -1,3 +1,4 @@
+import { gameplayKey } from '../../utils/gameplayKey';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 import type { Dispatch, SetStateAction } from 'react';
 import type { MenuType } from '../../components/GameMenu';
@@ -191,6 +192,7 @@ export function useGameplaySessionRuntime({
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      const key = gameplayKey(event);
       if (event.key === 'Escape') {
         if (currentMenu === null) {
           setCurrentMenu('main');
@@ -208,7 +210,7 @@ export function useGameplaySessionRuntime({
         return;
       }
 
-      if ((event.key === 'g' || event.key === 'G') && !isChatting) {
+      if (key === 'g' && !isChatting) {
         event.preventDefault();
         event.stopPropagation();
         if (isMinimapOpen) {
@@ -224,7 +226,7 @@ export function useGameplaySessionRuntime({
         return;
       }
 
-      if ((event.key === 'y' || event.key === 'Y') && !isChatting) {
+      if (key === 'y' && !isChatting) {
         event.preventDefault();
         if (isMinimapOpen && interfaceInitialView === 'achievements') {
           setInterfaceInitialView(undefined);
@@ -236,7 +238,7 @@ export function useGameplaySessionRuntime({
         return;
       }
 
-      if ((event.key === 'k' || event.key === 'K') && !isChatting) {
+      if (key === 'k' && !isChatting) {
         event.preventDefault();
         if (isMinimapOpen && interfaceInitialView === 'alk') {
           setInterfaceInitialView(undefined);

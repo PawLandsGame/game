@@ -1,3 +1,5 @@
+import LanguageSelect from './LanguageSelect';
+import { useLanguage } from '../i18n/LanguageContext';
 import React from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -21,6 +23,7 @@ const GameMenu: React.FC<GameMenuProps> = ({
     onClose, 
     onNavigate, 
 }) => {
+    const { t } = useLanguage();
     const { logout } = useAuth();
     const [showSignOutConfirm, setShowSignOutConfirm] = React.useState(false);
     
@@ -45,12 +48,12 @@ const GameMenu: React.FC<GameMenuProps> = ({
     };
 
     const menuOptions: MenuOption[] = [
-        { label: 'RESUME CONSCIOUSNESS', action: () => onClose() },
-        { label: 'AUDITORY CORTEX MODULE', action: () => onNavigate('settings'), icon: faVolumeUp },
-        { label: 'VISUAL CORTEX MODULE', action: () => onNavigate('visual_settings'), icon: faEye },
-        { label: 'MOTOR CORTEX INTERFACE', action: () => onNavigate('controls'), icon: faGamepad },
-        { label: 'TACTICAL KNOWLEDGE MATRIX', action: () => onNavigate('tips'), icon: faLightbulb },
-        { label: 'FORCE NEURAL SLEEP', action: handleSignOutRequest, isSignOut: true },
+        { label: t("RESUME CONSCIOUSNESS"), action: () => onClose() },
+        { label: t("AUDITORY CORTEX MODULE"), action: () => onNavigate('settings'), icon: faVolumeUp },
+        { label: t("VISUAL CORTEX MODULE"), action: () => onNavigate('visual_settings'), icon: faEye },
+        { label: t("MOTOR CORTEX INTERFACE"), action: () => onNavigate('controls'), icon: faGamepad },
+        { label: t("TACTICAL KNOWLEDGE MATRIX"), action: () => onNavigate('tips'), icon: faLightbulb },
+        { label: t("FORCE NEURAL SLEEP"), action: handleSignOutRequest, isSignOut: true },
     ];
 
     return (
@@ -98,10 +101,12 @@ const GameMenu: React.FC<GameMenuProps> = ({
                     border: '2px solid #00ffff',
                     borderRadius: '12px',
                     padding: '40px',
-                    minWidth: '350px',
+                    width: 'min(100%, 640px)',
+                    maxHeight: '90dvh',
+                    boxSizing: 'border-box',
                     boxShadow: '0 0 30px rgba(0, 255, 255, 0.3), inset 0 0 20px rgba(0, 255, 255, 0.1)',
                     position: 'relative',
-                    overflow: 'hidden',
+                    overflow: 'auto',
                 }}
                 onClick={(e) => e.stopPropagation()}
             >
@@ -129,7 +134,7 @@ const GameMenu: React.FC<GameMenuProps> = ({
                             letterSpacing: '2px',
                         }}
                     >
-                        NEUROVEIL™ OCULAR INTERFACE
+                        {t("NEUROVEIL™ OCULAR INTERFACE")}
                     </h2>
                     <div
                         style={{
@@ -143,11 +148,12 @@ const GameMenu: React.FC<GameMenuProps> = ({
                         }}
                     >
                         <div>ООО "Rozhkov Neuroscience"</div>
-                        <div>System v0.82</div>
+                        <div>{t("System v0.82")}</div>
                     </div>
                 </div>
                 
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                    <LanguageSelect />
                     {menuOptions.map((option, index) => (
                         <button
                             key={index}
@@ -270,7 +276,7 @@ const GameMenu: React.FC<GameMenuProps> = ({
                                 fontFamily: '"Press Start 2P", cursive',
                                 letterSpacing: '1px',
                             }}>
-                                ⚠️ NEURAL SLEEP PROTOCOL ⚠️
+                                {t("⚠️ NEURAL SLEEP PROTOCOL ⚠️")}
                             </div>
                             
                             <div style={{
@@ -284,11 +290,11 @@ const GameMenu: React.FC<GameMenuProps> = ({
                                 border: '1px solid rgba(255, 51, 102, 0.3)',
                                 fontFamily: '"Press Start 2P", cursive',
                             }}>
-                                Disconnect from this game session?
+                                {t("Disconnect from this game session?")}
                                 <br /><br />
-                                Your physical body will remain vulnerable in the world while your neural pathways are severed.
+                                {t("Your physical body will remain vulnerable in the world while your neural pathways are severed.")}
                                 <br /><br />
-                                Are you certain you wish to force neural sleep?
+                                {t("Are you certain you wish to force neural sleep?")}
                             </div>
 
                             <div style={{
@@ -323,7 +329,7 @@ const GameMenu: React.FC<GameMenuProps> = ({
                                         e.currentTarget.style.boxShadow = '0 0 15px rgba(255, 51, 102, 0.3), inset 0 0 10px rgba(255, 51, 102, 0.1)';
                                     }}
                                 >
-                                    CONFIRM NEURAL SLEEP
+                                    {t("CONFIRM NEURAL SLEEP")}
                                 </button>
                                 
                                 <button
@@ -353,7 +359,7 @@ const GameMenu: React.FC<GameMenuProps> = ({
                                         e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 170, 255, 0.3), inset 0 0 10px rgba(0, 170, 255, 0.1)';
                                     }}
                                 >
-                                    MAINTAIN CONNECTION
+                                    {t("MAINTAIN CONNECTION")}
                                 </button>
                             </div>
                         </div>

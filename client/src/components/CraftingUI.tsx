@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext';
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 import styles from './InventoryUI.module.css'; // Reuse styles for consistency
@@ -53,6 +54,7 @@ const CraftingUI: React.FC<CraftingUIProps> = ({
     purchasedMemoryNodes = new Set(['center']), // Default: only center node unlocked
     activeConsumableEffects,
 }) => {
+    const { t } = useLanguage();
     const [currentTime, setCurrentTime] = useState(Date.now());
     const [craftQuantities, setCraftQuantities] = useState<Map<string, number>>(new Map()); // State for quantity input
     // Initialize searchTerm from localStorage, fallback to empty string
@@ -449,13 +451,13 @@ const CraftingUI: React.FC<CraftingUIProps> = ({
             `}</style>
             {/* Craftable Items Section - Now a List */}
             <div className={styles.craftingHeader}>
-                <h3 className={styles.sectionTitle}>QUICK CRAFT</h3>
+                <h3 className={styles.sectionTitle}>{t("QUICK CRAFT")}</h3>
             </div>
             {/* Add Search Bar (no category filter - use full CraftingScreen for categories) */}
             <CraftingSearchBar 
                 searchTerm={searchTerm}
                 onSearchChange={handleSearchChange}
-                placeholder="Search by item or ingredient name..."
+                placeholder={t("Search by item or ingredient name...")}
                 onFocus={() => onCraftingSearchFocusChange?.(true)}
                 onBlur={() => onCraftingSearchFocusChange?.(false)}
                 recipes={recipeList}
@@ -555,7 +557,7 @@ const CraftingUI: React.FC<CraftingUIProps> = ({
                             >
                                 <img
                                     src={getItemIcon(outputDef.iconAssetName, 'crafting')}
-                                    alt={outputDef.name}
+                                    alt={t(outputDef.name)}
                                     style={{ 
                                         width: '32px', 
                                         height: '32px', 
@@ -597,7 +599,7 @@ const CraftingUI: React.FC<CraftingUIProps> = ({
             {/* Crafting Queue Section (Moved down, potentially needs own scroll later) */}
             <div className={styles.craftingQueueSection}>
                 <h4 style={{ fontSize: '16px', fontWeight: 'bold', color: '#00ffff', margin: '16px 0 12px 0', textShadow: '0 0 10px rgba(0, 255, 255, 0.6)' }}>
-                    CRAFTING QUEUE ({playerQueue.length})
+                    {t("CRAFTING QUEUE (")}{playerQueue.length})
                 </h4>
                  {/* Added scrollable class and data-attribute */}
                 <div data-scrollable-region="crafting-queue" className={`${styles.craftingQueueList} ${styles.scrollableSection}`}> 
@@ -613,7 +615,7 @@ const CraftingUI: React.FC<CraftingUIProps> = ({
                                     e.preventDefault();
                                     if (!isFirst) handleMoveToFront(item.queueItemId);
                                 }}
-                                title={isFirst ? 'Already first in queue' : 'Right-click to move to front'}
+                                title={isFirst ? t("Already first in queue") : t("Right-click to move to front")}
                                 style={{
                                 display: 'flex',
                                 alignItems: 'center',
@@ -630,17 +632,17 @@ const CraftingUI: React.FC<CraftingUIProps> = ({
                                     {outputDef && (
                                         <img
                                             src={getItemIcon(outputDef.iconAssetName, 'crafting')}
-                                            alt={outputDef?.name || 'Crafting'}
+                                            alt={t(outputDef?.name || 'Crafting')}
                                             style={{ width: '100%', height: '100%', objectFit: 'contain', imageRendering: 'pixelated' }}
                                         />
                                                     )}
                                   </div>
                                   <div style={{ flex: 1 }}>
                                     <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#00ffff', textShadow: '0 0 8px rgba(0, 255, 255, 0.6)' }}>
-                                        {outputDef?.name || 'Unknown Item'}
+                                        {t(outputDef?.name || 'Unknown Item')}
                                     </div>
                                     <div style={{ fontSize: '14px', color: '#00aaff' }}>
-                                        {remainingTime > 0 ? `${remainingTime}s remaining` : 'Completing...'}
+                                        {remainingTime > 0 ? `${remainingTime}s remaining` : t("Completing...")}
                                     </div>
                                 </div>
                                 <button
@@ -657,9 +659,9 @@ const CraftingUI: React.FC<CraftingUIProps> = ({
                                         textShadow: '0 0 8px rgba(255, 51, 102, 0.6)',
                                         transition: 'all 0.3s ease'
                                     }}
-                                    title="Cancel Craft"
+                                    title={t("Cancel Craft")}
                                 >
-                                    CANCEL
+                                    {t("CANCEL")}
                                 </button>
                             </div>
                         );
@@ -672,7 +674,7 @@ const CraftingUI: React.FC<CraftingUIProps> = ({
                             padding: '20px',
                             textShadow: '0 0 5px rgba(0, 170, 255, 0.4)'
                         }}>
-                            No items in queue
+                            {t("No items in queue")}
                         </div>
                     }
                 </div>
@@ -695,9 +697,9 @@ const CraftingUI: React.FC<CraftingUIProps> = ({
                             textShadow: '0 0 8px rgba(255, 51, 102, 0.6)',
                             transition: 'all 0.3s ease'
                         }}
-                        title="Cancel all items in queue and refund resources"
+                        title={t("Cancel all items in queue and refund resources")}
                     >
-                        CANCEL ALL QUEUE
+                        {t("CANCEL ALL QUEUE")}
                     </button>
                 )}
             </div>
@@ -729,7 +731,7 @@ const CraftingUI: React.FC<CraftingUIProps> = ({
                         ? '0 0 5px rgba(255, 165, 0, 0.5)' 
                         : '0 0 5px rgba(0, 255, 255, 0.5)'
                 }}>
-                    <div>{hoveredRecipe.name}</div>
+                    <div>{t(hoveredRecipe.name)}</div>
                     {hoveredRecipe.requiresStation && (
                         <div style={{ 
                             fontSize: '10px', 
@@ -740,7 +742,7 @@ const CraftingUI: React.FC<CraftingUIProps> = ({
                             gap: '4px'
                         }}>
                             <span>🍳</span>
-                            <span>Requires {hoveredRecipe.requiresStation}</span>
+                            <span>{t("Requires")} {hoveredRecipe.requiresStation}</span>
                         </div>
                     )}
                 </div>,

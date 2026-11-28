@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext';
 import React from 'react';
 
 interface GameMenuButtonProps {
@@ -5,6 +6,7 @@ interface GameMenuButtonProps {
 }
 
 const GameMenuButton: React.FC<GameMenuButtonProps> = ({ onClick }) => {
+    const { t } = useLanguage();
     return (
         <button
             onClick={onClick}
@@ -44,7 +46,7 @@ const GameMenuButton: React.FC<GameMenuButtonProps> = ({ onClick }) => {
                 e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 170, 255, 0.4), inset 0 0 10px rgba(0, 170, 255, 0.1)';
                 e.currentTarget.style.textShadow = '0 0 8px rgba(0, 255, 255, 0.8)';
             }}
-            aria-label="Open game menu"
+            aria-label={t("Open game menu")}
         >
             {/* Hamburger icon - three horizontal lines */}
             <span style={{

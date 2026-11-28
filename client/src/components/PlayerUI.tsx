@@ -1,3 +1,5 @@
+import { gameplayKey } from '../utils/gameplayKey';
+import { useLanguage } from '../i18n/LanguageContext';
 import React, { useState, useEffect, useCallback, useRef, useMemo } from 'react';
 import { DbConnection } from '../generated';
 import { Player, InventoryItem, ItemDefinition, ActiveEquipment, Campfire as SpacetimeDBCampfire, Furnace as SpacetimeDBFurnace, Barbecue as SpacetimeDBBarbecue, Fumarole as SpacetimeDBFumarole, Lantern as SpacetimeDBLantern, Turret as SpacetimeDBTurret, WoodenStorageBox as SpacetimeDBWoodenStorageBox, Recipe, CraftingQueueItem, PlayerCorpse, StatThresholdsConfig, Stash as SpacetimeDBStash, ActiveConsumableEffect, KnockedOutStatus, WorldState, RainCollector as SpacetimeDBRainCollector, BrothPot as SpacetimeDBBrothPot, HomesteadHearth as SpacetimeDBHomesteadHearth, RangedWeaponStats, MemoryGridProgress as SpacetimeDBMemoryGridProgress } from '../generated/types';
@@ -127,6 +129,7 @@ const PlayerUI: React.FC<PlayerUIProps> = ({
     onPauseBackgroundMusic,
     onResumeBackgroundMusic,
 }) => {
+    const { t } = useLanguage();
     const [localPlayer, setLocalPlayer] = useState<Player | null>(null);
     const [lowNeedThreshold, setLowNeedThreshold] = useState<number>(20.0);
     
@@ -606,7 +609,7 @@ const PlayerUI: React.FC<PlayerUIProps> = ({
     // Effect for crafting screen toggle keybind (B key)
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.key === 'b' || event.key === 'B') {
+            if (gameplayKey(event) === 'b') {
                 // Don't trigger if typing in an input field
                 const target = event.target as HTMLElement;
                 if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA' || target.isContentEditable) {
@@ -1497,7 +1500,7 @@ const PlayerUI: React.FC<PlayerUIProps> = ({
                     }}>
                         {/* HP Bar */}
                         <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
-                            <img src={heartIcon} alt="HP" style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} />
+                            <img src={heartIcon} alt={t("HP")} style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} />
                             <div style={{
                                 width: '36px',
                                 height: '6px',
@@ -1519,7 +1522,7 @@ const PlayerUI: React.FC<PlayerUIProps> = ({
                         
                         {/* Thirst Bar */}
                         <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
-                            <img src={thirstIcon} alt="Thirst" style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} />
+                            <img src={thirstIcon} alt={t("Thirst")} style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} />
                             <div style={{
                                 width: '36px',
                                 height: '6px',
@@ -1541,7 +1544,7 @@ const PlayerUI: React.FC<PlayerUIProps> = ({
                         
                         {/* Hunger Bar */}
                         <div style={{ display: 'flex', alignItems: 'center', gap: '3px' }}>
-                            <img src={hungerIcon} alt="Hunger" style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} />
+                            <img src={hungerIcon} alt={t("Hunger")} style={{ width: '14px', height: '14px', imageRendering: 'pixelated' }} />
                             <div style={{
                                 width: '36px',
                                 height: '6px',
@@ -1636,7 +1639,7 @@ const PlayerUI: React.FC<PlayerUIProps> = ({
                 }}>
                     {/* Status Bars mapping */}
                     <StatusBar 
-                        label="HP" 
+                        label={t("HP")}
                         iconType="heart"
                         value={localPlayer.health} 
                         maxValue={100} 
@@ -1653,8 +1656,8 @@ const PlayerUI: React.FC<PlayerUIProps> = ({
                       matching server logic for stat penalties/health loss. This helps players realize
                       why they're thirsty/hungry/cold and should take action soon.
                     */}
-                    <StatusBar label="Thirst" iconType="thirst" value={localPlayer.thirst} maxValue={250} barColor="#40a0ff" glow={localPlayer.thirst < lowNeedThreshold} hasSeawaterPoisoningEffect={isPlayerSeawaterPoisoned} />
-                    <StatusBar label="Hunger" iconType="hunger" value={localPlayer.hunger} maxValue={250} barColor="#ffa040" glow={localPlayer.hunger < lowNeedThreshold} />
+                    <StatusBar label={t("Thirst")} iconType="thirst" value={localPlayer.thirst} maxValue={250} barColor="#40a0ff" glow={localPlayer.thirst < lowNeedThreshold} hasSeawaterPoisoningEffect={isPlayerSeawaterPoisoned} />
+                    <StatusBar label={t("Hunger")} iconType="hunger" value={localPlayer.hunger} maxValue={250} barColor="#ffa040" glow={localPlayer.hunger < lowNeedThreshold} />
                     {/* <StatusBar label="Warmth" iconType="warmth" value={localPlayer.warmth} maxValue={100} barColor="#ffcc00" glow={localPlayer.warmth < lowNeedThreshold} /> */}
                     {/* XP Bar moved to above Hotbar (WoW style) */}
                 </div>

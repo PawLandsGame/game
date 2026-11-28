@@ -1,3 +1,4 @@
+import { gameplayKey } from '../utils/gameplayKey';
 /**
  * AlkDeliveryPanel.tsx
  * 
@@ -291,6 +292,7 @@ export const AlkDeliveryPanel: React.FC<AlkDeliveryPanelProps> = ({
     // Block movement keys when input is focused (for matronage name entry)
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
+            const key = gameplayKey(e);
             // Handle Escape on keydown (feels more responsive)
             if (e.key === 'Escape') {
                 e.preventDefault();
@@ -299,7 +301,7 @@ export const AlkDeliveryPanel: React.FC<AlkDeliveryPanelProps> = ({
                 return;
             }
             // Block E keydown from reaching input handler while panel is open
-            if (e.key === 'e' || e.key === 'E') {
+            if (key === 'e') {
                 if (!(e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement)) {
                     e.preventDefault();
                     e.stopImmediatePropagation();
@@ -311,8 +313,8 @@ export const AlkDeliveryPanel: React.FC<AlkDeliveryPanelProps> = ({
             // Block movement keys and spacebar when input is focused (matronage name entry)
             if (isInputFocused) {
                 // Block WASD and arrow keys from moving player
-                if (e.key === 'w' || e.key === 'W' || e.key === 'a' || e.key === 'A' ||
-                    e.key === 's' || e.key === 'S' || e.key === 'd' || e.key === 'D' ||
+                if (key === 'w' || key === 'a' ||
+                    key === 's' || key === 'd' ||
                     e.key === 'ArrowUp' || e.key === 'ArrowDown' ||
                     e.key === 'ArrowLeft' || e.key === 'ArrowRight') {
                     e.stopPropagation();

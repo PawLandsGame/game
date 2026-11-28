@@ -1,3 +1,4 @@
+import { gameplayKey } from '../utils/gameplayKey';
 /**
  * useInputHandler - Keyboard and mouse input → reducer calls and UI actions.
  *
@@ -691,7 +692,7 @@ export const useInputHandler = ({
     // --- Input Event Handlers ---
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
-            const key = event.key.toLowerCase();
+            const key = gameplayKey(event);
             
             // Enhanced chat input detection to prevent race conditions
             const target = event.target as Element;
@@ -1118,7 +1119,7 @@ export const useInputHandler = ({
         };
 
         const handleKeyUp = (event: KeyboardEvent) => {
-            const key = event.key.toLowerCase();
+            const key = gameplayKey(event);
 
             // Movement key handling is now done by useMovementInput hook
             // Only handle non-movement keys here to avoid conflicts

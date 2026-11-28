@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext';
 import React, { useRef } from 'react';
 import styles from './MenuComponents.module.css';
 import { tipSections } from '../utils/gameKnowledgeExtractor';
@@ -8,6 +9,7 @@ interface GameTipsMenuProps {
 }
 
 const GameTipsMenu: React.FC<GameTipsMenuProps> = ({ onBack, onClose }) => {
+    const { t } = useLanguage();
     const contentRef = useRef<HTMLDivElement>(null);
 
     const handleBackdropClick = (e: React.MouseEvent) => {
@@ -37,7 +39,7 @@ const GameTipsMenu: React.FC<GameTipsMenuProps> = ({ onBack, onClose }) => {
     });
 
     const sectionNames = tipSections.map(section => {
-        return section.title.replace(/^(\p{Emoji})\s*/u, '');
+        return t(section.title).replace(/^(\p{Emoji})\s*/u, '');
     });
 
     // Add escape key handler
@@ -96,7 +98,7 @@ const GameTipsMenu: React.FC<GameTipsMenuProps> = ({ onBack, onClose }) => {
                         textShadow: '0 0 10px rgba(0, 255, 255, 0.8), 0 0 20px rgba(0, 255, 255, 0.4)',
                     }}
                 >
-                    TACTICAL KNOWLEDGE MATRIX
+                    {t("TACTICAL KNOWLEDGE MATRIX")}
                 </h2>
                 
                 <div
@@ -110,7 +112,7 @@ const GameTipsMenu: React.FC<GameTipsMenuProps> = ({ onBack, onClose }) => {
                         marginBottom: '20px',
                     }}
                 >
-                    Neural Survival Protocol Database v0.82
+                    {t("Neural Survival Protocol Database v0.82")}
                 </div>
 
                 {/* Table of Contents */}
@@ -222,7 +224,7 @@ const GameTipsMenu: React.FC<GameTipsMenuProps> = ({ onBack, onClose }) => {
                                     textShadow: '0 0 8px rgba(0, 170, 255, 0.8)',
                                 }}
                             >
-                                {section.title}
+                                {t(section.title)}
                             </h3>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
                                 {section.tips.map((tip, tipIndex) => (
@@ -264,7 +266,7 @@ const GameTipsMenu: React.FC<GameTipsMenuProps> = ({ onBack, onClose }) => {
                                                 textShadow: '0 0 4px rgba(255, 255, 255, 0.4)',
                                             }}
                                         >
-                                            {tip}
+                                            {t(tip)}
                                         </span>
                                     </div>
                                 ))}
@@ -302,7 +304,7 @@ const GameTipsMenu: React.FC<GameTipsMenuProps> = ({ onBack, onClose }) => {
                             e.currentTarget.style.boxShadow = '0 0 15px rgba(255, 136, 51, 0.3), inset 0 0 10px rgba(255, 136, 51, 0.1)';
                         }}
                     >
-                        NEURAL INTERFACE MENU
+                        {t("NEURAL INTERFACE MENU")}
                     </button>
                     <button
                         onClick={onClose}
@@ -332,7 +334,7 @@ const GameTipsMenu: React.FC<GameTipsMenuProps> = ({ onBack, onClose }) => {
                             e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 170, 255, 0.3), inset 0 0 10px rgba(0, 170, 255, 0.1)';
                         }}
                     >
-                        RESUME CONSCIOUSNESS
+                        {t("RESUME CONSCIOUSNESS")}
                     </button>
                 </div>
             </div>

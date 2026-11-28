@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext';
 import React from 'react';
 import styles from './MenuComponents.module.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -20,6 +21,7 @@ const GameSettingsMenu: React.FC<GameSettingsMenuProps> = ({
     onBack,
     onClose,
 }) => {
+    const { t } = useLanguage();
     const {
         musicVolume,
         soundVolume,
@@ -104,7 +106,7 @@ const GameSettingsMenu: React.FC<GameSettingsMenuProps> = ({
                             letterSpacing: '2px',
                         }}
                     >
-                        AUDITORY CORTEX MODULE
+                        {t("AUDITORY CORTEX MODULE")}
                     </h2>
                     <div
                         style={{
@@ -116,7 +118,7 @@ const GameSettingsMenu: React.FC<GameSettingsMenuProps> = ({
                             opacity: 0.8,
                         }}
                     >
-                        Neural Audio Processing Interface v0.82
+                        {t("Neural Audio Processing Interface v0.82")}
                     </div>
                 </div>
                 
@@ -141,7 +143,7 @@ const GameSettingsMenu: React.FC<GameSettingsMenuProps> = ({
                                     fontSize: '14px',
                                 }}
                             />
-                            NEURAL HARMONY LEVELS: {Math.round(musicVolume * 100)}%
+                            {t("NEURAL HARMONY LEVELS:")} {Math.round(musicVolume * 100)}%
                         </div>
                         <div style={{
                             fontFamily: '"Press Start 2P", cursive',
@@ -152,7 +154,7 @@ const GameSettingsMenu: React.FC<GameSettingsMenuProps> = ({
                             letterSpacing: '0.5px',
                             textAlign: 'left',
                         }}>
-                            Cortical Music Enhancement, Ambient Synthesis
+                            {t("Cortical Music Enhancement, Ambient Synthesis")}
                         </div>
                         <input
                             type="range"
@@ -188,7 +190,7 @@ const GameSettingsMenu: React.FC<GameSettingsMenuProps> = ({
                                     fontSize: '14px',
                                 }}
                             />
-                            HAPTIC FEEDBACK MATRIX: {Math.round(soundVolume * 100)}%
+                            {t("HAPTIC FEEDBACK MATRIX:")} {Math.round(soundVolume * 100)}%
                         </div>
                         <div style={{
                             fontFamily: '"Press Start 2P", cursive',
@@ -199,7 +201,7 @@ const GameSettingsMenu: React.FC<GameSettingsMenuProps> = ({
                             letterSpacing: '0.5px',
                             textAlign: 'left',
                         }}>
-                            Neural Action Response, Item Recognition
+                            {t("Neural Action Response, Item Recognition")}
                         </div>
                         <input
                             type="range"
@@ -235,7 +237,7 @@ const GameSettingsMenu: React.FC<GameSettingsMenuProps> = ({
                                     fontSize: '14px',
                                 }}
                             />
-                            ATMOSPHERIC SENSORS: {Math.round(environmentalVolume * 100)}%
+                            {t("ATMOSPHERIC SENSORS:")} {Math.round(environmentalVolume * 100)}%
                         </div>
                         <div style={{
                             fontFamily: '"Press Start 2P", cursive',
@@ -246,7 +248,7 @@ const GameSettingsMenu: React.FC<GameSettingsMenuProps> = ({
                             letterSpacing: '0.5px',
                             textAlign: 'left',
                         }}>
-                            Weather Synthesis, Environmental Analysis
+                            {t("Weather Synthesis, Environmental Analysis")}
                         </div>
                         <input
                             type="range"
@@ -273,7 +275,7 @@ const GameSettingsMenu: React.FC<GameSettingsMenuProps> = ({
                             textAlign: 'left',
                             letterSpacing: '0.7px',
                         }}>
-                            PRESETS
+                            {t("PRESETS")}
                         </div>
                         <button
                             onClick={() => {
@@ -308,7 +310,7 @@ const GameSettingsMenu: React.FC<GameSettingsMenuProps> = ({
                                 e.currentTarget.style.boxShadow = '0 0 15px rgba(102, 255, 179, 0.35), inset 0 0 10px rgba(102, 255, 179, 0.12)';
                             }}
                         >
-                            DEFAULTS (20% / 50% / 100%)
+                            {t("DEFAULTS (20% / 50% / 100%)")}
                         </button>
                     </div>
                 </div>
@@ -342,7 +344,7 @@ const GameSettingsMenu: React.FC<GameSettingsMenuProps> = ({
                             e.currentTarget.style.boxShadow = '0 0 15px rgba(255, 136, 51, 0.3), inset 0 0 10px rgba(255, 136, 51, 0.1)';
                         }}
                     >
-                        NEURAL INTERFACE MENU
+                        {t("NEURAL INTERFACE MENU")}
                     </button>
                     <button
                         onClick={onClose}
@@ -372,7 +374,7 @@ const GameSettingsMenu: React.FC<GameSettingsMenuProps> = ({
                             e.currentTarget.style.boxShadow = '0 0 15px rgba(0, 170, 255, 0.3), inset 0 0 10px rgba(0, 170, 255, 0.1)';
                         }}
                     >
-                        RESUME CONSCIOUSNESS
+                        {t("RESUME CONSCIOUSNESS")}
                     </button>
                 </div>
                 

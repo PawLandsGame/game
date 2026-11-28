@@ -1,3 +1,4 @@
+import { useLanguage } from '../i18n/LanguageContext';
 import React, { useEffect, useRef, RefObject, useMemo, useCallback } from 'react';
 import { Message as SpacetimeDBMessage, Player as SpacetimeDBPlayer, PrivateMessage as SpacetimeDBPrivateMessage, TeamMessage as SpacetimeDBTeamMessage } from '../generated/types'; // Assuming Message and Player types are generated
 import { Identity } from 'spacetimedb'; // Import Identity directly from SDK
@@ -37,6 +38,7 @@ const ChatMessageHistory: React.FC<ChatMessageHistoryProps> = ({
   matronageMembers,
   matronages,
 }) => {
+  const { t } = useLanguage();
   const historyRef = useRef<HTMLDivElement>(null);
   // Track if user is at/near bottom for smart auto-scroll
   const isUserAtBottomRef = useRef(true);
@@ -239,7 +241,7 @@ const ChatMessageHistory: React.FC<ChatMessageHistoryProps> = ({
           <div key={key} className={messageClasses.join(' ')} style={messageStyle}>
             <div className={styles.messageHeader}>
               <span className={senderNameClasses.join(' ')}>
-                {isTeamMessage && <span className={styles.teamPrefix}>[Team] </span>}
+                {isTeamMessage && <span className={styles.teamPrefix}>{t("[Team]")} </span>}
                 {matronageTag && (
                   <span className={styles.matronageTag}>{matronageTag} </span>
                 )}
